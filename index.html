@@ -1691,6 +1691,30 @@
 标配内存偏保守
 高刷与高分对续航有压</textarea>
         </div>
+
+        <!-- 录制视频 -->
+        <div class="cfg-group" style="margin-top:24px; border-top:1px solid rgba(78,170,239,.15); padding-top:18px;">
+            <label class="cfg-label" style="font-size:14px; color:#4eaaef; margin-bottom:10px;">录制页面视频 (MP4)</label>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                <label class="cfg-label" style="margin:0; white-space:nowrap;">时长（分钟）</label>
+                <input class="cfg-input" id="cfgVideoDuration" type="number" min="0.1" max="10" step="0.1" value="3" style="width:100px;">
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button id="cfgRecordBtn" style="
+                    flex:1; padding:10px 0; border:1px solid rgba(78,170,239,.35);
+                    border-radius:8px; background:rgba(78,170,239,.12); color:#4eaaef;
+                    font-size:14px; cursor:pointer; font-family:inherit; letter-spacing:1px;
+                    transition: all .2s;
+                ">开始录制</button>
+                <button id="cfgStopRecordBtn" style="
+                    flex:1; padding:10px 0; border:1px solid rgba(255,77,79,.35);
+                    border-radius:8px; background:rgba(255,77,79,.12); color:#ff4d4f;
+                    font-size:14px; cursor:pointer; font-family:inherit; letter-spacing:1px;
+                    transition: all .2s; display:none;
+                ">停止录制</button>
+            </div>
+            <div id="cfgRecordStatus" style="font-size:12px; color:#7b8fa4; margin-top:8px;"></div>
+        </div>
     </div>
 
     <!-- 开关按钮 -->
@@ -1906,6 +1930,149 @@
         document.querySelectorAll("#configPanel input, #configPanel textarea").forEach(el => {
             el.addEventListener("input", applyConfig);
         });
+
+        // ============ 录制页面视频 =============
+        (function () {
+            const recordBtn = document.getElementById("cfgRecordBtn");
+            const stopBtn = document.getElementById("cfgStopRecordBtn");
+            const statusEl = document.getElementById("cfgRecordStatus");
+            const durationInput = document.getElementById("cfgVideoDuration");
+
+            let mediaRecorder = null;
+            let recordedChunks = [];
+            let recordTimer = null;
+            let countdownTimer = null;
+
+            recordBtn.addEventListener("click", startRecording);
+            stopBtn.addEventListener("click", stopRecording);
+
+            async function startRecording() {
+                const duration = parseFloat(durationInput.value);
+                if (!duration || duration <= 0 || duration > 10) {
+                    statusEl.textContent = "请输入有效时长（0.1 ~ 10 分钟）";
+                    statusEl.style.color = "#ff4d4f";
+                    return;
+                }
+
+                // 录制前先关闭配置面板，避免录进去
+                closePanel();
+
+                // 等面板动画结束
+                await new Promise(r => setTimeout(r, 400));
+
+                // 隐藏配置按钮
+                toggle.style.display = "none";
+
+                try {
+                    // 先弹出分享选择器（全屏前，避免分享对话框取消全屏）
+                    const stream = await navigator.mediaDevices.getDisplayMedia({
+                        video: { mediaSource: "screen", frameRate: 30 },
+                        audio: false
+                    });
+
+                    // 选择完成后再进入全屏
+                    try {
+                        await document.documentElement.requestFullscreen();
+                    } catch (e) {
+                        console.warn("全屏请求失败:", e);
+                    }
+                    // 等全屏切换完成
+                    await new Promise(r => setTimeout(r, 500));
+
+                    recordedChunks = [];
+                    // 优先 webm，后面转 mp4 下载；浏览器原生大多只支持 webm
+                    const mimeType = MediaRecorder.isTypeSupported("video/webm;codecs=vp9")
+                        ? "video/webm;codecs=vp9"
+                        : "video/webm";
+                    mediaRecorder = new MediaRecorder(stream, { mimeType });
+
+                    mediaRecorder.ondataavailable = (e) => {
+                        if (e.data.size > 0) recordedChunks.push(e.data);
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        // 停止所有轨道
+                        stream.getTracks().forEach(t => t.stop());
+                        clearInterval(countdownTimer);
+
+                        // 退出全屏
+                        if (document.fullscreenElement) {
+                            document.exitFullscreen().catch(() => {});
+                        }
+
+                        const blob = new Blob(recordedChunks, { type: mimeType });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement("a");
+                        a.href = url;
+                        // 浏览器原生录制为 webm，文件名标注；若需要 mp4 可用 FFmpeg 转换
+                        a.download = "页面录制_" + new Date().toISOString().slice(0, 19).replace(/[T:]/g, "-") + ".webm";
+                        document.body.appendChild(a);
+                        a.click();
+                        setTimeout(() => {
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(url);
+                        }, 100);
+
+                        // 恢复 UI
+                        recordBtn.style.display = "";
+                        stopBtn.style.display = "none";
+                        statusEl.textContent = "录制完成，已自动下载！";
+                        statusEl.style.color = "#1dd1a1";
+                        toggle.style.display = "flex";
+                    };
+
+                    // 如果用户在分享选择器里点了取消，stream 轨道会直接 ended
+                    stream.getVideoTracks()[0].onended = () => {
+                        if (mediaRecorder && mediaRecorder.state !== "inactive") {
+                            stopRecording();
+                        }
+                    };
+
+                    mediaRecorder.start(1000); // 每秒收集一次数据
+
+                    // UI 切换
+                    recordBtn.style.display = "none";
+                    stopBtn.style.display = "";
+                    statusEl.style.color = "#ff4d4f";
+
+                    // 倒计时
+                    const totalSec = Math.round(duration * 60);
+                    let remaining = totalSec;
+                    statusEl.textContent = "录制中… 剩余 " + formatTime(remaining);
+                    countdownTimer = setInterval(() => {
+                        remaining--;
+                        if (remaining <= 0) {
+                            stopRecording();
+                        } else {
+                            statusEl.textContent = "录制中… 剩余 " + formatTime(remaining);
+                        }
+                    }, 1000);
+
+                    // 到时自动停止
+                    recordTimer = setTimeout(() => stopRecording(), totalSec * 1000);
+
+                } catch (err) {
+                    console.error("录制失败:", err);
+                    statusEl.textContent = "录制取消或失败：" + err.message;
+                    statusEl.style.color = "#ff4d4f";
+                    toggle.style.display = "flex";
+                }
+            }
+
+            function stopRecording() {
+                clearTimeout(recordTimer);
+                clearInterval(countdownTimer);
+                if (mediaRecorder && mediaRecorder.state !== "inactive") {
+                    mediaRecorder.stop();
+                }
+            }
+
+            function formatTime(sec) {
+                const m = Math.floor(sec / 60);
+                const s = sec % 60;
+                return (m > 0 ? m + "分" : "") + s + "秒";
+            }
+        })();
 
         // ============ 入口 =============
         document.addEventListener("DOMContentLoaded", () => renderProduct(productData));
