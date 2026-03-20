@@ -467,8 +467,8 @@
         <div class="cfg-group" style="margin-top:24px; border-top:1px solid rgba(78,170,239,.15); padding-top:18px;">
             <label class="cfg-label" style="font-size:14px; color:#4eaaef; margin-bottom:10px;">录制页面视频 (MP4)</label>
             <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-                <label class="cfg-label" style="margin:0; white-space:nowrap;">时长（分钟）</label>
-                <input class="cfg-input" id="cfgVideoDuration" type="number" min="0.1" max="10" step="0.1" value="3" style="width:100px;">
+                <label class="cfg-label" style="margin:0; white-space:nowrap;">时长（秒）</label>
+                <input class="cfg-input" id="cfgVideoDuration" type="number" min="1" max="600" step="1" value="30" style="width:100px;">
             </div>
             <div style="display:flex; gap:10px;">
                 <button id="cfgRecordBtn" style="
@@ -769,9 +769,9 @@
             stopBtn.addEventListener('click', stopRecording);
 
             async function startRecording() {
-                const duration = parseFloat(durationInput.value);
-                if (!duration || duration <= 0 || duration > 10) {
-                    statusEl.textContent = '请输入有效时长（0.1 ~ 10 分钟）';
+                const duration = parseInt(durationInput.value, 10);
+                if (!duration || duration <= 0 || duration > 600) {
+                    statusEl.textContent = '请输入有效时长（1 ~ 600 秒）';
                     statusEl.style.color = '#ff4d4f';
                     return;
                 }
@@ -820,7 +820,7 @@
                     recordBtn.style.display = 'none';
                     stopBtn.style.display = '';
                     statusEl.style.color = '#ff4d4f';
-                    const totalSec = Math.round(duration * 60);
+                    const totalSec = duration;
                     let remaining = totalSec;
                     statusEl.textContent = '录制中… 剩余 ' + formatTime(remaining);
                     countdownTimer = setInterval(() => {
