@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>电动升降桌选购指南</title>
+    <style>
+        :root {
+            --bg: #0c0d10;
+            --card: #0f1116;
+            --text: #e8ecf1;
+            --muted: #b4bdc6;
+            --border: rgba(255, 255, 255, .08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; }
+
+        @font-face {
+            font-family: 'MyAwesomeFont';
+            src: url('./fontNew/站酷仓耳渔阳体-W05.ttf') format('truetype');
+        }
+
+        body {
+            color: var(--text);
+            font-family: 'MyAwesomeFont', 'Microsoft YaHei', sans-serif;
+            letter-spacing: .2px;
+            overflow-x: hidden;
+        }
+
+        /* 视频背景 */
+        .video-background {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        /* 主标题 */
+        .main-title {
+            text-align: center;
+            padding: 50px 0 10px;
+            font-size: 48px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #a58cff, #7ee8fa, #ff7d59, #a58cff);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 10px 30px rgba(159, 133, 255, .32);
+            animation: title-pan 8s linear infinite;
+        }
+
+        .sub-title {
+            text-align: center;
+            font-size: 20px;
+            color: var(--muted);
+            margin-bottom: 50px;
+            letter-spacing: 1px;
+            font-weight: 400;
+        }
+
+        @keyframes title-pan {
+            to { background-position: -300% 0; }
+        }
+
+        /* 卡片网格 */
+        .cards-grid {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0 40px 80px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 36px;
+        }
+
+        /* 单张类别卡片 */
+        .category-card {
+            position: relative;
+            border-radius: 18px;
+            padding: 32px 36px;
+            overflow: visible;
+            backdrop-filter: blur(12px);
+            transition: transform .4s ease, opacity .4s ease, filter .4s ease;
+        }
+
+        /* 高亮态 —— 放大 + 加强发光 */
+        .category-card.highlight {
+            transform: scale(1.03);
+            z-index: 10;
+            border-width: 3px;
+        }
+        .category-card.highlight .cc-conic { opacity: 1; }
+        .category-card.highlight .cc-dot { animation-duration: 1.4s; }
+        .category-card.highlight .cc-corner { width: 28px; height: 28px; }
+        .category-card.highlight .cat-scene { font-weight: 600; }
+        .category-card.highlight .product-name { font-weight: 500; }
+
+        .cat-1.highlight { box-shadow: inset 0 0 0 2px rgba(6,252,146,.25), inset 0 0 60px rgba(6,252,146,.2), 0 0 50px rgba(6,252,146,.3), 0 8px 32px rgba(0,0,0,.4) !important; }
+        .cat-2.highlight { box-shadow: inset 0 0 0 2px rgba(138,158,255,.25), inset 0 0 60px rgba(138,158,255,.2), 0 0 50px rgba(138,158,255,.3), 0 8px 32px rgba(0,0,0,.4) !important; }
+        .cat-3.highlight { box-shadow: inset 0 0 0 2px rgba(255,170,50,.25), inset 0 0 60px rgba(255,170,50,.2), 0 0 50px rgba(255,170,50,.3), 0 8px 32px rgba(0,0,0,.4) !important; }
+        .cat-4.highlight { box-shadow: inset 0 0 0 2px rgba(255,100,200,.25), inset 0 0 60px rgba(255,100,200,.2), 0 0 50px rgba(255,100,200,.3), 0 8px 32px rgba(0,0,0,.4) !important; }
+
+        /* 暗淡态 —— 未被高亮的卡片 */
+        .category-card.dimmed {
+            opacity: .7;
+            filter: saturate(.5) brightness(.8);
+            transform: scale(.98);
+        }
+        .category-card.dimmed .cc-conic { opacity: .2 !important; }
+        .category-card.dimmed .cc-flash { opacity: 0 !important; }
+        .category-card.dimmed .cc-particles .particle { opacity: 0 !important; }
+        .category-card.dimmed .cc-trail-svg { opacity: .3 !important; }
+        .category-card.dimmed .cc-dot { opacity: .25 !important; }
+
+        /* ========= 四色主题 ========= */
+        .cat-1 {
+            --c: 6, 252, 146;
+            --c-hex: #06fc92;
+            --c-hex2: #4cfec3;
+            border: 2px solid rgba(var(--c), .55);
+            background:
+                radial-gradient(ellipse 80% 70% at 10% 0%, rgba(var(--c), .1), transparent),
+                linear-gradient(155deg, rgba(4, 30, 20, .7), rgba(2, 16, 12, .5)),
+                repeating-linear-gradient(0deg, rgba(var(--c), .04) 0 1px, transparent 1px 36px),
+                repeating-linear-gradient(90deg, rgba(var(--c), .04) 0 1px, transparent 1px 36px);
+            box-shadow: inset 0 0 0 1px rgba(var(--c), .1), inset 0 0 30px rgba(var(--c), .08), 0 0 24px rgba(var(--c), .12);
+            animation: pulse1 3.6s ease-in-out infinite;
+        }
+        .cat-2 {
+            --c: 138, 158, 255;
+            --c-hex: #8a9eff;
+            --c-hex2: #b8c4ff;
+            border: 2px solid rgba(var(--c), .55);
+            background:
+                radial-gradient(ellipse 80% 70% at 10% 0%, rgba(var(--c), .1), transparent),
+                linear-gradient(155deg, rgba(12, 14, 40, .7), rgba(6, 8, 24, .5)),
+                repeating-linear-gradient(0deg, rgba(var(--c), .04) 0 1px, transparent 1px 36px),
+                repeating-linear-gradient(90deg, rgba(var(--c), .04) 0 1px, transparent 1px 36px);
+            box-shadow: inset 0 0 0 1px rgba(var(--c), .1), inset 0 0 30px rgba(var(--c), .08), 0 0 24px rgba(var(--c), .12);
+            animation: pulse2 3.6s ease-in-out infinite;
+        }
+        .cat-3 {
+            --c: 255, 170, 50;
+            --c-hex: #ffaa32;
+            --c-hex2: #ffd080;
+            border: 2px solid rgba(var(--c), .55);
+            background:
+                radial-gradient(ellipse 80% 70% at 10% 0%, rgba(var(--c), .08), transparent),
+                linear-gradient(155deg, rgba(30, 20, 4, .7), rgba(16, 12, 2, .5)),
+                repeating-linear-gradient(0deg, rgba(var(--c), .04) 0 1px, transparent 1px 36px),
+                repeating-linear-gradient(90deg, rgba(var(--c), .04) 0 1px, transparent 1px 36px);
+            box-shadow: inset 0 0 0 1px rgba(var(--c), .1), inset 0 0 30px rgba(var(--c), .06), 0 0 24px rgba(var(--c), .1);
+            animation: pulse3 3.6s ease-in-out infinite;
+        }
+        .cat-4 {
+            --c: 255, 100, 200;
+            --c-hex: #ff64c8;
+            --c-hex2: #ff99dd;
+            border: 2px solid rgba(var(--c), .55);
+            background:
+                radial-gradient(ellipse 80% 70% at 10% 0%, rgba(var(--c), .08), transparent),
+                linear-gradient(155deg, rgba(30, 4, 20, .7), rgba(16, 2, 12, .5)),
+                repeating-linear-gradient(0deg, rgba(var(--c), .04) 0 1px, transparent 1px 36px),
+                repeating-linear-gradient(90deg, rgba(var(--c), .04) 0 1px, transparent 1px 36px);
+            box-shadow: inset 0 0 0 1px rgba(var(--c), .1), inset 0 0 30px rgba(var(--c), .06), 0 0 24px rgba(var(--c), .1);
+            animation: pulse4 3.6s ease-in-out infinite;
+        }
+
+        /* 脉冲动画 */
+        @keyframes pulse1 {
+            0%, 100% { box-shadow: inset 0 0 0 1px rgba(6,252,146,.1), inset 0 0 30px rgba(6,252,146,.08), 0 0 24px rgba(6,252,146,.12); }
+            50%      { box-shadow: inset 0 0 0 1px rgba(6,252,146,.22), inset 0 0 48px rgba(6,252,146,.16), 0 0 40px rgba(6,252,146,.22); }
+        }
+        @keyframes pulse2 {
+            0%, 100% { box-shadow: inset 0 0 0 1px rgba(138,158,255,.1), inset 0 0 30px rgba(138,158,255,.08), 0 0 24px rgba(138,158,255,.12); }
+            50%      { box-shadow: inset 0 0 0 1px rgba(138,158,255,.22), inset 0 0 48px rgba(138,158,255,.16), 0 0 40px rgba(138,158,255,.22); }
+        }
+        @keyframes pulse3 {
+            0%, 100% { box-shadow: inset 0 0 0 1px rgba(255,170,50,.1), inset 0 0 30px rgba(255,170,50,.06), 0 0 24px rgba(255,170,50,.1); }
+            50%      { box-shadow: inset 0 0 0 1px rgba(255,170,50,.2), inset 0 0 45px rgba(255,170,50,.14), 0 0 36px rgba(255,170,50,.2); }
+        }
+        @keyframes pulse4 {
+            0%, 100% { box-shadow: inset 0 0 0 1px rgba(255,100,200,.1), inset 0 0 30px rgba(255,100,200,.06), 0 0 24px rgba(255,100,200,.1); }
+            50%      { box-shadow: inset 0 0 0 1px rgba(255,100,200,.2), inset 0 0 45px rgba(255,100,200,.14), 0 0 36px rgba(255,100,200,.2); }
+        }
+
+        /* 角标 */
+        .cc-corner {
+            position: absolute;
+            width: 22px; height: 22px;
+            z-index: 6; pointer-events: none;
+        }
+        .cc-corner.tl { top: -4px; left: -4px; border-top: 3px solid var(--c-hex); border-left: 3px solid var(--c-hex); }
+        .cc-corner.tr { top: -4px; right: -4px; border-top: 3px solid var(--c-hex); border-right: 3px solid var(--c-hex); }
+        .cc-corner.bl { bottom: -4px; left: -4px; border-bottom: 3px solid var(--c-hex); border-left: 3px solid var(--c-hex); }
+        .cc-corner.br { bottom: -4px; right: -4px; border-bottom: 3px solid var(--c-hex); border-right: 3px solid var(--c-hex); }
+
+        /* 角点发光 */
+        .cc-dot {
+            position: absolute;
+            width: 5px; height: 5px; border-radius: 50%;
+            background: var(--c-hex);
+            box-shadow: 0 0 8px 2px rgba(var(--c), .5);
+            z-index: 6; pointer-events: none;
+            animation: dotPulse 2.2s ease-in-out infinite;
+        }
+        .cc-dot.d1 { top: -5px; left: -5px; }
+        .cc-dot.d2 { top: -5px; right: -5px; animation-delay: .55s; }
+        .cc-dot.d3 { bottom: -5px; left: -5px; animation-delay: 1.1s; }
+        .cc-dot.d4 { bottom: -5px; right: -5px; animation-delay: 1.65s; }
+        @keyframes dotPulse {
+            0%, 100% { transform: scale(1); opacity: .5; }
+            50%      { transform: scale(1.6); opacity: 1; }
+        }
+
+        /* 扫描线 */
+        .cc-scanline {
+            position: absolute; inset: 0; overflow: hidden;
+            border-radius: 18px; pointer-events: none; z-index: 2;
+        }
+        .cc-scanline::after {
+            content: ""; position: absolute;
+            left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent 5%, rgba(var(--c), .08) 20%, rgba(var(--c), .14) 50%, rgba(var(--c), .08) 80%, transparent 95%);
+            animation: scanDown 4s linear infinite;
+        }
+        @keyframes scanDown { 0% { top: -2px; } 100% { top: 100%; } }
+
+        /* 数据流线 */
+        .cc-stream {
+            position: absolute; width: 1px; top: 0; bottom: 0;
+            pointer-events: none; z-index: 1; opacity: .3;
+            background: repeating-linear-gradient(180deg, rgba(var(--c), .3) 0px, rgba(var(--c), .3) 3px, transparent 3px, transparent 10px);
+            background-size: 1px 13px;
+            animation: streamUp 2.5s linear infinite;
+        }
+        .cc-stream.sl { left: -5px; }
+        .cc-stream.sr { right: -5px; animation-delay: 1.2s; opacity: .2; }
+        @keyframes streamUp { 0% { background-position: 0 0; } 100% { background-position: 0 -13px; } }
+
+        /* SVG流光边框 */
+        .cc-trail-svg {
+            position: absolute; inset: -6px;
+            width: calc(100% + 12px); height: calc(100% + 12px);
+            pointer-events: none; z-index: 5;
+        }
+        .cc-trail-svg rect {
+            fill: none; stroke-width: 2;
+            stroke-dasharray: 60 350; stroke-linecap: round;
+        }
+        .cc-trail-svg .trail-1 { filter: drop-shadow(0 0 5px currentColor); animation: trailRun 9s linear infinite; }
+        .cc-trail-svg .trail-2 { filter: drop-shadow(0 0 4px currentColor); animation: trailRun 9s linear infinite; animation-delay: -4.5s; opacity: .5; }
+        @keyframes trailRun { to { stroke-dashoffset: -820; } }
+
+        /* 类别标签 */
+        .cat-label {
+            display: inline-block;
+            padding: 5px 16px;
+            border-radius: 0 0 10px 10px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            position: absolute;
+            right: 20px;
+            top: -2px;
+            z-index: 10;
+            transform: translateY(-100%);
+        }
+        .cat-1 .cat-label { background: linear-gradient(90deg, #06fc92, #4cfec3); color: #012018; box-shadow: 0 6px 16px rgba(6,252,146,.3); }
+        .cat-2 .cat-label { background: linear-gradient(90deg, #8a9eff, #b8c4ff); color: #0a0c24; box-shadow: 0 6px 16px rgba(138,158,255,.3); }
+        .cat-3 .cat-label { background: linear-gradient(90deg, #ffaa32, #ffd080); color: #1a0e00; box-shadow: 0 6px 16px rgba(255,170,50,.3); }
+        .cat-4 .cat-label { background: linear-gradient(90deg, #ff64c8, #ff99dd); color: #1a0010; box-shadow: 0 6px 16px rgba(255,100,200,.3); }
+
+        /* 场景描述 */
+        .cat-scene {
+            font-size: 24px;
+            font-weight: 500;
+            letter-spacing: .5px;
+            margin-bottom: 22px;
+            position: relative;
+            z-index: 3;
+            line-height: 1.5;
+        }
+        .cat-1 .cat-scene { color: #70ffca; text-shadow: 0 0 18px rgba(6,252,146,.25); }
+        .cat-2 .cat-scene { color: #b8c8ff; text-shadow: 0 0 18px rgba(138,158,255,.25); }
+        .cat-3 .cat-scene { color: #ffd080; text-shadow: 0 0 18px rgba(255,170,50,.25); }
+        .cat-4 .cat-scene { color: #ffaadd; text-shadow: 0 0 18px rgba(255,100,200,.25); }
+
+        /* 产品列表 */
+        .product-list {
+            position: relative; z-index: 3;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .product-item {
+            display: flex; align-items: center; gap: 14px;
+            padding: 12px 18px; border-radius: 12px;
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid rgba(255, 255, 255, .06);
+            transition: all .3s ease; cursor: default;
+        }
+        .product-item:hover {
+            background: rgba(255, 255, 255, .07);
+            border-color: rgba(255, 255, 255, .12);
+            transform: translateX(6px);
+        }
+        .cat-1 .product-item:hover { box-shadow: 0 0 20px rgba(6,252,146,.12); border-color: rgba(6,252,146,.3); }
+        .cat-2 .product-item:hover { box-shadow: 0 0 20px rgba(138,158,255,.12); border-color: rgba(138,158,255,.3); }
+        .cat-3 .product-item:hover { box-shadow: 0 0 20px rgba(255,170,50,.12); border-color: rgba(255,170,50,.3); }
+        .cat-4 .product-item:hover { box-shadow: 0 0 20px rgba(255,100,200,.12); border-color: rgba(255,100,200,.3); }
+
+        /* 序号 */
+        .product-num {
+            width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px; font-weight: 600; flex-shrink: 0;
+        }
+        .cat-1 .product-num { background: rgba(6,252,146,.15); color: #06fc92; border: 1px solid rgba(6,252,146,.3); }
+        .cat-2 .product-num { background: rgba(138,158,255,.15); color: #8a9eff; border: 1px solid rgba(138,158,255,.3); }
+        .cat-3 .product-num { background: rgba(255,170,50,.15); color: #ffaa32; border: 1px solid rgba(255,170,50,.3); }
+        .cat-4 .product-num { background: rgba(255,100,200,.15); color: #ff64c8; border: 1px solid rgba(255,100,200,.3); }
+
+        .product-name {
+            font-size: 22px;
+            font-weight: 400;
+            color: #e8ecf1;
+            letter-spacing: .3px;
+        }
+
+        /* 粒子 */
+        .cc-particles {
+            position: absolute; inset: 0; overflow: hidden;
+            border-radius: 18px; pointer-events: none; z-index: 1;
+        }
+        .cc-particles .particle {
+            position: absolute; width: 2px; height: 2px;
+            border-radius: 50%; opacity: 0;
+            background: var(--c-hex);
+            animation: particleFloat 7s ease-in-out infinite;
+        }
+        .cc-particles .particle:nth-child(1) { left: 10%; bottom: -2px; animation-delay: 0s; animation-duration: 6s; }
+        .cc-particles .particle:nth-child(2) { left: 30%; bottom: -2px; animation-delay: 1.2s; animation-duration: 7s; width: 2.5px; height: 2.5px; }
+        .cc-particles .particle:nth-child(3) { left: 55%; bottom: -2px; animation-delay: 2.8s; animation-duration: 5.5s; }
+        .cc-particles .particle:nth-child(4) { left: 78%; bottom: -2px; animation-delay: 0.6s; animation-duration: 8s; width: 1.5px; height: 1.5px; }
+        .cc-particles .particle:nth-child(5) { left: 92%; bottom: -2px; animation-delay: 3.8s; animation-duration: 6.5s; }
+        @keyframes particleFloat {
+            0%   { transform: translateY(0); opacity: 0; }
+            10%  { opacity: .7; }
+            90%  { opacity: .7; }
+            100% { transform: translateY(-180px); opacity: 0; }
+        }
+
+        /* 电弧闪烁 */
+        .cc-flash {
+            position: absolute; inset: 0; border-radius: 18px;
+            pointer-events: none; z-index: 1; opacity: 0;
+            background: radial-gradient(ellipse at 30% 20%, rgba(var(--c), .1), transparent 50%);
+            animation: eFlash 9s ease-in-out infinite;
+        }
+        @keyframes eFlash {
+            0%, 88%, 100% { opacity: 0; }
+            90% { opacity: 1; }
+            92% { opacity: 0; }
+            94% { opacity: .7; }
+            96% { opacity: 0; }
+        }
+
+        /* conic旋转光边 */
+        .cc-conic {
+            position: absolute; inset: -3px; border-radius: 20px;
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+            padding: 2px; pointer-events: none; z-index: 1;
+            animation: conicSpin 6s linear infinite; opacity: .6;
+            background: conic-gradient(from var(--conic-angle, 0deg),
+                transparent 0%, rgba(var(--c), .35) 8%, transparent 16%,
+                transparent 50%, rgba(var(--c), .2) 58%, transparent 66%);
+        }
+        @keyframes conicSpin { to { --conic-angle: 360deg; } }
+        @property --conic-angle {
+            syntax: '<angle>';
+            inherits: false;
+            initial-value: 0deg;
+        }
+
+        /* ========= 配置面板样式 ========= */
+        .cfg-group { margin-bottom: 14px; }
+        .cfg-label {
+            display: block; font-size: 12px; color: #7b8fa4;
+            margin-bottom: 5px; font-weight: 500; letter-spacing: .3px;
+        }
+        .cfg-input, .cfg-textarea {
+            width: 100%; background: rgba(6,10,22,.6);
+            border: 1px solid rgba(78,170,239,.1); border-radius: 8px;
+            color: #d0dce8; padding: 10px 14px; font-size: 14px;
+            font-family: inherit; transition: all .2s; line-height: 1.5;
+        }
+        .cfg-input:focus, .cfg-textarea:focus {
+            outline: none; border-color: rgba(78,170,239,.35);
+            box-shadow: 0 0 0 3px rgba(78,170,239,.08);
+        }
+        .cfg-textarea { resize: vertical; min-height: 60px; }
+        #configPanel::-webkit-scrollbar { width: 6px; }
+        #configPanel::-webkit-scrollbar-track { background: transparent; }
+        #configPanel::-webkit-scrollbar-thumb { background: rgba(78,170,239,.2); border-radius: 3px; }
+    </style>
+</head>
+
+<body>
+    <!-- 视频背景 -->
+    <video class="video-background" autoplay muted loop>
+        <source src="./背景/6.mp4" type="video/mp4">
+        您的浏览器不支持视频播放。
+    </video>
+
+    <div class="main-title" id="mainTitle">电动升降桌选购指南</div>
+    <div class="sub-title" id="subTitle">按需求场景分类，帮你快速找到最适合的那一款</div>
+
+    <div class="cards-grid" id="cardsGrid">
+        <!-- JS 动态渲染 -->
+    </div>
+
+    <!-- ==================== 配置面板 ==================== -->
+    <div id="configPanel" style="
+        position: fixed; top: 0; right: -500px; width: 500px; height: 100vh;
+        background: linear-gradient(165deg, #0f1525, #141c30);
+        border-left: 2px solid rgba(78,170,239,.15);
+        box-shadow: -8px 0 40px rgba(0,0,0,.6);
+        z-index: 9999; overflow-y: auto; padding: 24px 28px;
+        font-family: 'Microsoft YaHei', sans-serif; color: #c8ddf0;
+        transition: right .35s cubic-bezier(.4,0,.2,1);
+    ">
+        <h3 style="margin:0 0 20px; font-size:20px; color:#4eaaef; letter-spacing:2px; display:flex; justify-content:space-between; align-items:center;">
+            文字配置
+            <span id="cfgClose" style="cursor:pointer; font-size:24px; color:#7b8fa4; line-height:1;">&times;</span>
+        </h3>
+
+        <!-- 导入TXT -->
+        <div class="cfg-group" style="margin-bottom:18px;">
+            <label class="cfg-label" style="margin-bottom:8px;">导入配置文件（.txt）</label>
+            <input type="file" id="cfgFileInput" accept=".txt" style="display:none;">
+            <button id="cfgImportBtn" style="
+                width:100%; padding:10px 0; border:1px dashed rgba(78,170,239,.35);
+                border-radius:8px; background:rgba(78,170,239,.06); color:#4eaaef;
+                font-size:14px; cursor:pointer; font-family:inherit; letter-spacing:1px;
+                transition: all .2s;
+            ">点击导入 TXT 配置文件</button>
+        </div>
+
+        <!-- 主标题 -->
+        <div class="cfg-group">
+            <label class="cfg-label">页面主标题</label>
+            <input class="cfg-input" id="cfgMainTitle" value="电动升降桌选购指南">
+        </div>
+        <div class="cfg-group">
+            <label class="cfg-label">页面副标题</label>
+            <input class="cfg-input" id="cfgSubTitle" value="按需求场景分类，帮你快速找到最适合的那一款">
+        </div>
+
+        <!-- 四个类别 -->
+        <div id="cfgCategoriesWrap"></div>
+
+        <!-- 录制视频 -->
+        <div class="cfg-group" style="margin-top:24px; border-top:1px solid rgba(78,170,239,.15); padding-top:18px;">
+            <label class="cfg-label" style="font-size:14px; color:#4eaaef; margin-bottom:10px;">录制页面视频 (MP4)</label>
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                <label class="cfg-label" style="margin:0; white-space:nowrap;">时长（分钟）</label>
+                <input class="cfg-input" id="cfgVideoDuration" type="number" min="0.1" max="10" step="0.1" value="3" style="width:100px;">
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button id="cfgRecordBtn" style="
+                    flex:1; padding:10px 0; border:1px solid rgba(78,170,239,.35);
+                    border-radius:8px; background:rgba(78,170,239,.12); color:#4eaaef;
+                    font-size:14px; cursor:pointer; font-family:inherit; letter-spacing:1px;
+                ">开始录制</button>
+                <button id="cfgStopRecordBtn" style="
+                    flex:1; padding:10px 0; border:1px solid rgba(255,77,79,.35);
+                    border-radius:8px; background:rgba(255,77,79,.12); color:#ff4d4f;
+                    font-size:14px; cursor:pointer; font-family:inherit; letter-spacing:1px;
+                    display:none;
+                ">停止录制</button>
+            </div>
+            <div id="cfgRecordStatus" style="font-size:12px; color:#7b8fa4; margin-top:8px;"></div>
+        </div>
+    </div>
+
+    <!-- 开关按钮 -->
+    <div id="cfgToggle" style="
+        position: fixed; top: 50%; right: 0; transform: translateY(-50%);
+        width: 40px; height: 100px; z-index: 10000; cursor: pointer;
+        background: linear-gradient(180deg, rgba(78,170,239,.25), rgba(78,170,239,.1));
+        border: 1px solid rgba(78,170,239,.3); border-right: none;
+        border-radius: 10px 0 0 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; color: #4eaaef; writing-mode: vertical-rl;
+        letter-spacing: 4px; font-weight: 700;
+        backdrop-filter: blur(8px); transition: all .25s;
+    ">配置</div>
+
+    <script>
+        // ============ 默认数据 =============
+        const defaultData = {
+            mainTitle: "电动升降桌选购指南",
+            subTitle: "按需求场景分类，帮你快速找到最适合的那一款",
+            categories: [
+                {
+                    label: "轻办公 / 床边 / 宿舍",
+                    scene: "只是轻办公、床边用、宿舍用",
+                    highlight: false,
+                    products: ["北弧可升降桌移动电脑桌", "网易严选任意桌 C70 Pro", "西昊 D01 Pro"]
+                },
+                {
+                    label: "稳妥入门",
+                    scene: "第一次买电动升降桌，想稳妥入门",
+                    highlight: false,
+                    products: ["京东京造 Jump", "西昊 D03", "乐歌 ES2Pro"]
+                },
+                {
+                    label: "一步到位",
+                    scene: "桌面设备多，想一步到位",
+                    highlight: false,
+                    products: ["京东京造双电机款", "乐歌 E5-N"]
+                },
+                {
+                    label: "电竞风 / 颜值 / 桌搭氛围",
+                    scene: "更在意电竞风、颜值、桌搭氛围",
+                    highlight: false,
+                    products: ["戟创 AGKey-K1 PRO", "傲风 A4", "傲风 A4 Pro", "安德斯特未来 Max", "安德斯特实木一体桌板 Max"]
+                }
+            ]
+        };
+
+        // 卡片装饰 HTML（角标、粒子、流光等）
+        const gradientColors = [
+            ['#06fc92', '#4cfec3'],
+            ['#8a9eff', '#b8c4ff'],
+            ['#ffaa32', '#ffd080'],
+            ['#ff64c8', '#ff99dd']
+        ];
+
+        function makeDecoHTML(idx) {
+            const [c1, c2] = gradientColors[idx] || gradientColors[0];
+            const gid = 'tg' + (idx + 1);
+            return `
+                <span class="cc-corner tl"></span><span class="cc-corner tr"></span>
+                <span class="cc-corner bl"></span><span class="cc-corner br"></span>
+                <span class="cc-dot d1"></span><span class="cc-dot d2"></span>
+                <span class="cc-dot d3"></span><span class="cc-dot d4"></span>
+                <div class="cc-conic"></div>
+                <svg class="cc-trail-svg"><defs><linearGradient id="${gid}" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="transparent"/><stop offset="40%" stop-color="${c1}"/><stop offset="60%" stop-color="${c2}"/><stop offset="100%" stop-color="transparent"/></linearGradient></defs><rect class="trail-1" stroke="url(#${gid})" x="1" y="1" rx="17" ry="17" style="width:calc(100% - 2px);height:calc(100% - 2px)"/><rect class="trail-2" stroke="url(#${gid})" x="1" y="1" rx="17" ry="17" style="width:calc(100% - 2px);height:calc(100% - 2px)"/></svg>
+                <div class="cc-particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div></div>
+                <div class="cc-flash"></div>
+                <span class="cc-stream sl"></span><span class="cc-stream sr"></span>
+                <div class="cc-scanline"></div>
+            `;
+        }
+
+        // ============ 渲染页面 =============
+        function renderPage(data) {
+            document.getElementById('mainTitle').textContent = data.mainTitle;
+            document.getElementById('subTitle').textContent = data.subTitle;
+
+            const grid = document.getElementById('cardsGrid');
+            grid.innerHTML = '';
+
+            const hasAnyHighlight = data.categories.some(c => c.highlight);
+
+            data.categories.forEach((cat, i) => {
+                const catClass = 'cat-' + (i % 4 + 1);
+                const card = document.createElement('div');
+                let cls = 'category-card ' + catClass;
+                if (hasAnyHighlight) {
+                    cls += cat.highlight ? ' highlight' : ' dimmed';
+                }
+                card.className = cls;
+
+                let productsHTML = '';
+                cat.products.forEach((p, j) => {
+                    productsHTML += `<div class="product-item"><span class="product-num">${j + 1}</span><span class="product-name">${p}</span></div>`;
+                });
+
+                card.innerHTML = `
+                    <span class="cat-label">${cat.label}</span>
+                    ${makeDecoHTML(i % 4)}
+                    <div class="cat-scene">${cat.scene}</div>
+                    <div class="product-list">${productsHTML}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // ============ 生成配置面板输入框 =============
+        function buildConfigInputs(data) {
+            const wrap = document.getElementById('cfgCategoriesWrap');
+            wrap.innerHTML = '';
+            data.categories.forEach((cat, i) => {
+                const checked = cat.highlight ? 'checked' : '';
+                const html = `
+                    <div style="margin-top:18px; border-top:1px solid rgba(78,170,239,.12); padding-top:14px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <label class="cfg-label" style="color:#4eaaef; font-size:14px; margin:0;">第${i + 1}类</label>
+                            <label style="display:flex; align-items:center; gap:6px; cursor:pointer; font-size:12px; color:#f0c040; user-select:none;">
+                                <input type="checkbox" class="cfg-cat-highlight" data-idx="${i}" ${checked} style="accent-color:#f0c040; width:16px; height:16px; cursor:pointer;">
+                                高亮突出
+                            </label>
+                        </div>
+                        <div class="cfg-group">
+                            <label class="cfg-label">标签名</label>
+                            <input class="cfg-input cfg-cat-label" data-idx="${i}" value="${cat.label}">
+                        </div>
+                        <div class="cfg-group">
+                            <label class="cfg-label">场景描述</label>
+                            <input class="cfg-input cfg-cat-scene" data-idx="${i}" value="${cat.scene}">
+                        </div>
+                        <div class="cfg-group">
+                            <label class="cfg-label">推荐产品（每行一个）</label>
+                            <textarea class="cfg-textarea cfg-cat-products" data-idx="${i}" rows="${Math.max(2, cat.products.length)}">${cat.products.join('\n')}</textarea>
+                        </div>
+                    </div>
+                `;
+                wrap.insertAdjacentHTML('beforeend', html);
+            });
+
+            // 绑定实时监听
+            wrap.querySelectorAll('input, textarea').forEach(el => {
+                el.addEventListener('input', applyConfig);
+                el.addEventListener('change', applyConfig);
+            });
+        }
+
+        // ============ 从面板读取并渲染 =============
+        function applyConfig() {
+            const labels = document.querySelectorAll('.cfg-cat-label');
+            const scenes = document.querySelectorAll('.cfg-cat-scene');
+            const prods = document.querySelectorAll('.cfg-cat-products');
+            const highlights = document.querySelectorAll('.cfg-cat-highlight');
+
+            const categories = [];
+            labels.forEach((el, i) => {
+                categories.push({
+                    label: el.value,
+                    scene: scenes[i].value,
+                    highlight: highlights[i] ? highlights[i].checked : false,
+                    products: prods[i].value.split('\n').filter(s => s.trim())
+                });
+            });
+
+            const data = {
+                mainTitle: document.getElementById('cfgMainTitle').value,
+                subTitle: document.getElementById('cfgSubTitle').value,
+                categories
+            };
+            renderPage(data);
+        }
+
+        // ============ 配置面板开关 =============
+        let panelOpen = false;
+        const panel = document.getElementById('configPanel');
+        const toggle = document.getElementById('cfgToggle');
+        const closeBtn = document.getElementById('cfgClose');
+
+        function openPanel() { panelOpen = true; panel.style.right = '0'; toggle.style.right = '500px'; }
+        function closePanel() { panelOpen = false; panel.style.right = '-500px'; toggle.style.right = '0'; }
+        toggle.addEventListener('click', () => panelOpen ? closePanel() : openPanel());
+        closeBtn.addEventListener('click', closePanel);
+
+        // Ctrl+H 显隐配置按钮
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key.toLowerCase() === 'h') {
+                e.preventDefault();
+                const isHidden = toggle.style.display === 'none';
+                if (isHidden) {
+                    toggle.style.display = 'flex';
+                } else {
+                    if (panelOpen) closePanel();
+                    toggle.style.display = 'none';
+                }
+            }
+        });
+
+        // 主标题/副标题实时监听
+        document.getElementById('cfgMainTitle').addEventListener('input', applyConfig);
+        document.getElementById('cfgSubTitle').addEventListener('input', applyConfig);
+
+        // ============ 导入TXT配置文件 =============
+        // 格式：
+        // [主标题] 电动升降桌选购指南
+        // [副标题] ...
+        // [类别1]
+        // 标签|轻办公 / 床边 / 宿舍
+        // 场景|只是轻办公、床边用、宿舍用
+        // 产品|北弧可升降桌移动电脑桌
+        // 产品|网易严选任意桌 C70 Pro
+        // [类别2] ...
+        const cfgImportBtn = document.getElementById('cfgImportBtn');
+        const cfgFileInput = document.getElementById('cfgFileInput');
+        cfgImportBtn.addEventListener('click', () => cfgFileInput.click());
+        cfgFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const text = ev.target.result;
+                const data = parseTxtConfig(text);
+                // 填入面板
+                document.getElementById('cfgMainTitle').value = data.mainTitle;
+                document.getElementById('cfgSubTitle').value = data.subTitle;
+                buildConfigInputs(data);
+                renderPage(data);
+                cfgImportBtn.textContent = '已导入：' + file.name;
+                setTimeout(() => { cfgImportBtn.textContent = '点击导入 TXT 配置文件'; }, 2000);
+            };
+            reader.readAsText(file, 'UTF-8');
+            cfgFileInput.value = '';
+        });
+
+        function parseTxtConfig(text) {
+            const result = {
+                mainTitle: defaultData.mainTitle,
+                subTitle: defaultData.subTitle,
+                categories: []
+            };
+            let currentCat = null;
+            text.split('\n').forEach(line => {
+                const trimmed = line.trim();
+                if (!trimmed) return;
+
+                // [主标题] xxx
+                let m;
+                if ((m = trimmed.match(/^\[主标题\]\s*(.*)/))) {
+                    result.mainTitle = m[1].trim();
+                } else if ((m = trimmed.match(/^\[副标题\]\s*(.*)/))) {
+                    result.subTitle = m[1].trim();
+                } else if ((m = trimmed.match(/^\[类别\d*\]/))) {
+                    currentCat = { label: '', scene: '', highlight: false, products: [] };
+                    result.categories.push(currentCat);
+                } else if (currentCat) {
+                    const parts = trimmed.split('|');
+                    if (parts.length >= 2) {
+                        const key = parts[0].trim();
+                        const val = parts.slice(1).join('|').trim();
+                        if (key === '标签') currentCat.label = val;
+                        else if (key === '场景') currentCat.scene = val;
+                        else if (key === '高亮') currentCat.highlight = (val === '是' || val === 'true' || val === '1');
+                        else if (key === '产品') currentCat.products.push(val);
+                    }
+                }
+            });
+            if (result.categories.length === 0) result.categories = defaultData.categories;
+            return result;
+        }
+
+        // ============ 录制页面视频 =============
+        (function () {
+            const recordBtn = document.getElementById('cfgRecordBtn');
+            const stopBtn = document.getElementById('cfgStopRecordBtn');
+            const statusEl = document.getElementById('cfgRecordStatus');
+            const durationInput = document.getElementById('cfgVideoDuration');
+
+            let mediaRecorder = null;
+            let recordedChunks = [];
+            let recordTimer = null;
+            let countdownTimer = null;
+
+            recordBtn.addEventListener('click', startRecording);
+            stopBtn.addEventListener('click', stopRecording);
+
+            async function startRecording() {
+                const duration = parseFloat(durationInput.value);
+                if (!duration || duration <= 0 || duration > 10) {
+                    statusEl.textContent = '请输入有效时长（0.1 ~ 10 分钟）';
+                    statusEl.style.color = '#ff4d4f';
+                    return;
+                }
+                closePanel();
+                await new Promise(r => setTimeout(r, 400));
+                toggle.style.display = 'none';
+
+                try {
+                    const stream = await navigator.mediaDevices.getDisplayMedia({
+                        video: { mediaSource: 'screen', frameRate: 30 },
+                        audio: false
+                    });
+                    try { await document.documentElement.requestFullscreen(); } catch (e) {}
+                    await new Promise(r => setTimeout(r, 500));
+
+                    recordedChunks = [];
+                    const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
+                        ? 'video/webm;codecs=vp9' : 'video/webm';
+                    mediaRecorder = new MediaRecorder(stream, { mimeType });
+
+                    mediaRecorder.ondataavailable = (e) => {
+                        if (e.data.size > 0) recordedChunks.push(e.data);
+                    };
+                    mediaRecorder.onstop = () => {
+                        stream.getTracks().forEach(t => t.stop());
+                        clearInterval(countdownTimer);
+                        if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+                        const blob = new Blob(recordedChunks, { type: mimeType });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = '页面录制_' + new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-') + '.webm';
+                        document.body.appendChild(a);
+                        a.click();
+                        setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+                        recordBtn.style.display = '';
+                        stopBtn.style.display = 'none';
+                        statusEl.textContent = '录制完成，已自动下载！';
+                        statusEl.style.color = '#1dd1a1';
+                        toggle.style.display = 'flex';
+                    };
+                    stream.getVideoTracks()[0].onended = () => {
+                        if (mediaRecorder && mediaRecorder.state !== 'inactive') stopRecording();
+                    };
+                    mediaRecorder.start(1000);
+                    recordBtn.style.display = 'none';
+                    stopBtn.style.display = '';
+                    statusEl.style.color = '#ff4d4f';
+                    const totalSec = Math.round(duration * 60);
+                    let remaining = totalSec;
+                    statusEl.textContent = '录制中… 剩余 ' + formatTime(remaining);
+                    countdownTimer = setInterval(() => {
+                        remaining--;
+                        if (remaining <= 0) stopRecording();
+                        else statusEl.textContent = '录制中… 剩余 ' + formatTime(remaining);
+                    }, 1000);
+                    recordTimer = setTimeout(() => stopRecording(), totalSec * 1000);
+                } catch (err) {
+                    statusEl.textContent = '录制取消或失败：' + err.message;
+                    statusEl.style.color = '#ff4d4f';
+                    toggle.style.display = 'flex';
+                }
+            }
+            function stopRecording() {
+                clearTimeout(recordTimer);
+                clearInterval(countdownTimer);
+                if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+            }
+            function formatTime(sec) {
+                const m = Math.floor(sec / 60), s = sec % 60;
+                return (m > 0 ? m + '分' : '') + s + '秒';
+            }
+        })();
+
+        // ============ 入口 =============
+        renderPage(defaultData);
+        buildConfigInputs(defaultData);
+    </script>
+</body>
+
+</html>
