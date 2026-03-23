@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>一键三连</title>
+    <style>
+        @font-face {
+            font-family: 'MyAwesomeFont';
+            src: url('./fontNew/站酷仓耳渔阳体-W05.ttf') format('truetype');
+        }
+        *{ box-sizing:border-box; margin:0; padding:0; }
+        html,body{ height:100%; overflow:hidden; }
+        body{
+            font-family:'MyAwesomeFont','Microsoft YaHei',sans-serif;
+            color:#fff;
+            display:flex; align-items:center; justify-content:center;
+        }
+
+        .video-background {
+            position:fixed; top:0; left:0;
+            width:100%; height:100%; z-index:-1; object-fit:cover;
+        }
+
+        .container{ text-align:center; position:relative; }
+
+        /* 头像 */
+        .avatar-wrap{
+            position:relative;
+            width:160px; height:160px;
+            margin:0 auto 24px;
+            opacity:0;
+            transform:scale(.5) translateY(30px);
+            animation: avatarEntry 1s cubic-bezier(.34,1.56,.64,1) .3s forwards;
+        }
+        @keyframes avatarEntry {
+            to{ opacity:1; transform:scale(1) translateY(0); }
+        }
+        .avatar-ring{
+            position:absolute; inset:-6px;
+            border-radius:50%;
+            background: conic-gradient(from var(--ring-angle,0deg), #fb7299, #ff9ab5, #23ade5, #fb7299);
+            animation: ringSpin 3s linear infinite;
+            z-index:0;
+        }
+        @property --ring-angle {
+            syntax:'<angle>'; inherits:false; initial-value:0deg;
+        }
+        @keyframes ringSpin { to{ --ring-angle:360deg; } }
+        .avatar-ring::after{
+            content:''; position:absolute; inset:4px;
+            border-radius:50%; background:#0c0d10;
+        }
+        /* 头像外层呼吸光 */
+        .avatar-glow{
+            position:absolute; inset:-20px;
+            border-radius:50%;
+            background: radial-gradient(circle, rgba(251,114,153,.2), transparent 70%);
+            animation: avatarGlow 2.5s ease-in-out infinite;
+            z-index:-1;
+        }
+        @keyframes avatarGlow {
+            0%,100%{ transform:scale(1); opacity:.6; }
+            50%{ transform:scale(1.2); opacity:1; }
+        }
+        .avatar{
+            position:relative; z-index:1;
+            width:160px; height:160px;
+            border-radius:50%; object-fit:cover;
+            border:4px solid #0c0d10;
+        }
+
+        .username{
+            font-size:36px; font-weight:600; letter-spacing:1px;
+            margin-bottom:8px;
+            background: linear-gradient(90deg, #fb7299, #ff9ab5, #23ade5);
+            -webkit-background-clip:text; background-clip:text; color:transparent;
+            opacity:0; transform:translateY(20px);
+            animation: fadeUp .8s ease .6s forwards;
+        }
+        .slogan{
+            font-size:28px;
+            font-weight:500;
+            margin-bottom:56px;
+            letter-spacing:1px;
+            background: linear-gradient(90deg, #ffdc5e, #ffe98a, #ffd700, #ffdc5e);
+            background-size:300% 100%;
+            -webkit-background-clip:text;
+            background-clip:text;
+            color:transparent;
+            text-shadow: 0 0 30px rgba(255,215,0,.3);
+            animation: sloganPan 4s linear infinite, fadeUp .8s ease .9s forwards;
+            opacity:0; transform:translateY(20px);
+        }
+        @keyframes sloganPan { to{ background-position:-300% 0; } }
+        @keyframes fadeUp { to{ opacity:1; transform:translateY(0); } }
+
+        /* 三连容器 */
+        .actions{
+            display:flex; gap:72px;
+            justify-content:center; align-items:center;
+            opacity:0; transform:translateY(20px);
+            animation: fadeUp .8s ease 1.1s forwards;
+            animation-fill-mode: forwards;
+        }
+        .actions.entered{
+            opacity:1; transform:none;
+            animation: none;
+        }
+
+        /* 单个按钮 */
+        .action{
+            display:flex; align-items:center; gap:10px;
+            position:relative;
+        }
+
+        .action-icon{
+            width:52px; height:52px;
+            display:flex; align-items:center; justify-content:center;
+            position:relative;
+        }
+
+        .action-icon svg{
+            width:48px; height:48px;
+            fill:#6a7a8a;
+            transition: fill .4s, filter .4s, transform .4s;
+        }
+
+        /* 激活态 */
+        .action.active .action-icon svg{
+            fill:#00b8d4;
+            filter: drop-shadow(0 0 18px rgba(0,184,212,.7)) drop-shadow(0 0 40px rgba(0,184,212,.3));
+        }
+
+        .action-count{
+            font-size:28px; font-weight:500;
+            color:#6a7a8a;
+            transition: color .4s, text-shadow .4s;
+            min-width:36px; text-align:left;
+        }
+        .action.active .action-count{
+            color:#00b8d4;
+            text-shadow: 0 0 18px rgba(0,184,212,.5), 0 0 40px rgba(0,184,212,.2);
+        }
+
+        /* 弹跳动画 - 更夸张 */
+        @keyframes popIn {
+            0%{ transform:scale(1); }
+            20%{ transform:scale(1.7); }
+            40%{ transform:scale(.75); }
+            55%{ transform:scale(1.25); }
+            70%{ transform:scale(.95); }
+            85%{ transform:scale(1.08); }
+            100%{ transform:scale(1); }
+        }
+        .action.pop .action-icon svg{
+            animation: popIn .7s cubic-bezier(.34,1.56,.64,1);
+        }
+        .action.pop .action-count{
+            animation: popIn .7s cubic-bezier(.34,1.56,.64,1);
+        }
+
+        /* 整行震动 */
+        @keyframes shakeRow {
+            0%,100%{ transform:translateX(0) translateY(0); }
+            10%{ transform:translateX(-6px) translateY(-2px); }
+            20%{ transform:translateX(5px) translateY(3px); }
+            30%{ transform:translateX(-4px) translateY(-1px); }
+            40%{ transform:translateX(3px) translateY(2px); }
+            50%{ transform:translateX(-2px); }
+            60%{ transform:translateX(1px); }
+        }
+        .actions.shake{
+            animation: shakeRow .6s ease;
+        }
+
+        /* 飞出 +N */
+        .fly-num{
+            position:absolute;
+            font-size:26px; font-weight:700;
+            color:#00e5ff;
+            pointer-events:none;
+            opacity:0;
+            text-shadow: 0 0 14px rgba(0,229,255,.6), 0 0 30px rgba(0,229,255,.3);
+            animation: flyUp 1.2s ease-out forwards;
+            z-index:20;
+        }
+        @keyframes flyUp {
+            0%{ opacity:1; transform:translateY(0) translateX(-50%) scale(1.3); }
+            50%{ opacity:1; }
+            100%{ opacity:0; transform:translateY(-80px) translateX(-50%) scale(.6); }
+        }
+
+        /* 粒子 */
+        .burst-container{
+            position:fixed; inset:0;
+            pointer-events:none; z-index:100;
+        }
+
+        /* 光环扩散 - 多层 */
+        .ring-burst{
+            position:absolute; border-radius:50%;
+            pointer-events:none;
+        }
+        .ring-burst.r1{
+            border:2.5px solid rgba(0,229,255,.7);
+            animation: ringExpand1 .8s ease-out forwards;
+        }
+        .ring-burst.r2{
+            border:1.5px solid rgba(0,184,212,.4);
+            animation: ringExpand2 1s ease-out .1s forwards;
+        }
+        .ring-burst.r3{
+            border:1px solid rgba(0,229,255,.2);
+            animation: ringExpand3 1.2s ease-out .2s forwards;
+        }
+        @keyframes ringExpand1 {
+            0%{ width:0; height:0; opacity:1; }
+            100%{ width:140px; height:140px; opacity:0; }
+        }
+        @keyframes ringExpand2 {
+            0%{ width:0; height:0; opacity:1; }
+            100%{ width:200px; height:200px; opacity:0; }
+        }
+        @keyframes ringExpand3 {
+            0%{ width:0; height:0; opacity:1; }
+            100%{ width:260px; height:260px; opacity:0; }
+        }
+
+        /* 闪光overlay */
+        .flash-overlay{
+            position:fixed; inset:0;
+            background:radial-gradient(circle at var(--fx,50%) var(--fy,50%), rgba(0,229,255,.15), transparent 60%);
+            pointer-events:none; z-index:50;
+            opacity:0;
+        }
+        .flash-overlay.show{
+            animation: flashPulse .5s ease-out;
+        }
+        @keyframes flashPulse {
+            0%{ opacity:1; }
+            100%{ opacity:0; }
+        }
+
+        /* 录制面板 */
+        .rec-panel{
+            position:fixed; top:50%; right:20px; transform:translateY(-50%);
+            z-index:9999;
+            background:rgba(12,13,16,.85);
+            border:1px solid rgba(0,229,255,.2);
+            border-radius:12px;
+            padding:16px 14px;
+            display:flex; flex-direction:column; gap:10px;
+            backdrop-filter:blur(10px);
+            min-width:130px;
+            transition:opacity .3s;
+        }
+        .rec-panel.hidden{ display:none; }
+        .rec-label{
+            font-size:12px; color:#7b8fa4; white-space:nowrap;
+        }
+        .rec-input{
+            width:100%; padding:6px 8px;
+            background:rgba(255,255,255,.06); border:1px solid rgba(0,229,255,.2);
+            border-radius:6px; color:#c8d6e5; font-size:14px;
+            font-family:inherit; outline:none;
+            text-align:center;
+        }
+        .rec-input:focus{ border-color:rgba(0,229,255,.5); }
+        .rec-btn{
+            padding:8px 0; border-radius:8px;
+            font-size:13px; cursor:pointer;
+            font-family:inherit; letter-spacing:1px;
+            border:1px solid rgba(0,229,255,.35);
+            background:rgba(0,229,255,.12); color:#00e5ff;
+        }
+        .rec-btn:hover{ background:rgba(0,229,255,.2); }
+        .rec-btn.stop{ display:none; }
+        .rec-status{
+            font-size:11px; color:#7b8fa4; text-align:center; min-height:16px;
+        }
+
+        /* 拖尾星星 */
+        .star-trail{
+            position:absolute;
+            pointer-events:none;
+            font-size:16px;
+            opacity:0;
+            z-index:90;
+        }
+        @keyframes starFloat {
+            0%{ opacity:1; transform:translate(0,0) scale(1) rotate(0deg); }
+            100%{ opacity:0; transform:translate(var(--sx),var(--sy)) scale(0) rotate(180deg); }
+        }
+    </style>
+</head>
+<body>
+    <video class="video-background" autoplay muted loop>
+        <source src="./背景/6.mp4" type="video/mp4">
+    </video>
+
+    <!-- 录制面板 -->
+    <div class="rec-panel" id="recPanel">
+        <div class="rec-label">录制时长（秒）</div>
+        <input class="rec-input" id="recDuration" type="number" min="1" max="600" value="15">
+        <button class="rec-btn" id="recStartBtn">开始录制</button>
+        <button class="rec-btn stop" id="recStopBtn">停止录制</button>
+        <div class="rec-status" id="recStatus"></div>
+    </div>
+
+    <div class="burst-container" id="burstContainer"></div>
+    <div class="flash-overlay" id="flashOverlay"></div>
+    <div class="container">
+        <div class="avatar-wrap">
+            <div class="avatar-glow"></div>
+            <div class="avatar-ring"></div>
+            <img class="avatar" src="./头像.png" alt="头像">
+        </div>
+        <div class="username">曼波科技喵</div>
+        <div class="slogan">一键三连，今年一定赚大钱！</div>
+
+        <div class="actions" id="actionsRow">
+            <!-- 点赞 -->
+            <div class="action like" id="actionLike">
+                <div class="action-icon">
+                    <svg viewBox="0 0 36 36"><path d="M9 32.4h16.2c1.4 0 2.6-.8 3.2-2l5-11.7c.1-.3.2-.7.2-1.1v-2.4c0-1.5-1.2-2.7-2.7-2.7h-8.5l1.3-6.1.04-.4c0-.5-.2-1-.6-1.4l-1.4-1.4L11.4 13.5c-.5.4-.7 1-.7 1.7V29.7c0 1.5 1.2 2.7 2.7 2.7H9zM3.6 15H.9v17.4H3.6c.5 0 .9-.4.9-.9V15.9c0-.5-.4-.9-.9-.9z"/></svg>
+                </div>
+                <span class="action-count" id="likeCount">200</span>
+            </div>
+            <!-- 投币 -->
+            <div class="action coin" id="actionCoin">
+                <div class="action-icon">
+                    <svg viewBox="0 0 28 28"><path fill-rule="evenodd" clip-rule="evenodd" d="M14.045 25.5454C7.69377 25.5454 2.54504 20.3967 2.54504 14.0454C2.54504 7.69413 7.69377 2.54541 14.045 2.54541C20.3963 2.54541 25.545 7.69413 25.545 14.0454C25.545 17.0954 24.3334 20.0205 22.1768 22.1771C20.0201 24.3338 17.095 25.5454 14.045 25.5454ZM9.66202 6.81624H18.2761C18.825 6.81624 19.27 7.22183 19.27 7.72216C19.27 8.22248 18.825 8.62807 18.2761 8.62807H14.95V10.2903C17.989 10.4444 20.3766 12.9487 20.3855 15.9916V17.1995C20.3854 17.6997 19.9799 18.1052 19.4796 18.1052C18.9793 18.1052 18.5738 17.6997 18.5737 17.1995V15.9916C18.5667 13.9478 16.9882 12.2535 14.95 12.1022V20.5574C14.95 21.0577 14.5444 21.4633 14.0441 21.4633C13.5437 21.4633 13.1382 21.0577 13.1382 20.5574V12.1022C11.1 12.2535 9.52148 13.9478 9.51448 15.9916V17.1995C9.5144 17.6997 9.10883 18.1052 8.60856 18.1052C8.1083 18.1052 7.70273 17.6997 7.70265 17.1995V15.9916C7.71158 12.9487 10.0992 10.4444 13.1382 10.2903V8.62807H9.66202C9.11309 8.62807 8.66809 8.22248 8.66809 7.72216C8.66809 7.22183 9.11309 6.81624 9.66202 6.81624Z"/></svg>
+                </div>
+                <span class="action-count" id="coinCount">500</span>
+            </div>
+            <!-- 收藏 -->
+            <div class="action fav" id="actionFav">
+                <div class="action-icon">
+                    <svg viewBox="0 0 36 36"><path d="M18 3l4.6 9.4L33 13.8l-7.5 7.3 1.8 10.4L18 26.4l-9.3 5.1 1.8-10.4L3 13.8l10.4-1.4z"/></svg>
+                </div>
+                <span class="action-count" id="favCount">800</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const burstColors = ['#00e5ff','#00b8d4','#80f0ff','#b3f5ff','#fff','#fb7299','#ffd700'];
+        const starEmojis = ['✨','⭐','💫','🌟','❤️','👍','🪙'];
+
+        // 粒子爆发 - 更多、更大
+        function burst(cx, cy, count=28, radius=100){
+            const container = document.getElementById('burstContainer');
+            for(let i=0;i<count;i++){
+                const p = document.createElement('div');
+                const angle = (Math.PI*2/count)*i + (Math.random()-.5)*.5;
+                const dist = radius * (.4 + Math.random()*.8);
+                const tx = Math.cos(angle)*dist;
+                const ty = Math.sin(angle)*dist;
+                const size = 3 + Math.random()*7;
+                const color = burstColors[Math.floor(Math.random()*burstColors.length)];
+                const dur = 500 + Math.random()*500;
+                p.style.cssText = `position:absolute;left:${cx}px;top:${cy}px;width:${size}px;height:${size}px;border-radius:50%;background:${color};box-shadow:0 0 ${size+4}px ${color}, 0 0 ${size+10}px ${color}44;pointer-events:none;`;
+                p.animate([
+                    { transform:'translate(-50%,-50%) scale(1.2)', opacity:1 },
+                    { transform:`translate(calc(-50% + ${tx}px),calc(-50% + ${ty}px)) scale(0)`, opacity:0 }
+                ],{ duration:dur, easing:'cubic-bezier(.15,.46,.45,.94)', fill:'forwards' });
+                container.appendChild(p);
+                setTimeout(()=> p.remove(), dur+50);
+            }
+            // 三层光环
+            for(let r=1;r<=3;r++){
+                const ring = document.createElement('div');
+                ring.className = 'ring-burst r'+r;
+                const halfW = [70,100,130][r-1];
+                ring.style.cssText = `left:${cx}px;top:${cy}px;margin-left:-${halfW}px;margin-top:-${halfW}px;width:0;height:0;`;
+                container.appendChild(ring);
+                setTimeout(()=> ring.remove(), 1300);
+            }
+        }
+
+        // 拖尾星星emoji
+        function starBurst(cx, cy, count=12){
+            const container = document.getElementById('burstContainer');
+            for(let i=0;i<count;i++){
+                const s = document.createElement('div');
+                s.className = 'star-trail';
+                s.textContent = starEmojis[Math.floor(Math.random()*starEmojis.length)];
+                const angle = (Math.PI*2/count)*i + Math.random()*.5;
+                const dist = 60 + Math.random()*120;
+                const tx = Math.cos(angle)*dist;
+                const ty = Math.sin(angle)*dist;
+                const dur = 600 + Math.random()*600;
+                const size = 14 + Math.random()*18;
+                s.style.cssText = `left:${cx}px;top:${cy}px;font-size:${size}px;--sx:${tx}px;--sy:${ty}px;`;
+                s.style.animation = `starFloat ${dur}ms ease-out forwards`;
+                container.appendChild(s);
+                setTimeout(()=> s.remove(), dur+50);
+            }
+        }
+
+        // 屏幕闪光
+        function screenFlash(cx, cy){
+            const flash = document.getElementById('flashOverlay');
+            const rx = (cx/window.innerWidth*100).toFixed(0);
+            const ry = (cy/window.innerHeight*100).toFixed(0);
+            flash.style.setProperty('--fx', rx+'%');
+            flash.style.setProperty('--fy', ry+'%');
+            flash.classList.remove('show');
+            void flash.offsetWidth;
+            flash.classList.add('show');
+        }
+
+        // 飞出 +N
+        function flyPlus(actionEl, num){
+            const f = document.createElement('div');
+            f.className = 'fly-num';
+            f.textContent = '+' + num;
+            f.style.cssText = 'left:50%;top:-10px;';
+            actionEl.appendChild(f);
+            setTimeout(()=> f.remove(), 1250);
+        }
+
+        // 激活单个 - 加强版
+        function activate(actionEl, add){
+            add = add || 1;
+            actionEl.classList.add('active','pop');
+            const countEl = actionEl.querySelector('.action-count');
+            countEl.textContent = parseInt(countEl.textContent) + add;
+            flyPlus(actionEl, add);
+            // 粒子+星星+闪光
+            const rect = actionEl.querySelector('.action-icon').getBoundingClientRect();
+            const cx = rect.left + rect.width/2;
+            const cy = rect.top + rect.height/2;
+            burst(cx, cy, 30, 110);
+            starBurst(cx, cy, 8);
+            screenFlash(cx, cy);
+            // 整行震动
+            const row = document.getElementById('actionsRow');
+            row.classList.remove('shake');
+            void row.offsetWidth;
+            row.classList.add('shake');
+            setTimeout(()=>{ actionEl.classList.remove('pop'); row.classList.remove('shake'); }, 700);
+        }
+
+        // 烟花：从底部升起再炸开
+        function firework(startX){
+            const container = document.getElementById('burstContainer');
+            const W = window.innerWidth, H = window.innerHeight;
+            const sx = startX || W * (.15 + Math.random()*.7);
+            const sy = H + 10;
+            const ey = H * (.12 + Math.random()*.3);
+            // 升起的拖尾
+            const trail = document.createElement('div');
+            trail.style.cssText = `position:absolute;left:${sx}px;top:${sy}px;width:4px;height:4px;border-radius:50%;pointer-events:none;`;
+            const trailColor = burstColors[Math.floor(Math.random()*burstColors.length)];
+            trail.style.background = trailColor;
+            trail.style.boxShadow = `0 0 8px ${trailColor}, 0 0 20px ${trailColor}`;
+            container.appendChild(trail);
+            // 升起过程洒拖尾粒子
+            const riseDur = 600 + Math.random()*400;
+            trail.animate([
+                { transform:'translateY(0)', opacity:1 },
+                { transform:`translateY(${ey - sy}px)`, opacity:.8 }
+            ],{ duration:riseDur, easing:'cubic-bezier(.2,0,.4,1)', fill:'forwards' });
+            // 升起过程中的尾迹
+            let trailCount = 0;
+            const trailInterval = setInterval(()=>{
+                trailCount++;
+                if(trailCount > 12){ clearInterval(trailInterval); return; }
+                const progress = trailCount / 12;
+                const curY = sy + (ey - sy) * progress;
+                const tp = document.createElement('div');
+                const ts = 2 + Math.random()*3;
+                tp.style.cssText = `position:absolute;left:${sx + (Math.random()-0.5)*6}px;top:${curY}px;width:${ts}px;height:${ts}px;border-radius:50%;background:${trailColor};box-shadow:0 0 6px ${trailColor};pointer-events:none;`;
+                tp.animate([
+                    { opacity:.8, transform:'scale(1)' },
+                    { opacity:0, transform:'scale(0) translateY(20px)' }
+                ],{ duration:400, fill:'forwards' });
+                container.appendChild(tp);
+                setTimeout(()=> tp.remove(), 450);
+            }, riseDur/13);
+            // 到顶后爆炸
+            setTimeout(()=>{
+                trail.remove();
+                // 大量粒子
+                const palette = [
+                    ['#ff4d6d','#ff758f','#ff9bb3','#ffccd5'],
+                    ['#00e5ff','#00b8d4','#80f0ff','#b3f5ff'],
+                    ['#ffd700','#ffec4f','#fff3a0','#ffe066'],
+                    ['#a855f7','#c084fc','#d8b4fe','#e9d5ff'],
+                    ['#34d399','#6ee7b7','#a7f3d0','#d1fae5'],
+                    ['#fb7299','#ff9ab5','#ffcdd8','#fff0f3']
+                ];
+                const chosen = palette[Math.floor(Math.random()*palette.length)];
+                const allColors = [...chosen, '#fff', '#ffffffcc'];
+                // 主爆炸 - 球形展开
+                for(let i=0;i<50;i++){
+                    const p = document.createElement('div');
+                    const angle = Math.random()*Math.PI*2;
+                    const speed = 80 + Math.random()*180;
+                    const tx = Math.cos(angle)*speed;
+                    const ty = Math.sin(angle)*speed - 30; // 稍微往上偏
+                    const size = 3 + Math.random()*6;
+                    const color = allColors[Math.floor(Math.random()*allColors.length)];
+                    const dur = 800 + Math.random()*700;
+                    p.style.cssText = `position:absolute;left:${sx}px;top:${ey}px;width:${size}px;height:${size}px;border-radius:50%;background:${color};box-shadow:0 0 ${size+4}px ${color}, 0 0 ${size*3}px ${color}66;pointer-events:none;`;
+                    p.animate([
+                        { transform:'translate(-50%,-50%) scale(1.5)', opacity:1 },
+                        { transform:`translate(calc(-50% + ${tx}px),calc(-50% + ${ty}px)) scale(0)`, opacity:0 }
+                    ],{ duration:dur, easing:'cubic-bezier(.15,.6,.35,1)', fill:'forwards' });
+                    container.appendChild(p);
+                    setTimeout(()=> p.remove(), dur+50);
+                }
+                // 带重力下坠的拖尾粒子
+                for(let i=0;i<30;i++){
+                    const p = document.createElement('div');
+                    const angle = Math.random()*Math.PI*2;
+                    const speed = 40 + Math.random()*120;
+                    const tx = Math.cos(angle)*speed;
+                    const ty1 = Math.sin(angle)*speed - 20;
+                    const ty2 = ty1 + 80 + Math.random()*60; // 重力下坠
+                    const size = 2 + Math.random()*3;
+                    const color = allColors[Math.floor(Math.random()*allColors.length)];
+                    const dur = 1200 + Math.random()*800;
+                    p.style.cssText = `position:absolute;left:${sx}px;top:${ey}px;width:${size}px;height:${size}px;border-radius:50%;background:${color};box-shadow:0 0 ${size+2}px ${color};pointer-events:none;`;
+                    p.animate([
+                        { transform:'translate(-50%,-50%) scale(1)', opacity:1, offset:0 },
+                        { transform:`translate(calc(-50% + ${tx*.6}px),calc(-50% + ${ty1}px)) scale(.8)`, opacity:.9, offset:0.4 },
+                        { transform:`translate(calc(-50% + ${tx}px),calc(-50% + ${ty2}px)) scale(0)`, opacity:0, offset:1 }
+                    ],{ duration:dur, easing:'ease-out', fill:'forwards' });
+                    container.appendChild(p);
+                    setTimeout(()=> p.remove(), dur+50);
+                }
+                // 光环
+                for(let r=1;r<=3;r++){
+                    const ring = document.createElement('div');
+                    ring.className = 'ring-burst r'+r;
+                    const halfW = [70,100,130][r-1];
+                    ring.style.cssText = `left:${sx}px;top:${ey}px;margin-left:-${halfW}px;margin-top:-${halfW}px;width:0;height:0;`;
+                    container.appendChild(ring);
+                    setTimeout(()=> ring.remove(), 1500);
+                }
+                // emoji星星
+                starBurst(sx, ey, 10);
+                // 闪光
+                screenFlash(sx, ey);
+            }, riseDur);
+        }
+
+        // 全屏庆祝 - 连续多发烟花
+        function celebrate(){
+            const W = window.innerWidth;
+            // 第一波：3发
+            firework(W * .2);
+            setTimeout(()=> firework(W * .7), 200);
+            setTimeout(()=> firework(W * .45), 400);
+            // 第二波：4发
+            setTimeout(()=> firework(W * .15), 1000);
+            setTimeout(()=> firework(W * .55), 1200);
+            setTimeout(()=> firework(W * .8), 1400);
+            setTimeout(()=> firework(W * .35), 1600);
+            // 第三波：3发
+            setTimeout(()=> firework(W * .25), 2300);
+            setTimeout(()=> firework(W * .65), 2500);
+            setTimeout(()=> firework(W * .5), 2700);
+            // 持续零星烟花
+            for(let i=0;i<6;i++){
+                setTimeout(()=> firework(), 3400 + i*500);
+            }
+        }
+
+        // 入场动画结束后锁定显示状态，防止shake覆盖
+        setTimeout(()=>{
+            document.getElementById('actionsRow').classList.add('entered');
+        }, 2000);
+
+        // 自动播放动画序列（只播一次，按钮保持亮）
+        function playAnimation(){
+            const like = document.getElementById('actionLike');
+            const coin = document.getElementById('actionCoin');
+            const fav  = document.getElementById('actionFav');
+
+            setTimeout(()=> activate(like, 1), 1800);
+            setTimeout(()=> activate(coin, 2), 2800);
+            setTimeout(()=> activate(fav, 1),  3800);
+            setTimeout(()=> celebrate(), 4500);
+        }
+
+        playAnimation();
+
+        // ======= 重置动画 =======
+        function resetAnimation(){
+            // 清除所有粒子
+            document.getElementById('burstContainer').innerHTML = '';
+            // 重置三连按钮状态
+            ['actionLike','actionCoin','actionFav'].forEach(id => {
+                const el = document.getElementById(id);
+                el.classList.remove('active','pop');
+            });
+            document.getElementById('likeCount').textContent = '200';
+            document.getElementById('coinCount').textContent = '500';
+            document.getElementById('favCount').textContent = '800';
+            // 重置入场动画
+            const row = document.getElementById('actionsRow');
+            row.classList.remove('entered','shake');
+            // 重建动画：移除再添加关键元素触发CSS动画重播
+            const container = document.querySelector('.container');
+            const avatarWrap = container.querySelector('.avatar-wrap');
+            const username = container.querySelector('.username');
+            const slogan = container.querySelector('.slogan');
+            // 通过克隆替换来重播CSS动画
+            [avatarWrap, username, slogan, row].forEach(el => {
+                const clone = el.cloneNode(true);
+                el.parentNode.replaceChild(clone, el);
+            });
+            // 重新获取引用（因为克隆替换了）
+            const newRow = document.getElementById('actionsRow');
+            newRow.classList.remove('entered');
+            setTimeout(()=> newRow.classList.add('entered'), 2000);
+            // 重新播放动画序列
+            playAnimation();
+        }
+
+        // ======= 录制功能 =======
+        (function(){
+            const panel = document.getElementById('recPanel');
+            const startBtn = document.getElementById('recStartBtn');
+            const stopBtn = document.getElementById('recStopBtn');
+            const statusEl = document.getElementById('recStatus');
+            const durationInput = document.getElementById('recDuration');
+
+            let mediaRecorder = null;
+            let recordedChunks = [];
+            let recordTimer = null;
+            let countdownTimer = null;
+
+            startBtn.addEventListener('click', startRecording);
+            stopBtn.addEventListener('click', stopRecording);
+
+            async function startRecording(){
+                const duration = parseInt(durationInput.value, 10);
+                if(!duration || duration <= 0 || duration > 600){
+                    statusEl.textContent = '请输入有效时长（1~600秒）';
+                    statusEl.style.color = '#ff4d4f';
+                    return;
+                }
+                // 隐藏面板
+                panel.classList.add('hidden');
+                await new Promise(r => setTimeout(r, 300));
+
+                try {
+                    const stream = await navigator.mediaDevices.getDisplayMedia({
+                        video:{ mediaSource:'screen', frameRate:30 },
+                        audio:false
+                    });
+                    // 进入全屏
+                    try { await document.documentElement.requestFullscreen(); } catch(e){}
+                    await new Promise(r => setTimeout(r, 500));
+                    // 重置并重播动画
+                    resetAnimation();
+
+                    recordedChunks = [];
+                    const mimeType = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
+                        ? 'video/webm;codecs=vp9' : 'video/webm';
+                    mediaRecorder = new MediaRecorder(stream, { mimeType });
+
+                    mediaRecorder.ondataavailable = (e) => {
+                        if(e.data.size > 0) recordedChunks.push(e.data);
+                    };
+                    mediaRecorder.onstop = () => {
+                        stream.getTracks().forEach(t => t.stop());
+                        clearInterval(countdownTimer);
+                        if(document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+                        const blob = new Blob(recordedChunks, { type: mimeType });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = '一键三连_' + new Date().toISOString().slice(0,19).replace(/[T:]/g,'-') + '.webm';
+                        document.body.appendChild(a);
+                        a.click();
+                        setTimeout(()=>{ document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+                        statusEl.textContent = '录制完成，已自动下载！';
+                        statusEl.style.color = '#1dd1a1';
+                        panel.classList.remove('hidden');
+                    };
+                    stream.getVideoTracks()[0].onended = () => {
+                        if(mediaRecorder && mediaRecorder.state !== 'inactive') stopRecording();
+                    };
+                    mediaRecorder.start(1000);
+                    let remaining = duration;
+                    countdownTimer = setInterval(()=>{
+                        remaining--;
+                        if(remaining <= 0) stopRecording();
+                    }, 1000);
+                    recordTimer = setTimeout(()=> stopRecording(), duration * 1000);
+                } catch(err){
+                    statusEl.textContent = '录制取消或失败';
+                    statusEl.style.color = '#ff4d4f';
+                    panel.classList.remove('hidden');
+                }
+            }
+            function stopRecording(){
+                clearTimeout(recordTimer);
+                clearInterval(countdownTimer);
+                if(mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+            }
+        })();
+    </script>
+</body>
+</html>
