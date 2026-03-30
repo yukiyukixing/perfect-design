@@ -1,0 +1,1107 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>竞技上分利器：UG25HF</title>
+    <style>
+        :root {
+            --bg-0: #041423;
+            --bg-1: #07293b;
+            --bg-2: #0a3f4f;
+            --cyan: #46f5ff;
+            --cyan-soft: rgba(70, 245, 255, 0.38);
+            --blue: #67a6ff;
+            --green: #25ffc4;
+            --yellow: #ffd45f;
+            --text: #ebffff;
+            --text-soft: rgba(235, 255, 255, 0.9);
+            --panel-bg: rgba(6, 43, 63, 0.42);
+            --panel-bg-deep: rgba(5, 31, 49, 0.48);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: "MiSans", "Source Han Sans SC", "Noto Sans SC", "HarmonyOS Sans SC", "Microsoft YaHei UI", "PingFang SC", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(1200px 700px at 0% 85%, rgba(72, 255, 239, 0.12), transparent 58%),
+                radial-gradient(900px 600px at 90% 18%, rgba(48, 145, 255, 0.18), transparent 62%),
+                linear-gradient(135deg, var(--bg-0), var(--bg-1) 45%, var(--bg-2));
+            letter-spacing: 0.2px;
+            font-synthesis: none;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .scene {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            isolation: isolate;
+        }
+
+        .scene::before,
+        .scene::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .scene::before {
+            background:
+                repeating-linear-gradient(to right, rgba(122, 223, 255, 0.12) 0 1px, transparent 1px 64px),
+                repeating-linear-gradient(to bottom, rgba(122, 223, 255, 0.1) 0 1px, transparent 1px 64px);
+            opacity: 0.35;
+            mix-blend-mode: screen;
+            z-index: 0;
+        }
+
+        .scene::after {
+            background:
+                radial-gradient(circle at 5% 78%, rgba(75, 246, 255, 0.9) 0 10px, rgba(75, 246, 255, 0.05) 30px, transparent 95px),
+                radial-gradient(circle at 93% 35%, rgba(88, 251, 245, 0.88) 0 8px, rgba(88, 251, 245, 0.05) 26px, transparent 85px),
+                radial-gradient(circle at 86% 67%, rgba(98, 255, 253, 0.74) 0 4px, transparent 25px),
+                radial-gradient(circle at 14% 13%, rgba(85, 214, 255, 0.7) 0 4px, transparent 20px);
+            z-index: 0;
+            filter: blur(0.2px);
+            animation: twinkle 4.8s ease-in-out infinite alternate;
+        }
+
+        .board {
+            position: relative;
+            z-index: 2;
+            width: min(1500px, 95vw);
+            height: min(920px, 92vh);
+            margin: 4vh auto;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            gap: 48px;
+        }
+
+        .title-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            padding-top: 10px;
+        }
+
+        .title-wrap .line {
+            width: clamp(100px, 17vw, 280px);
+            height: 20px;
+            position: relative;
+            opacity: 0.9;
+        }
+
+        .title-wrap .line::before,
+        .title-wrap .line::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        .title-wrap .line::before {
+            top: 9px;
+            width: 100%;
+            border-top: 2px solid rgba(124, 255, 255, 0.35);
+            box-shadow: 0 0 12px rgba(70, 245, 255, 0.65);
+        }
+
+        .title-wrap .line::after {
+            top: 0;
+            width: 68%;
+            height: 18px;
+            border: 2px solid rgba(70, 245, 255, 0.35);
+            border-right: none;
+            border-left: none;
+            border-radius: 12px;
+            opacity: 0.65;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(40px, 2.9vw, 56px);
+            font-weight: 820;
+            letter-spacing: 2px;
+            background: none;
+            color: rgba(56, 187, 198, 1);
+            -webkit-text-fill-color: rgba(56, 187, 198, 1);
+            -webkit-text-stroke: 0;
+            text-shadow:
+                0 1px 0 rgba(7, 33, 28, 0.9),
+                0 0 10px rgba(74, 255, 210, 0.5),
+                0 0 22px rgba(50, 232, 178, 0.32);
+            filter: drop-shadow(0 0 8px rgba(74, 255, 210, 0.26));
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1.05fr 1.55fr;
+            gap: 28px;
+            height: 750px;
+            min-height: 0;
+        }
+
+        .panel {
+            position: relative;
+            border-radius: 18px;
+            border: 2px solid rgba(96, 249, 255, 0.65);
+            background: linear-gradient(140deg, var(--panel-bg), var(--panel-bg-deep));
+            box-shadow:
+                inset 0 0 48px rgba(27, 188, 226, 0.1),
+                0 0 26px rgba(73, 245, 255, 0.22);
+            backdrop-filter: blur(1.5px);
+            overflow: hidden;
+        }
+
+        .panel::before,
+        .panel::after {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border: 2px solid currentColor;
+            opacity: 0.85;
+        }
+
+        .panel::before {
+            top: 8px;
+            left: 8px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .panel::after {
+            right: 8px;
+            bottom: 8px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .spec-panel {
+            color: var(--cyan);
+            padding: 24px 34px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 20px;
+            min-height: 0;
+        }
+
+        .spec-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 20px;
+            color: var(--text-soft);
+            font-variant-numeric: tabular-nums lining-nums;
+        }
+
+        .spec-list li {
+            font-size: 30px;
+            line-height: 1.24;
+            color: #ffffff;
+            display: flex;
+            align-items: baseline;
+            gap: 0;
+            flex-wrap: wrap;
+            text-shadow:
+                0 1px 0 rgba(5, 20, 30, 0.88),
+                0 0 7px rgba(120, 225, 255, 0.14);
+        }
+
+        .label {
+            color: #ffffff;
+            font-weight: 400;
+            letter-spacing: 0.4px;
+            text-shadow:
+                0 1px 0 rgba(4, 16, 26, 0.9),
+                0 0 9px rgba(130, 232, 255, 0.34);
+        }
+
+        .value {
+            color: #ffffff;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            text-shadow:
+                0 1px 0 rgba(6, 20, 31, 0.86),
+                0 0 8px rgba(148, 232, 255, 0.16);
+        }
+
+        .icon {
+            font-size: 0.82em;
+            line-height: 1;
+            margin-left: 4px;
+            transform: translateY(-1px);
+            color: #52ffd6;
+            text-shadow: 0 0 12px rgba(95, 255, 211, 0.72);
+        }
+
+        .audience {
+            margin: 0;
+            font-size: 30px;
+            line-height: 1.24;
+            font-weight: 400;
+            color: #ddea00;
+            letter-spacing: 0.5px;
+            text-shadow:
+                0 1px 0 rgba(69, 49, 12, 0.72),
+                0 0 10px rgba(255, 220, 132, 0.26);
+        }
+
+        .audience span {
+            color: #ddea00;
+            margin-right: 6px;
+            text-shadow:
+                0 1px 0 rgba(58, 43, 10, 0.7),
+                0 0 9px rgba(255, 233, 150, 0.3);
+        }
+
+        .right-col {
+            min-height: 0;
+            display: grid;
+            grid-template-rows: 1fr 0.42fr;
+            gap: 22px;
+        }
+
+        .display-panel {
+            color: var(--blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .display-panel::before,
+        .display-panel::after {
+            display: none;
+        }
+
+        .display-panel .display-media {
+            position: absolute;
+            inset: 8px;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            --media-scale: 1;
+            border-radius: 12px;
+        }
+
+        .display-panel .display-media .display-media-bg {
+            display: none;
+        }
+
+        .display-panel .display-media::after {
+            display: none;
+        }
+
+        .display-panel .display-media img {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transform: none;
+            transition: none;
+            filter: none;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .display-panel .scan {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 0%, rgba(111, 190, 255, 0.13) 50%, transparent 100%);
+            animation: sweep 5.6s linear infinite;
+            mix-blend-mode: screen;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .display-panel .wave {
+            position: absolute;
+            right: 4%;
+            top: 43%;
+            width: 34%;
+            height: 28%;
+            filter: drop-shadow(0 0 8px rgba(100, 255, 245, 0.42));
+            z-index: 6;
+            pointer-events: none;
+        }
+
+        .display-panel .wave span {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent 0%, rgba(85, 255, 249, 0.18) 18%, rgba(130, 239, 255, 0.95) 62%, transparent 100%);
+            border-radius: 6px;
+            transform-origin: left center;
+            animation: flux 2.4s ease-in-out infinite;
+        }
+
+        .display-panel .wave span:nth-child(1) {
+            top: 6%;
+            animation-delay: -0.2s;
+            transform: skewY(-8deg);
+        }
+
+        .display-panel .wave span:nth-child(2) {
+            top: 24%;
+            animation-delay: -0.45s;
+            transform: skewY(-7deg);
+        }
+
+        .display-panel .wave span:nth-child(3) {
+            top: 40%;
+            animation-delay: -0.8s;
+            transform: skewY(-6deg);
+        }
+
+        .display-panel .wave span:nth-child(4) {
+            top: 58%;
+            animation-delay: -1.2s;
+            transform: skewY(-5deg);
+        }
+
+        .display-panel .wave span:nth-child(5) {
+            top: 76%;
+            animation-delay: -1.55s;
+            transform: skewY(-4deg);
+        }
+
+        .display-panel .wave span:nth-child(6) {
+            top: 92%;
+            animation-delay: -1.9s;
+            transform: skewY(-3deg);
+        }
+
+        .sub-panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .mini {
+            padding: 16px 20px;
+        }
+
+        .mini h2 {
+            margin: 0 0 10px;
+            font-size: clamp(36px, 1.9vw, 48px);
+            line-height: 1;
+            letter-spacing: 1.1px;
+            font-weight: 740;
+            text-shadow: 0 0 14px rgba(165, 247, 255, 0.25);
+        }
+
+        .mini ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 10px;
+            font-size: clamp(30px, 1.55vw, 39px);
+            line-height: 1.18;
+            color: rgba(244, 255, 255, 0.94);
+            font-weight: 560;
+            text-shadow:
+                0 1px 0 rgba(4, 19, 30, 0.88),
+                0 0 7px rgba(132, 238, 255, 0.14);
+        }
+
+        .mini li::before {
+            content: "› ";
+            margin-right: 2px;
+            opacity: 0.85;
+        }
+
+        .mini.pros {
+            color: var(--green);
+            border-color: rgba(56, 255, 198, 0.85);
+            box-shadow:
+                inset 0 0 40px rgba(52, 249, 195, 0.12),
+                0 0 26px rgba(58, 255, 201, 0.28);
+        }
+
+        .mini.pros h2 {
+            color: #40ffd0;
+            text-shadow: 0 0 15px rgba(64, 255, 208, 0.55);
+        }
+
+        .mini.cons {
+            color: var(--yellow);
+            border-color: rgba(255, 217, 97, 0.87);
+            box-shadow:
+                inset 0 0 40px rgba(255, 212, 95, 0.12),
+                0 0 26px rgba(255, 214, 89, 0.28);
+        }
+
+        .mini.cons h2 {
+            color: #ffd867;
+            text-shadow: 0 0 15px rgba(255, 217, 103, 0.5);
+        }
+
+        .circuit {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.78;
+        }
+
+        .circuit svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        @keyframes twinkle {
+            from { opacity: 0.72; }
+            to { opacity: 1; }
+        }
+
+        @keyframes sweep {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        @keyframes flux {
+            0%,
+            100% {
+                opacity: 0.45;
+                transform: translateX(0) scaleX(0.92);
+            }
+            50% {
+                opacity: 1;
+                transform: translateX(7%) scaleX(1.04);
+            }
+        }
+
+        #neoConfigPanel {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 420px;
+            height: 100vh;
+            padding: 20px 22px;
+            overflow-y: auto;
+            z-index: 12000;
+            color: #d6ecff;
+            background: linear-gradient(165deg, rgba(8, 24, 40, 0.98), rgba(5, 17, 32, 0.98));
+            border-left: 1px solid rgba(90, 214, 255, 0.34);
+            box-shadow: -8px 0 36px rgba(0, 0, 0, 0.5);
+            transition: right .3s ease;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        }
+
+        #neoConfigPanel h3 {
+            margin: 0 0 16px;
+            font-size: 18px;
+            color: #7cdfff;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #neoCfgClose {
+            cursor: pointer;
+            font-size: 24px;
+            color: #9db8cf;
+            line-height: 1;
+        }
+
+        .neo-cfg-group {
+            margin-bottom: 12px;
+        }
+
+        .neo-cfg-label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 12px;
+            color: #9fc4df;
+            letter-spacing: 0.2px;
+        }
+
+        .neo-cfg-input,
+        .neo-cfg-textarea,
+        .neo-cfg-btn {
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid rgba(95, 193, 241, 0.28);
+            background: rgba(8, 22, 38, 0.88);
+            color: #e3f4ff;
+            font-size: 14px;
+            line-height: 1.5;
+            padding: 10px 12px;
+            font-family: inherit;
+        }
+
+        .neo-cfg-textarea {
+            min-height: 76px;
+            resize: vertical;
+        }
+
+        .neo-cfg-input:focus,
+        .neo-cfg-textarea:focus {
+            outline: none;
+            border-color: rgba(107, 224, 255, 0.55);
+            box-shadow: 0 0 0 2px rgba(107, 224, 255, 0.14);
+        }
+
+        .neo-cfg-btn {
+            cursor: pointer;
+            background: rgba(18, 55, 88, 0.88);
+            border-style: dashed;
+            color: #7fdfff;
+        }
+
+        #neoConfigToggle {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 110px;
+            z-index: 12001;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            writing-mode: vertical-rl;
+            font-size: 18px;
+            letter-spacing: 3px;
+            color: #7edcff;
+            border: 1px solid rgba(98, 212, 255, 0.35);
+            border-right: none;
+            border-radius: 10px 0 0 10px;
+            background: linear-gradient(180deg, rgba(33, 108, 161, 0.46), rgba(14, 57, 96, 0.56));
+            backdrop-filter: blur(6px);
+            user-select: none;
+        }
+
+        #neoConfigPanel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #neoConfigPanel::-webkit-scrollbar-thumb {
+            background: rgba(102, 201, 245, 0.4);
+            border-radius: 4px;
+        }
+
+        @media (max-width: 1366px) {
+            .board {
+                height: min(880px, 94vh);
+                gap: 16px;
+            }
+
+            .content {
+                gap: 20px;
+            }
+
+            .spec-list li {
+                font-size: 30px;
+            }
+
+            .audience {
+                font-size: 30px;
+            }
+
+            .mini h2 {
+                font-size: clamp(28px, 2.2vw, 38px);
+            }
+
+            .mini ul {
+                font-size: clamp(20px, 1.85vw, 32px);
+            }
+        }
+
+        @media (max-width: 1100px) {
+            html,
+            body {
+                overflow: auto;
+            }
+
+            .board {
+                width: min(94vw, 760px);
+                height: auto;
+                margin: 18px auto 30px;
+                gap: 14px;
+            }
+
+            .title-wrap {
+                gap: 10px;
+            }
+
+            .title-wrap .line {
+                width: min(18vw, 110px);
+            }
+
+            h1 {
+                font-size: clamp(22px, 5.4vw, 34px);
+            }
+
+            .content {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                height: auto;
+            }
+
+            .spec-panel {
+                padding: 18px 18px 16px;
+                gap: 12px;
+            }
+
+            .spec-list {
+                gap: 12px;
+            }
+
+            .spec-list li {
+                font-size: clamp(16px, 4.4vw, 24px);
+            }
+
+            .audience {
+                margin-top: 0;
+                padding-top: 0;
+                font-size: clamp(20px, 5vw, 30px);
+            }
+
+            .right-col {
+                grid-template-rows: auto auto;
+                gap: 12px;
+            }
+
+            .display-panel {
+                min-height: 250px;
+            }
+
+            .display-panel .display-media {
+                inset: 6px;
+            }
+
+            .sub-panels {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .mini {
+                padding: 12px 14px;
+            }
+
+            .mini h2 {
+                font-size: clamp(22px, 5vw, 30px);
+            }
+
+            .mini ul {
+                font-size: clamp(18px, 4.5vw, 24px);
+                gap: 7px;
+            }
+
+            #neoConfigPanel {
+                width: 360px;
+                right: -360px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scene">
+        <div class="circuit" aria-hidden="true">
+            <svg viewBox="0 0 1920 1080" preserveAspectRatio="none">
+                <g stroke="rgba(84, 243, 255, 0.45)" stroke-width="2" fill="none">
+                    <path d="M0,710 H240 V640 H410 V676 H505" />
+                    <path d="M205,860 H460 V788 H625" />
+                    <path d="M1440,720 H1650 V664 H1920" />
+                    <path d="M1330,660 H1540 V580 H1880" />
+                    <path d="M1540,805 H1740 V760 H1920" />
+                </g>
+                <g fill="rgba(137, 252, 255, 0.85)">
+                    <circle cx="410" cy="676" r="4" />
+                    <circle cx="625" cy="788" r="4" />
+                    <circle cx="1540" cy="580" r="4" />
+                    <circle cx="1740" cy="760" r="4" />
+                </g>
+            </svg>
+        </div>
+
+        <main class="board">
+            <div class="title-wrap">
+                <span class="line"></span>
+                <h1>竞技上分利器：UG25HF</h1>
+                <span class="line"></span>
+            </div>
+
+            <section class="content">
+                <aside class="panel spec-panel">
+                    <ul class="spec-list">
+                        <li><span class="label">名称：</span><span class="value">UG25HF</span></li>
+                        <li><span class="label">面板：</span><span class="value">TN</span></li>
+                        <li><span class="label">响应时间：</span><span class="value">0.5ms</span><span class="icon">⚡</span></li>
+                        <li><span class="label">分辨率：</span><span class="value">1920*1080</span></li>
+                        <li><span class="label">屏幕刷新率：</span><span class="value">500Hz</span><span class="icon">⟳</span></li>
+                        <li><span class="label">屏幕尺寸：</span><span class="value">24.1英寸</span></li>
+                        <li><span class="label">亮度：</span><span class="value">350cd/㎡</span></li>
+                        <li><span class="label">产品净重：</span><span class="value">5.2kg</span></li>
+                        <li><span class="label">类型：</span><span class="value">直面屏</span></li>
+                        <li><span class="label">屏幕比例：</span><span class="value">16:9</span></li>
+                    </ul>
+                    <p class="audience"><span>适用人群：</span>适合重度FPS玩家，追求毫秒级优势的玩家</p>
+                </aside>
+
+                <div class="right-col">
+                    <section class="panel display-panel" aria-label="产品展示区域">
+                        <div class="display-media">
+                            <div class="display-media-bg" id="displayMediaBg"></div>
+                            <img id="displayProductImage" src="./showImg/UG25HF-removebg-preview.png" alt="产品展示图" />
+                        </div>
+                        <div class="scan"></div>
+                        <div class="wave" aria-hidden="true">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </section>
+
+                    <div class="sub-panels">
+                        <section class="panel mini pros">
+                            <h2>优点</h2>
+                            <ul>
+                                <li>性能堆得很满</li>
+                                <li>屏幕规格豪华</li>
+                                <li>做工与易用性细节</li>
+                            </ul>
+                        </section>
+                        <section class="panel mini cons">
+                            <h2>缺点</h2>
+                            <ul>
+                                <li>便携性一般</li>
+                                <li>标配内存偏保守</li>
+                                <li>高刷与高分对续航有压</li>
+                            </ul>
+                        </section>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="neoConfigPanel">
+        <h3>文字配置 <span id="neoCfgClose">&times;</span></h3>
+
+        <div class="neo-cfg-group">
+            <label class="neo-cfg-label">导入配置文件（.txt）</label>
+            <input id="neoCfgFile" type="file" accept=".txt" style="display:none;" />
+            <button class="neo-cfg-btn" id="neoCfgImportBtn" type="button">点击导入 TXT 配置文件</button>
+        </div>
+
+        <div class="neo-cfg-group">
+            <label class="neo-cfg-label">产品标题</label>
+            <input class="neo-cfg-input" id="neoCfgTitle" value="竞技上分利器：UG25HF" />
+        </div>
+
+        <div class="neo-cfg-group">
+            <label class="neo-cfg-label">展示图上传</label>
+            <input id="neoCfgImageFile" type="file" accept="image/*" style="display:none;" />
+            <button class="neo-cfg-btn" id="neoCfgImageBtn" type="button">点击上传展示图</button>
+        </div>
+
+        <div class="neo-cfg-group">
+            <label class="neo-cfg-label">核心参数（每行：参数名|参数值）</label>
+            <textarea class="neo-cfg-textarea" id="neoCfgSpecs" rows="12">名称|UG25HF
+面板|TN
+响应时间|0.5ms
+分辨率|1920*1080
+屏幕刷新率|500Hz
+屏幕尺寸|24.1英寸
+亮度|350cd/㎡
+产品净重|5.2kg
+类型|直面屏
+屏幕比例|16:9</textarea>
+        </div>
+
+        <div class="neo-cfg-group">
+            <label class="neo-cfg-label">适用人群</label>
+            <input class="neo-cfg-input" id="neoCfgAudience" value="适合重度FPS玩家，追求毫秒级优势的玩家" />
+        </div>
+
+        <div class="neo-cfg-group">
+            <label class="neo-cfg-label">优点（每行一条）</label>
+            <textarea class="neo-cfg-textarea" id="neoCfgPros" rows="3">性能堆得很满
+屏幕规格豪华
+做工与易用性细节</textarea>
+        </div>
+
+        <div class="neo-cfg-group">
+            <label class="neo-cfg-label">缺点（每行一条）</label>
+            <textarea class="neo-cfg-textarea" id="neoCfgCons" rows="3">便携性一般
+标配内存偏保守
+高刷与高分对续航有压</textarea>
+        </div>
+    </div>
+
+    <div id="neoConfigToggle">配置</div>
+
+    <script>
+        (function () {
+            const panel = document.getElementById("neoConfigPanel");
+            const toggle = document.getElementById("neoConfigToggle");
+            const closeBtn = document.getElementById("neoCfgClose");
+            const fileInput = document.getElementById("neoCfgFile");
+            const importBtn = document.getElementById("neoCfgImportBtn");
+            const titleInput = document.getElementById("neoCfgTitle");
+            const imageFileInput = document.getElementById("neoCfgImageFile");
+            const imageUploadBtn = document.getElementById("neoCfgImageBtn");
+            const specsInput = document.getElementById("neoCfgSpecs");
+            const audienceInput = document.getElementById("neoCfgAudience");
+            const prosInput = document.getElementById("neoCfgPros");
+            const consInput = document.getElementById("neoCfgCons");
+
+            let panelOpen = false;
+
+            function getPanelWidth() {
+                return panel.offsetWidth || 420;
+            }
+
+            function setPanelState(open) {
+                panelOpen = open;
+                const width = getPanelWidth();
+                panel.style.right = panelOpen ? "0px" : `-${width}px`;
+                toggle.style.right = panelOpen ? `${width}px` : "0px";
+            }
+
+            function normalizeLines(text) {
+                return String(text || "")
+                    .split(/\r?\n/)
+                    .map(s => s.trim())
+                    .filter(Boolean);
+            }
+
+            function parseSpecs(text) {
+                const specs = [];
+                normalizeLines(text).forEach((line) => {
+                    const parts = line.split("|");
+                    if (parts.length >= 2) {
+                        specs.push({
+                            label: parts[0].trim(),
+                            value: parts.slice(1).join("|").trim()
+                        });
+                    }
+                });
+                return specs;
+            }
+
+            function renderSpecs(specs, audienceText) {
+                const list = document.querySelector(".spec-list");
+                if (!list) return;
+                list.innerHTML = "";
+
+                specs.forEach(({ label, value }) => {
+                    const li = document.createElement("li");
+                    const labelSpan = document.createElement("span");
+                    labelSpan.className = "label";
+                    labelSpan.textContent = `${label}：`;
+
+                    const valueSpan = document.createElement("span");
+                    valueSpan.className = "value";
+                    valueSpan.textContent = value;
+
+                    li.appendChild(labelSpan);
+                    li.appendChild(valueSpan);
+
+                    if (label === "响应时间") {
+                        const icon = document.createElement("span");
+                        icon.className = "icon";
+                        icon.textContent = "⚡";
+                        li.appendChild(icon);
+                    }
+                    if (label === "屏幕刷新率") {
+                        const icon = document.createElement("span");
+                        icon.className = "icon";
+                        icon.textContent = "⟳";
+                        li.appendChild(icon);
+                    }
+
+                    list.appendChild(li);
+                });
+
+                const audience = document.querySelector(".audience");
+                if (audience) {
+                    audience.innerHTML = `<span>适用人群：</span>${audienceText || ""}`;
+                }
+            }
+
+            function renderList(selector, lines) {
+                const ul = document.querySelector(selector);
+                if (!ul) return;
+                ul.innerHTML = "";
+                lines.forEach((text) => {
+                    const li = document.createElement("li");
+                    li.textContent = text;
+                    ul.appendChild(li);
+                });
+            }
+
+            function renderDisplayImage(src) {
+                const media = document.querySelector(".display-media");
+                const bg = document.getElementById("displayMediaBg");
+                const img = document.getElementById("displayProductImage");
+                if (!img || !bg || !media || !src) return;
+
+                const safeSrc = String(src).replace(/"/g, '\\"');
+                bg.style.backgroundImage = `url("${safeSrc}")`;
+                img.setAttribute("src", src);
+            }
+
+            function applyConfig() {
+                const title = titleInput.value.trim();
+                const specs = parseSpecs(specsInput.value);
+                const audience = audienceInput.value.trim();
+                const pros = normalizeLines(prosInput.value);
+                const cons = normalizeLines(consInput.value);
+
+                const titleEl = document.querySelector(".title-wrap h1");
+                if (title && titleEl) titleEl.textContent = title;
+
+                renderSpecs(specs, audience);
+                renderList(".mini.pros ul", pros);
+                renderList(".mini.cons ul", cons);
+            }
+
+            function hydrateInputsFromDom() {
+                const titleEl = document.querySelector(".title-wrap h1");
+                if (titleEl) titleInput.value = titleEl.textContent.trim();
+
+                const specLines = [];
+                document.querySelectorAll(".spec-list li").forEach((li) => {
+                    const label = li.querySelector(".label") ? li.querySelector(".label").textContent.replace("：", "").trim() : "";
+                    const value = li.querySelector(".value") ? li.querySelector(".value").textContent.trim() : "";
+                    if (label && value) specLines.push(`${label}|${value}`);
+                });
+                if (specLines.length) specsInput.value = specLines.join("\n");
+
+                const audience = document.querySelector(".audience");
+                if (audience) {
+                    const txt = audience.textContent.replace("适用人群：", "").trim();
+                    audienceInput.value = txt;
+                }
+
+                const pros = Array.from(document.querySelectorAll(".mini.pros ul li")).map(li => li.textContent.trim()).filter(Boolean);
+                const cons = Array.from(document.querySelectorAll(".mini.cons ul li")).map(li => li.textContent.trim()).filter(Boolean);
+                if (pros.length) prosInput.value = pros.join("\n");
+                if (cons.length) consInput.value = cons.join("\n");
+            }
+
+            function parseTxtConfig(text) {
+                const sections = {};
+                let current = null;
+                String(text || "").split(/\r?\n/).forEach((line) => {
+                    const trimmed = line.trim();
+                    if (!trimmed) return;
+                    if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
+                        current = trimmed.slice(1, -1).trim();
+                        sections[current] = [];
+                        return;
+                    }
+                    if (current) sections[current].push(trimmed);
+                });
+
+                if (sections["标题"]) titleInput.value = sections["标题"].join(" ");
+                if (sections["展示图"]) renderDisplayImage(sections["展示图"].join(" "));
+                if (sections["核心参数"]) specsInput.value = sections["核心参数"].join("\n");
+                if (sections["适用人群"]) audienceInput.value = sections["适用人群"].join(" ");
+                if (sections["优点"]) prosInput.value = sections["优点"].join("\n");
+                if (sections["缺点"]) consInput.value = sections["缺点"].join("\n");
+            }
+
+            toggle.addEventListener("click", () => setPanelState(!panelOpen));
+            closeBtn.addEventListener("click", () => setPanelState(false));
+
+            importBtn.addEventListener("click", () => fileInput.click());
+            fileInput.addEventListener("change", (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    parseTxtConfig(ev.target ? ev.target.result : "");
+                    applyConfig();
+                    importBtn.textContent = `已导入：${file.name}`;
+                    setTimeout(() => {
+                        importBtn.textContent = "点击导入 TXT 配置文件";
+                    }, 1800);
+                };
+                reader.readAsText(file, "UTF-8");
+                fileInput.value = "";
+            });
+
+            imageUploadBtn.addEventListener("click", () => imageFileInput.click());
+            imageFileInput.addEventListener("change", (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const src = String(ev.target && ev.target.result || "");
+                    if (src) {
+                        renderDisplayImage(src);
+                        imageUploadBtn.textContent = `已上传：${file.name}`;
+                        setTimeout(() => {
+                            imageUploadBtn.textContent = "点击上传展示图";
+                        }, 1800);
+                    }
+                };
+                reader.readAsDataURL(file);
+                imageFileInput.value = "";
+            });
+
+            [titleInput, specsInput, audienceInput, prosInput, consInput].forEach((el) => {
+                el.addEventListener("input", applyConfig);
+            });
+
+            document.addEventListener("keydown", (e) => {
+                if (e.ctrlKey && e.key.toLowerCase() === "h") {
+                    e.preventDefault();
+                    toggle.style.display = (toggle.style.display === "none") ? "flex" : "none";
+                    if (toggle.style.display === "none") setPanelState(false);
+                }
+            });
+
+            window.addEventListener("resize", () => {
+                if (panelOpen) {
+                    setPanelState(true);
+                } else {
+                    setPanelState(false);
+                }
+            });
+
+            hydrateInputsFromDom();
+            applyConfig();
+            const initialImg = document.getElementById("displayProductImage");
+            if (initialImg && initialImg.getAttribute("src")) {
+                renderDisplayImage(initialImg.getAttribute("src"));
+            }
+            setPanelState(false);
+        })();
+    </script>
+</body>
+</html>
