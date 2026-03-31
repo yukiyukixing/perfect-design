@@ -295,7 +295,7 @@
 
         .display-panel .display-media {
             position: absolute;
-            inset: 8px;
+            inset: 4px;
             z-index: 1;
             display: flex;
             align-items: center;
@@ -695,7 +695,7 @@
             }
 
             .display-panel .display-media {
-                inset: 6px;
+                inset: 4px;
             }
 
             .sub-panels {
@@ -822,6 +822,14 @@
         </div>
 
         <div class="neo-cfg-group">
+            <label class="neo-cfg-label">标题颜色</label>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <input id="neoCfgTitleColorPicker" type="color" value="#38bbc6" style="width:44px; height:38px; padding:0; border:1px solid rgba(95,193,241,.28); border-radius:8px; background:rgba(8,22,38,.88);" />
+                <input class="neo-cfg-input" id="neoCfgTitleColor" value="#38bbc6" style="flex:1;" />
+            </div>
+        </div>
+
+        <div class="neo-cfg-group">
             <label class="neo-cfg-label">展示图上传</label>
             <input id="neoCfgImageFile" type="file" accept="image/*" style="display:none;" />
             <button class="neo-cfg-btn" id="neoCfgImageBtn" type="button">点击上传展示图</button>
@@ -859,6 +867,12 @@
 标配内存偏保守
 高刷与高分对续航有压</textarea>
         </div>
+
+        <div class="neo-cfg-group">
+            <label class="neo-cfg-label">页面导出</label>
+            <button class="neo-cfg-btn" id="neoCfgDownloadBtn" type="button">下载整页 PNG</button>
+            <div id="neoCfgDownloadStatus" style="margin-top:6px; font-size:12px; color:#8fb5cf;"></div>
+        </div>
     </div>
 
     <div id="neoConfigToggle">配置</div>
@@ -871,14 +885,19 @@
             const fileInput = document.getElementById("neoCfgFile");
             const importBtn = document.getElementById("neoCfgImportBtn");
             const titleInput = document.getElementById("neoCfgTitle");
+            const titleColorInput = document.getElementById("neoCfgTitleColor");
+            const titleColorPicker = document.getElementById("neoCfgTitleColorPicker");
             const imageFileInput = document.getElementById("neoCfgImageFile");
             const imageUploadBtn = document.getElementById("neoCfgImageBtn");
+            const downloadBtn = document.getElementById("neoCfgDownloadBtn");
+            const downloadStatus = document.getElementById("neoCfgDownloadStatus");
             const specsInput = document.getElementById("neoCfgSpecs");
             const audienceInput = document.getElementById("neoCfgAudience");
             const prosInput = document.getElementById("neoCfgPros");
             const consInput = document.getElementById("neoCfgCons");
 
             let panelOpen = false;
+            let userToggleHidden = false;
 
             function getPanelWidth() {
                 return panel.offsetWidth || 420;
@@ -889,6 +908,23 @@
                 const width = getPanelWidth();
                 panel.style.right = panelOpen ? "0px" : `-${width}px`;
                 toggle.style.right = panelOpen ? `${width}px` : "0px";
+            }
+
+            function isFullscreenNow() {
+                return !!(
+                    document.fullscreenElement ||
+                    document.webkitFullscreenElement ||
+                    document.mozFullScreenElement ||
+                    document.msFullscreenElement
+                );
+            }
+
+            function refreshToggleVisibility() {
+                const shouldHide = userToggleHidden || isFullscreenNow();
+                toggle.style.display = shouldHide ? "none" : "flex";
+                if (shouldHide && panelOpen) {
+                    setPanelState(false);
+                }
             }
 
             function normalizeLines(text) {
@@ -963,6 +999,31 @@
                 });
             }
 
+            function normalizeColor(value) {
+                const v = String(value || "").trim();
+                if (!v) return null;
+                if (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v)) return v;
+                if (/^rgba?\(([^)]+)\)$/i.test(v)) return v;
+                return null;
+            }
+
+            function toHexIfPossible(value) {
+                const v = String(value || "").trim();
+                if (/^#[0-9a-fA-F]{6}$/.test(v)) return v;
+                const rgb = v.match(/^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})(?:\s*,\s*(\d*\.?\d+))?\s*\)$/i);
+                if (!rgb) return null;
+                const toHex = (n) => Math.max(0, Math.min(255, Number(n))).toString(16).padStart(2, "0");
+                return `#${toHex(rgb[1])}${toHex(rgb[2])}${toHex(rgb[3])}`;
+            }
+
+            function renderTitleColor(colorValue) {
+                const titleEl = document.querySelector(".title-wrap h1");
+                const color = normalizeColor(colorValue);
+                if (!titleEl || !color) return;
+                titleEl.style.color = color;
+                titleEl.style.webkitTextFillColor = color;
+            }
+
             function renderDisplayImage(src) {
                 const media = document.querySelector(".display-media");
                 const bg = document.getElementById("displayMediaBg");
@@ -976,6 +1037,7 @@
 
             function applyConfig() {
                 const title = titleInput.value.trim();
+                const titleColor = titleColorInput.value.trim();
                 const specs = parseSpecs(specsInput.value);
                 const audience = audienceInput.value.trim();
                 const pros = normalizeLines(prosInput.value);
@@ -983,6 +1045,7 @@
 
                 const titleEl = document.querySelector(".title-wrap h1");
                 if (title && titleEl) titleEl.textContent = title;
+                renderTitleColor(titleColor);
 
                 renderSpecs(specs, audience);
                 renderList(".mini.pros ul", pros);
@@ -991,7 +1054,15 @@
 
             function hydrateInputsFromDom() {
                 const titleEl = document.querySelector(".title-wrap h1");
-                if (titleEl) titleInput.value = titleEl.textContent.trim();
+                if (titleEl) {
+                    titleInput.value = titleEl.textContent.trim();
+                    const computedColor = getComputedStyle(titleEl).color;
+                    if (computedColor) {
+                        titleColorInput.value = computedColor;
+                        const hex = toHexIfPossible(computedColor);
+                        if (hex) titleColorPicker.value = hex;
+                    }
+                }
 
                 const specLines = [];
                 document.querySelectorAll(".spec-list li").forEach((li) => {
@@ -1028,11 +1099,89 @@
                 });
 
                 if (sections["标题"]) titleInput.value = sections["标题"].join(" ");
+                if (sections["标题颜色"]) {
+                    const c = sections["标题颜色"].join(" ");
+                    titleColorInput.value = c;
+                    const hex = toHexIfPossible(c);
+                    if (hex) titleColorPicker.value = hex;
+                }
                 if (sections["展示图"]) renderDisplayImage(sections["展示图"].join(" "));
                 if (sections["核心参数"]) specsInput.value = sections["核心参数"].join("\n");
                 if (sections["适用人群"]) audienceInput.value = sections["适用人群"].join(" ");
                 if (sections["优点"]) prosInput.value = sections["优点"].join("\n");
                 if (sections["缺点"]) consInput.value = sections["缺点"].join("\n");
+            }
+
+            function getPngFileName() {
+                const title = (titleInput.value || "page").trim().replace(/[\\/:*?"<>|]/g, "_");
+                const t = new Date();
+                const pad = (n) => String(n).padStart(2, "0");
+                const stamp = `${t.getFullYear()}${pad(t.getMonth() + 1)}${pad(t.getDate())}-${pad(t.getHours())}${pad(t.getMinutes())}${pad(t.getSeconds())}`;
+                return `${title || "page"}-${stamp}.png`;
+            }
+
+            function loadHtml2Canvas() {
+                if (window.html2canvas) return Promise.resolve(window.html2canvas);
+                return new Promise((resolve, reject) => {
+                    const script = document.createElement("script");
+                    script.src = "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js";
+                    script.async = true;
+                    script.onload = () => resolve(window.html2canvas);
+                    script.onerror = () => reject(new Error("html2canvas 加载失败"));
+                    document.head.appendChild(script);
+                });
+            }
+
+            async function downloadPagePng() {
+                const prevOpen = panelOpen;
+                const prevPanelDisplay = panel.style.display || "";
+
+                try {
+                    downloadBtn.disabled = true;
+                    downloadStatus.textContent = "正在生成 PNG，请稍候...";
+
+                    await loadHtml2Canvas();
+
+                    panel.style.display = "none";
+                    toggle.style.display = "none";
+                    setPanelState(false);
+                    await new Promise((r) => setTimeout(r, 120));
+
+                    const target = document.querySelector(".scene") || document.body;
+                    const canvas = await window.html2canvas(target, {
+                        scale: Math.max(2, window.devicePixelRatio || 1),
+                        useCORS: true,
+                        allowTaint: true,
+                        logging: false,
+                        backgroundColor: null
+                    });
+
+                    const link = document.createElement("a");
+                    link.href = canvas.toDataURL("image/png");
+                    link.download = getPngFileName();
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+
+                    downloadStatus.textContent = "PNG 已下载。";
+                } catch (err) {
+                    console.error(err);
+                    downloadStatus.textContent = "下载失败：请检查浏览器网络或重试。";
+                } finally {
+                    panel.style.display = prevPanelDisplay;
+                    refreshToggleVisibility();
+                    if (prevOpen && !isFullscreenNow() && !userToggleHidden) {
+                        setPanelState(true);
+                    } else {
+                        setPanelState(false);
+                    }
+                    downloadBtn.disabled = false;
+                    setTimeout(() => {
+                        if (downloadStatus.textContent === "PNG 已下载。") {
+                            downloadStatus.textContent = "";
+                        }
+                    }, 1800);
+                }
             }
 
             toggle.addEventListener("click", () => setPanelState(!panelOpen));
@@ -1074,6 +1223,18 @@
                 imageFileInput.value = "";
             });
 
+            titleColorPicker.addEventListener("input", () => {
+                titleColorInput.value = titleColorPicker.value;
+                applyConfig();
+            });
+            titleColorInput.addEventListener("input", () => {
+                const hex = toHexIfPossible(titleColorInput.value);
+                if (hex) titleColorPicker.value = hex;
+                applyConfig();
+            });
+
+            downloadBtn.addEventListener("click", downloadPagePng);
+
             [titleInput, specsInput, audienceInput, prosInput, consInput].forEach((el) => {
                 el.addEventListener("input", applyConfig);
             });
@@ -1081,9 +1242,13 @@
             document.addEventListener("keydown", (e) => {
                 if (e.ctrlKey && e.key.toLowerCase() === "h") {
                     e.preventDefault();
-                    toggle.style.display = (toggle.style.display === "none") ? "flex" : "none";
-                    if (toggle.style.display === "none") setPanelState(false);
+                    userToggleHidden = !userToggleHidden;
+                    refreshToggleVisibility();
                 }
+            });
+
+            ["fullscreenchange", "webkitfullscreenchange", "mozfullscreenchange", "MSFullscreenChange"].forEach((evt) => {
+                document.addEventListener(evt, refreshToggleVisibility);
             });
 
             window.addEventListener("resize", () => {
@@ -1101,6 +1266,7 @@
                 renderDisplayImage(initialImg.getAttribute("src"));
             }
             setPanelState(false);
+            refreshToggleVisibility();
         })();
     </script>
 </body>
