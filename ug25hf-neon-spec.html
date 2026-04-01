@@ -137,17 +137,25 @@
         h1 {
             margin: 0;
             font-size: clamp(40px, 2.9vw, 56px);
-            font-weight: 820;
-            letter-spacing: 2px;
-            background: none;
-            color: rgba(56, 187, 198, 1);
-            -webkit-text-fill-color: rgba(56, 187, 198, 1);
-            -webkit-text-stroke: 0;
-            text-shadow:
-                0 1px 0 rgba(7, 33, 28, 0.9),
-                0 0 10px rgba(74, 255, 210, 0.5),
-                0 0 22px rgba(50, 232, 178, 0.32);
-            filter: drop-shadow(0 0 8px rgba(74, 255, 210, 0.26));
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            line-height: 1.06;
+            text-align: center;
+            background: linear-gradient(90deg, #a58cff, #7ee8fa, #ff7d59, #a58cff);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(159, 133, 255, 0.32);
+            animation: title-pan 8s linear infinite;
+            position: relative;
+        }
+
+        @keyframes title-pan {
+            to {
+                background-position: -300% 0;
+            }
         }
 
         .content {
@@ -824,8 +832,8 @@
         <div class="neo-cfg-group">
             <label class="neo-cfg-label">标题颜色</label>
             <div style="display:flex; gap:8px; align-items:center;">
-                <input id="neoCfgTitleColorPicker" type="color" value="#38bbc6" style="width:44px; height:38px; padding:0; border:1px solid rgba(95,193,241,.28); border-radius:8px; background:rgba(8,22,38,.88);" />
-                <input class="neo-cfg-input" id="neoCfgTitleColor" value="#38bbc6" style="flex:1;" />
+                <input id="neoCfgTitleColorPicker" type="color" value="#a58cff" style="width:44px; height:38px; padding:0; border:1px solid rgba(95,193,241,.28); border-radius:8px; background:rgba(8,22,38,.88);" />
+                <input class="neo-cfg-input" id="neoCfgTitleColor" value="gradient" placeholder="gradient / 渐变 / #RRGGBB / rgba(...)" style="flex:1;" />
             </div>
         </div>
 
@@ -895,6 +903,9 @@
             const audienceInput = document.getElementById("neoCfgAudience");
             const prosInput = document.getElementById("neoCfgPros");
             const consInput = document.getElementById("neoCfgCons");
+            const DEFAULT_TITLE_GRADIENT = "linear-gradient(90deg, #a58cff, #7ee8fa, #ff7d59, #a58cff)";
+            const DEFAULT_TITLE_SHADOW = "0 10px 30px rgba(159, 133, 255, 0.32)";
+            const SOLID_TITLE_SHADOW = "0 0 12px rgba(56, 187, 198, 0.35)";
 
             let panelOpen = false;
             let userToggleHidden = false;
@@ -1016,12 +1027,44 @@
                 return `#${toHex(rgb[1])}${toHex(rgb[2])}${toHex(rgb[3])}`;
             }
 
+            function isGradientKeyword(value) {
+                const v = String(value || "").trim().toLowerCase();
+                return !v || v === "gradient" || v === "渐变";
+            }
+
+            function isTransparentColor(value) {
+                const v = String(value || "").replace(/\s+/g, "").toLowerCase();
+                return v === "transparent" || v === "rgba(0,0,0,0)" || v === "rgba(0,0,0,0.0)" || v === "hsla(0,0%,0%,0)";
+            }
+
             function renderTitleColor(colorValue) {
                 const titleEl = document.querySelector(".title-wrap h1");
+                if (!titleEl) return;
+
+                if (isGradientKeyword(colorValue)) {
+                    titleEl.dataset.titleColorMode = "gradient";
+                    titleEl.style.background = DEFAULT_TITLE_GRADIENT;
+                    titleEl.style.backgroundSize = "300% 100%";
+                    titleEl.style.webkitBackgroundClip = "text";
+                    titleEl.style.backgroundClip = "text";
+                    titleEl.style.color = "transparent";
+                    titleEl.style.webkitTextFillColor = "transparent";
+                    titleEl.style.textShadow = DEFAULT_TITLE_SHADOW;
+                    titleEl.style.animation = "title-pan 8s linear infinite";
+                    return;
+                }
+
                 const color = normalizeColor(colorValue);
-                if (!titleEl || !color) return;
+                if (!color) return;
+                titleEl.dataset.titleColorMode = "solid";
+                titleEl.style.background = "none";
+                titleEl.style.backgroundSize = "";
+                titleEl.style.webkitBackgroundClip = "border-box";
+                titleEl.style.backgroundClip = "border-box";
                 titleEl.style.color = color;
                 titleEl.style.webkitTextFillColor = color;
+                titleEl.style.textShadow = SOLID_TITLE_SHADOW;
+                titleEl.style.animation = "none";
             }
 
             function renderDisplayImage(src) {
@@ -1056,8 +1099,15 @@
                 const titleEl = document.querySelector(".title-wrap h1");
                 if (titleEl) {
                     titleInput.value = titleEl.textContent.trim();
-                    const computedColor = getComputedStyle(titleEl).color;
-                    if (computedColor) {
+                    const cs = getComputedStyle(titleEl);
+                    const computedColor = cs.color;
+                    const webkitFillColor = cs.webkitTextFillColor || "";
+                    const backgroundImage = cs.backgroundImage || "";
+                    const gradientMode = titleEl.dataset.titleColorMode === "gradient" ||
+                        (backgroundImage.includes("gradient") && (isTransparentColor(computedColor) || isTransparentColor(webkitFillColor)));
+                    if (gradientMode) {
+                        titleColorInput.value = "gradient";
+                    } else if (computedColor && !isTransparentColor(computedColor)) {
                         titleColorInput.value = computedColor;
                         const hex = toHexIfPossible(computedColor);
                         if (hex) titleColorPicker.value = hex;
@@ -1101,9 +1151,13 @@
                 if (sections["标题"]) titleInput.value = sections["标题"].join(" ");
                 if (sections["标题颜色"]) {
                     const c = sections["标题颜色"].join(" ");
-                    titleColorInput.value = c;
-                    const hex = toHexIfPossible(c);
-                    if (hex) titleColorPicker.value = hex;
+                    if (isGradientKeyword(c)) {
+                        titleColorInput.value = "gradient";
+                    } else {
+                        titleColorInput.value = c;
+                        const hex = toHexIfPossible(c);
+                        if (hex) titleColorPicker.value = hex;
+                    }
                 }
                 if (sections["展示图"]) renderDisplayImage(sections["展示图"].join(" "));
                 if (sections["核心参数"]) specsInput.value = sections["核心参数"].join("\n");
