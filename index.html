@@ -3,20 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0b0d12" />
+    <meta name="theme-color" content="#171614" />
     <meta
       name="description"
-      content="星演 PPT Studio：输入大纲、切换风格、实时预览并导出可编辑的 PowerPoint。"
+      content="基于原版商品测评母版的 PPT 生成器：编辑参数、上传产品图，并导出与预览一致的高清 PPTX。"
     />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="星演 PPT Studio · 多风格演示文稿生成器" />
-    <meta property="og:description" content="输入大纲，选择风格，导出可编辑 PPTX。全部内容在浏览器本地处理。" />
+    <meta property="og:title" content="好物测评 PPT 生成器" />
+    <meta property="og:description" content="暖金工业风与蓝青霓虹风，直接复用原版 16:9 商品测评母版。" />
     <meta id="ogUrl" property="og:url" content="/" />
     <meta id="ogImage" property="og:image" content="/og.png" />
-    <meta property="og:image:alt" content="星演 PPT Studio 多风格演示文稿编辑器" />
+    <meta property="og:image:alt" content="暖金工业风商品测评 PPT 母版" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="星演 PPT Studio · 多风格演示文稿生成器" />
-    <meta name="twitter:description" content="输入大纲，选择风格，导出可编辑 PPTX。" />
     <meta id="twitterImage" name="twitter:image" content="/og.png" />
     <script>
       (() => {
@@ -27,11 +25,11 @@
         document.querySelector("#twitterImage").content = imageUrl;
       })();
     </script>
-    <title>星演 PPT Studio · 多风格演示文稿生成器</title>
+    <title>好物测评 PPT 生成器 · 原版母版</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/src/styles.css" />
@@ -39,160 +37,142 @@
   <body>
     <div class="app-shell">
       <header class="topbar">
-        <a class="brand" href="#" aria-label="星演 PPT Studio 首页">
-          <span class="brand-mark" aria-hidden="true"><i></i><b>S</b></span>
+        <a class="brand" href="#" aria-label="好物测评 PPT 生成器首页">
+          <span class="brand-mark" aria-hidden="true"><i></i><b>评</b></span>
           <span>
-            <strong>星演</strong>
-            <small>PPT STUDIO</small>
+            <strong>好物测评 PPT</strong>
+            <small>ORIGINAL TEMPLATE STUDIO</small>
           </span>
         </a>
-
-        <div class="topbar-center" aria-label="项目状态">
-          <span class="status-dot"></span>
-          <span id="saveStatus">更改会自动保存在本机</span>
-        </div>
-
-        <div class="topbar-actions">
-          <input id="importInput" type="file" accept=".txt,.md,.json,text/plain,application/json" hidden />
-          <button class="button button-ghost" id="importButton" type="button">
-            <span class="button-icon" aria-hidden="true">↥</span>
-            导入内容
-          </button>
-          <button class="button button-primary" id="exportButton" type="button">
-            <span class="button-icon" aria-hidden="true">⇩</span>
-            <span id="exportLabel">导出 PPTX</span>
-          </button>
-        </div>
+        <div class="topbar-note"><i></i><span id="saveStatus">内容自动保存在本机</span></div>
+        <div class="topbar-badge">原版 1920 × 1080 母版</div>
       </header>
 
-      <main class="workspace">
-        <aside class="editor-panel" aria-label="PPT 内容与风格设置">
-          <section class="panel-section intro-section">
-            <div class="eyebrow">CREATE A DECK</div>
-            <h1>把想法，排成一套<br />有节奏的演示。</h1>
-            <p>输入大纲，选择风格。所有内容仅在浏览器本地处理。</p>
+      <main class="creator">
+        <aside class="editor" aria-label="商品测评内容编辑器">
+          <section class="editor-intro">
+            <span>PRODUCT REVIEW SLIDE</span>
+            <h1>按你的原稿<br />生成同款 PPT</h1>
+            <p>不是通用模板。右侧直接运行你原来的两套商品测评页面。</p>
           </section>
 
-          <section class="panel-section form-section">
-            <div class="section-heading">
-              <div>
-                <span class="step-index">01</span>
-                <h2>演示内容</h2>
-              </div>
-              <button class="text-button" id="exampleButton" type="button">填入示例</button>
+          <section class="editor-section style-section">
+            <div class="section-title">
+              <span>01</span>
+              <div><h2>选择原版风格</h2><p>切换风格，内容不会丢失</p></div>
             </div>
-
-            <label class="field">
-              <span>主标题</span>
-              <input id="titleInput" type="text" maxlength="60" autocomplete="off" />
-            </label>
-
-            <label class="field">
-              <span>副标题</span>
-              <input id="subtitleInput" type="text" maxlength="100" autocomplete="off" />
-            </label>
-
-            <div class="field-row">
-              <label class="field">
-                <span>演讲者 / 品牌</span>
-                <input id="presenterInput" type="text" maxlength="32" autocomplete="off" />
-              </label>
-              <label class="field field-compact">
-                <span>结尾页</span>
-                <span class="switch-wrap">
-                  <input id="closingInput" type="checkbox" />
-                  <span class="switch" aria-hidden="true"></span>
-                  <span>自动添加</span>
+            <div class="style-grid" id="styleGrid">
+              <button class="style-card is-selected" type="button" data-style="gold" aria-pressed="true">
+                <span class="style-preview style-preview-gold" aria-hidden="true">
+                  <i></i><b></b><em></em>
                 </span>
-              </label>
-            </div>
-
-            <label class="field">
-              <span class="field-label-row">
-                <span>内容大纲</span>
-                <span id="outlineMeta">0 个章节</span>
-              </span>
-              <textarea
-                id="outlineInput"
-                rows="13"
-                spellcheck="false"
-                placeholder="# 第一章&#10;- 每行一个要点&#10;- 最多建议 5 条&#10;&#10;# 第二章&#10;- 继续输入内容"
-              ></textarea>
-            </label>
-
-            <div class="format-hint">
-              <span class="hint-badge">#</span>
-              <span>用“# 标题”新建章节，用“- 要点”添加正文；内容过长会自动分页。</span>
+                <span class="style-copy"><strong>暖金工业风</strong><small>原「模板3」</small></span>
+                <span class="style-check">✓</span>
+              </button>
+              <button class="style-card" type="button" data-style="neon" aria-pressed="false">
+                <span class="style-preview style-preview-neon" aria-hidden="true">
+                  <i></i><b></b><em></em>
+                </span>
+                <span class="style-copy"><strong>蓝青霓虹风</strong><small>原「UG25HF」</small></span>
+                <span class="style-check">✓</span>
+              </button>
             </div>
           </section>
 
-          <section class="panel-section asset-section">
-            <div class="section-heading compact-heading">
-              <div>
-                <span class="step-index">02</span>
-                <h2>封面图片</h2>
+          <section class="editor-section content-section">
+            <div class="section-title with-action">
+              <div class="section-title-main">
+                <span>02</span>
+                <div><h2>填写商品内容</h2><p>沿用原 TXT 配置格式</p></div>
               </div>
-              <button class="text-button is-hidden" id="removeImageButton" type="button">移除</button>
+              <div>
+                <input id="importInput" type="file" accept=".txt,text/plain" hidden />
+                <button class="text-button" id="importButton" type="button">导入 TXT</button>
+              </div>
+            </div>
+
+            <label class="field">
+              <span>页面标题</span>
+              <input id="titleInput" type="text" maxlength="40" autocomplete="off" />
+            </label>
+
+            <label class="field">
+              <span>账号 / 品牌</span>
+              <input id="brandInput" type="text" maxlength="24" autocomplete="off" />
+              <small class="field-hint">显示在暖金版左上角；切换风格时会保留</small>
+            </label>
+
+            <label class="field">
+              <span class="field-row"><span>核心参数</span><small id="specCount">10 项</small></span>
+              <textarea id="specsInput" rows="10" spellcheck="false"></textarea>
+              <small class="field-hint">每行：参数名|参数值</small>
+            </label>
+
+            <label class="field">
+              <span>适用人群</span>
+              <textarea id="audienceInput" rows="2" maxlength="80"></textarea>
+            </label>
+
+            <div class="two-fields">
+              <label class="field">
+                <span>优点 / 亮点</span>
+                <textarea id="prosInput" rows="4"></textarea>
+              </label>
+              <label class="field">
+                <span>缺点 / 注意点</span>
+                <textarea id="consInput" rows="4"></textarea>
+              </label>
+            </div>
+          </section>
+
+          <section class="editor-section image-section">
+            <div class="section-title">
+              <span>03</span>
+              <div><h2>产品展示图</h2><p>不上传时使用原模板示例图</p></div>
             </div>
             <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp" hidden />
             <button class="image-dropzone" id="imageDropzone" type="button">
-              <span class="upload-orb" aria-hidden="true">＋</span>
-              <span>
-                <strong id="imageDropTitle">上传一张封面图</strong>
-                <small id="imageDropMeta">PNG、JPG 或 WebP，最大 10 MB</small>
-              </span>
+              <span class="upload-icon">＋</span>
+              <span><strong id="imageTitle">上传产品图片</strong><small id="imageMeta">PNG、JPG 或 WebP，最大 10 MB</small></span>
             </button>
+            <button class="remove-image is-hidden" id="removeImageButton" type="button">恢复模板示例图</button>
           </section>
-
-          <section class="panel-section theme-section">
-            <div class="section-heading compact-heading">
-              <div>
-                <span class="step-index">03</span>
-                <h2>选择风格</h2>
-              </div>
-              <span class="theme-count">6 STYLES</span>
-            </div>
-            <div class="theme-grid" id="themeGrid" role="list" aria-label="PPT 风格"></div>
-          </section>
-
-          <div class="privacy-note">
-            <span aria-hidden="true">⌁</span>
-            <p><strong>无需上传服务器</strong>，文字和图片都在你的浏览器中完成处理。</p>
-          </div>
         </aside>
 
-        <section class="preview-panel" aria-label="幻灯片预览">
+        <section class="preview-area" aria-label="原版 PPT 实时预览">
           <div class="preview-toolbar">
-            <div class="preview-title">
-              <span class="live-badge"><i></i> LIVE PREVIEW</span>
-              <span class="toolbar-divider"></span>
-              <strong id="currentThemeName">星海霓虹</strong>
+            <div>
+              <span class="live"><i></i> 原版实时预览</span>
+              <strong id="activeStyleName">暖金工业风 · 模板3</strong>
             </div>
-            <div class="preview-controls">
-              <button class="icon-button" id="previousButton" type="button" aria-label="上一页">←</button>
-              <span class="page-counter"><b id="currentPage">01</b><i>/</i><span id="totalPages">01</span></span>
-              <button class="icon-button" id="nextButton" type="button" aria-label="下一页">→</button>
+            <div class="preview-meta"><span>1 页</span><span>16:9</span><span>1920 × 1080</span></div>
+          </div>
+
+          <div class="preview-stage-wrap">
+            <div class="preview-glow" aria-hidden="true"></div>
+            <div class="preview-frame" id="previewFrame">
+              <div class="frame-loading" id="frameLoading"><i></i><span>正在加载原版母版…</span></div>
+              <iframe
+                id="templateFrame"
+                title="商品测评 PPT 原版母版预览"
+                src="/templates/gold.html"
+                width="1920"
+                height="1080"
+              ></iframe>
             </div>
           </div>
 
-          <div class="canvas-area">
-            <div class="canvas-halo" aria-hidden="true"></div>
-            <div class="slide-frame">
-              <div id="slideStage" class="slide-stage" aria-live="polite"></div>
+          <div class="export-bar">
+            <div class="export-note">
+              <strong>所见即所得</strong>
+              <span>PPTX 使用当前预览的高清整页画面，版式不会跑偏。</span>
             </div>
-          </div>
-
-          <div class="thumbs-wrap">
-            <div class="thumbs-heading">
-              <span>页面导航</span>
-              <span id="deckSummary">共 1 页</span>
+            <div class="export-actions">
+              <button class="button button-secondary" id="pngButton" type="button">下载 PNG</button>
+              <button class="button button-primary" id="pptxButton" type="button">
+                <span aria-hidden="true">⇩</span><span id="pptxLabel">导出同款 PPTX</span>
+              </button>
             </div>
-            <div class="thumb-strip" id="thumbStrip" role="listbox" aria-label="幻灯片页面"></div>
-          </div>
-
-          <div class="preview-footer">
-            <span><kbd>←</kbd><kbd>→</kbd> 切换页面</span>
-            <span>16:9 · 可编辑文字与图形 · 本地生成</span>
           </div>
         </section>
       </main>

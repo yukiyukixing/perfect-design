@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>竞技上分利器：UG25HF</title>
+    <style>
+        :root {
+            --ink: #393534;
+            --ink-deep: #282523;
+            --ink-soft: #45403d;
+            --taupe: #948C77;
+            --taupe-soft: rgba(148, 140, 119, 0.32);
+            --gold: #D5A431;
+            --gold-soft: rgba(213, 164, 49, 0.22);
+            --silver: #CFCFCF;
+            --silver-soft: rgba(207, 207, 207, 0.72);
+            --sage: #7E9E91;
+            --sage-soft: rgba(126, 158, 145, 0.24);
+            --card: rgba(57, 53, 52, 0.86);
+            --card-strong: rgba(46, 42, 40, 0.94);
+            --hairline: rgba(207, 207, 207, 0.14);
+            --shadow: 0 28px 70px rgba(16, 14, 13, 0.45);
+            --radius-lg: 28px;
+            --radius-md: 18px;
+            --display-w: 877px;
+            --display-h: 512px;
+            --display-ratio: 877 / 512;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: "MiSans", "HarmonyOS Sans SC", "Source Han Sans SC", "Noto Sans SC", "Microsoft YaHei UI", "PingFang SC", sans-serif;
+            color: var(--silver);
+            background:
+                radial-gradient(900px 520px at 12% 10%, rgba(213, 164, 49, 0.16), transparent 58%),
+                radial-gradient(820px 560px at 88% 22%, rgba(126, 158, 145, 0.20), transparent 62%),
+                radial-gradient(760px 620px at 58% 102%, rgba(148, 140, 119, 0.20), transparent 58%),
+                linear-gradient(135deg, #292624 0%, var(--ink) 46%, #2f2d2b 100%);
+            letter-spacing: 0.2px;
+            font-synthesis: none;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .scene {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            isolation: isolate;
+            overflow: hidden;
+        }
+
+        .scene::before,
+        .scene::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .scene::before {
+            z-index: 0;
+            background:
+                linear-gradient(90deg, rgba(207, 207, 207, 0.055) 1px, transparent 1px) 0 0 / 72px 72px,
+                linear-gradient(0deg, rgba(207, 207, 207, 0.045) 1px, transparent 1px) 0 0 / 72px 72px,
+                repeating-linear-gradient(135deg, transparent 0 14px, rgba(213, 164, 49, 0.035) 14px 15px, transparent 15px 28px);
+            opacity: 0.72;
+            mask-image: radial-gradient(circle at center, black 0 65%, transparent 100%);
+        }
+
+        .scene::after {
+            z-index: 1;
+            background:
+                radial-gradient(circle at 17% 78%, rgba(213, 164, 49, 0.82) 0 3px, transparent 4px),
+                radial-gradient(circle at 83% 32%, rgba(126, 158, 145, 0.82) 0 3px, transparent 4px),
+                radial-gradient(circle at 71% 82%, rgba(207, 207, 207, 0.34) 0 2px, transparent 3px),
+                linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.22) 100%);
+            opacity: 0.7;
+        }
+
+        .board {
+            position: relative;
+            z-index: 2;
+            width: min(1540px, 94vw);
+            height: min(920px, 92vh);
+            margin: 4vh auto;
+            display: grid;
+            grid-template-rows: auto auto 1fr;
+            gap: 18px;
+        }
+
+        .hero-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            color: var(--silver-soft);
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .brand-pill,
+        .palette-note {
+            min-height: 42px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            border: 1px solid rgba(207, 207, 207, 0.16);
+            border-radius: 999px;
+            background: rgba(40, 37, 35, 0.72);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            font-size: 14px;
+        }
+
+        .brand-pill .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--gold);
+            box-shadow: 0 0 18px rgba(213, 164, 49, 0.72);
+        }
+
+        .palette-note {
+            color: rgba(207, 207, 207, 0.8);
+            text-transform: none;
+            font-weight: 700;
+        }
+
+        .title-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            padding: 4px 0 2px;
+        }
+
+        .title-wrap .line {
+            width: clamp(120px, 18vw, 310px);
+            height: 16px;
+            position: relative;
+            opacity: 0.95;
+        }
+
+        .title-wrap .line::before,
+        .title-wrap .line::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        .title-wrap .line::before {
+            top: 7px;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(207, 207, 207, 0.5), transparent);
+        }
+
+        .title-wrap .line::after {
+            top: 2px;
+            width: 34%;
+            height: 10px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--sage), var(--gold));
+            box-shadow: 0 0 18px rgba(213, 164, 49, 0.28);
+        }
+
+        h1 {
+            margin: 0;
+            max-width: 780px;
+            font-size: clamp(38px, 3vw, 58px);
+            font-weight: 950;
+            letter-spacing: 0.5px;
+            line-height: 1.04;
+            text-align: center;
+            color: #f3f0e8;
+            text-shadow:
+                0 4px 0 rgba(0, 0, 0, 0.18),
+                0 18px 36px rgba(0, 0, 0, 0.38);
+            position: relative;
+        }
+
+        h1::before {
+            content: "专业测评 · 数据看板 · 购买建议";
+            position: absolute;
+            left: 50%;
+            top: -26px;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            color: var(--gold);
+            font-size: 13px;
+            font-weight: 900;
+            letter-spacing: 2.4px;
+            text-shadow: none;
+        }
+
+        h1::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -12px;
+            width: min(300px, 58%);
+            height: 5px;
+            transform: translateX(-50%);
+            border-radius: 999px;
+            background: linear-gradient(90deg, transparent, var(--gold), var(--sage), transparent);
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 0.92fr 1.58fr;
+            gap: 24px;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .panel {
+            position: relative;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(207, 207, 207, 0.14);
+            /* background:
+                linear-gradient(150deg, rgba(255, 255, 255, 0.07), transparent 28%),
+                linear-gradient(145deg, rgba(57, 53, 52, 0.90), rgba(40, 37, 35, 0.90)); */
+            box-shadow:
+                var(--shadow),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.045);
+            backdrop-filter: blur(12px);
+            overflow: hidden;
+        }
+
+        /* .panel::before,
+        .panel::after {
+            content: "";
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            pointer-events: none;
+            opacity: 0.95;
+        }
+
+        .panel::before {
+            top: 0;
+            left: 0;
+            border-top: 4px solid var(--gold);
+            border-left: 4px solid var(--gold);
+            border-top-left-radius: var(--radius-lg);
+        }
+
+        .panel::after {
+            right: 0;
+            bottom: 0;
+            border-right: 4px solid var(--sage);
+            border-bottom: 4px solid var(--sage);
+            border-bottom-right-radius: var(--radius-lg);
+        } */
+
+        .section-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 48px;
+            margin-bottom: 14px;
+        }
+
+        .section-head .index {
+            display: inline-grid;
+            place-items: center;
+            width: 46px;
+            height: 46px;
+            flex: 0 0 46px;
+            border-radius: 16px;
+            color: #211f1e;
+            background: linear-gradient(135deg, var(--gold), #e4bf64);
+            font-weight: 950;
+            font-size: 20px;
+            box-shadow: 0 12px 24px rgba(213, 164, 49, 0.24);
+        }
+
+        .section-head b {
+            display: block;
+            color: #f2efe9;
+            font-size: 24px;
+            line-height: 1.05;
+            letter-spacing: 0.6px;
+        }
+
+        .section-head small {
+            display: block;
+            margin-top: 5px;
+            color: rgba(207, 207, 207, 0.62);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .spec-panel {
+            padding: 24px 26px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 0;
+            min-height: 0;
+        }
+
+        .spec-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 8px;
+            color: var(--silver);
+            font-variant-numeric: tabular-nums lining-nums;
+        }
+
+        .spec-list li {
+            position: relative;
+            min-height: 46px;
+            padding: 8px 12px 8px 14px;
+            border-radius: 14px;
+            background:
+                linear-gradient(90deg, rgba(207, 207, 207, 0.075), rgba(207, 207, 207, 0.02)),
+                rgba(40, 37, 35, 0.52);
+            border: 1px solid rgba(207, 207, 207, 0.095);
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 6px;
+            color: var(--silver);
+            font-size: clamp(18px, 1.2vw, 23px);
+            line-height: 1.15;
+            box-shadow: inset 3px 0 0 rgba(213, 164, 49, 0.78);
+        }
+
+        .spec-list li:nth-child(even) {
+            box-shadow: inset 3px 0 0 rgba(126, 158, 145, 0.82);
+        }
+
+        .label {
+            color: #7E9E91;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+        }
+
+        .value {
+            justify-self: start;
+            color: #fff9eb;
+            font-weight: 920;
+            letter-spacing: 0.2px;
+        }
+
+        .icon {
+            display: inline-grid;
+            place-items: center;
+            width: 28px;
+            height: 28px;
+            margin-left: 2px;
+            border-radius: 10px;
+            color: #211f1e;
+            background: var(--gold);
+            font-size: 16px;
+            line-height: 1;
+            transform: translateY(-1px);
+        }
+
+        .audience-card {
+            position: relative;
+            margin-top: 14px;
+            padding: 14px 16px 16px 18px;
+            border-radius: 18px;
+            background:
+                linear-gradient(135deg, rgba(213, 164, 49, 0.17), rgba(126, 158, 145, 0.12)),
+                rgba(40, 37, 35, 0.62);
+            border: 1px solid rgba(213, 164, 49, 0.28);
+        }
+
+        .audience-card::before {
+            content: "RECOMMENDED FOR";
+            display: block;
+            margin-bottom: 8px;
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: 950;
+            letter-spacing: 2px;
+        }
+
+        .audience {
+            margin: 0;
+            color: #f0eadb;
+            font-size: clamp(18px, 1.25vw, 24px);
+            line-height: 1.32;
+            font-weight: 850;
+            letter-spacing: 0.2px;
+        }
+
+        .audience span {
+            color: var(--sage);
+            margin-right: 4px;
+        }
+
+        .right-col {
+            min-height: 0;
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr);
+            gap: 18px;
+            align-content: start;
+        }
+
+        .display-panel {
+            min-height: 0;
+            display: grid;
+            grid-template-rows: auto auto;
+            justify-items: center;
+            align-content: start;
+            row-gap: 14px;
+            padding: 18px;
+        }
+
+        .display-panel::before,
+        .display-panel::after {
+            display: none;
+        }
+
+        .display-ribbon {
+            z-index: 8;
+            width: max-content;
+            max-width: 100%;
+            min-height: 38px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            color: #211f1e;
+            background: linear-gradient(90deg, var(--gold), #dfbc65);
+            font-size: 14px;
+            font-weight: 950;
+            letter-spacing: 1px;
+            box-shadow: 0 14px 30px rgba(213, 164, 49, 0.22);
+        }
+
+        .display-panel .display-media {
+            position: relative;
+            z-index: 2;
+            width: min(100%, var(--display-w));
+            aspect-ratio: var(--display-ratio);
+            height: auto;
+            margin-top: 0;
+            min-height: 0;
+            max-width: 100%;
+            border-radius: 24px;
+            overflow: hidden;
+            background:
+                linear-gradient(135deg, rgba(213, 164, 49, 0.14), transparent 36%),
+                linear-gradient(45deg, rgba(126, 158, 145, 0.13), transparent 55%),
+                #262321;
+            border: 1px solid rgba(207, 207, 207, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow:
+                inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+                inset 0 -46px 90px rgba(0, 0, 0, 0.24);
+        }
+
+        .display-panel .display-media::before {
+            content: "产品展示图 / 上传实拍图后自动替换";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            width: min(520px, 78%);
+            min-height: 160px;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            padding: 28px;
+            border-radius: 28px;
+            border: 1px dashed rgba(207, 207, 207, 0.22);
+            color: rgba(207, 207, 207, 0.46);
+            font-size: clamp(18px, 1.4vw, 26px);
+            font-weight: 900;
+            letter-spacing: 1.5px;
+        }
+
+        .display-panel .display-media.is-empty::before {
+            z-index: 2;
+        }
+
+        .display-panel .display-media .display-media-bg {
+            position: absolute;
+            inset: -22px;
+            z-index: 0;
+            background-position: center;
+            background-size: cover;
+            filter: blur(22px) saturate(0.72) brightness(0.5);
+            opacity: 0.42;
+            transform: scale(1.06);
+        }
+
+        .display-frame {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            height: 100%;
+            max-width: none;
+            max-height: none;
+            aspect-ratio: var(--display-ratio);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 28px 42px rgba(0, 0, 0, 0.45));
+        }
+
+        .display-media.is-empty .display-frame {
+            display: none;
+        }
+
+        .display-frame img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            padding: 0;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .display-panel .scan {
+            position: absolute;
+            inset: 18px;
+            border-radius: 24px;
+            /* background: linear-gradient(to bottom, transparent 0%, rgba(213, 164, 49, 0.12) 50%, transparent 100%); */
+            /* animation: sweep 6.5s linear infinite; */
+            mix-blend-mode: screen;
+            z-index: 5;
+            pointer-events: none;
+            opacity: 0.45;
+        }
+
+        .display-panel .wave {
+            position: absolute;
+            right: 4.5%;
+            top: 38%;
+            width: 25%;
+            height: 24%;
+            filter: drop-shadow(0 0 8px rgba(213, 164, 49, 0.28));
+            z-index: 6;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .display-panel .wave span {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent 0%, rgba(213, 164, 49, 0.1) 18%, rgba(213, 164, 49, 0.8) 62%, transparent 100%);
+            border-radius: 6px;
+            transform-origin: left center;
+            animation: flux 2.8s ease-in-out infinite;
+        }
+
+        .display-panel .wave span:nth-child(1) { top: 6%; animation-delay: -0.2s; transform: skewY(-8deg); }
+        .display-panel .wave span:nth-child(2) { top: 24%; animation-delay: -0.45s; transform: skewY(-7deg); }
+        .display-panel .wave span:nth-child(3) { top: 40%; animation-delay: -0.8s; transform: skewY(-6deg); }
+        .display-panel .wave span:nth-child(4) { top: 58%; animation-delay: -1.2s; transform: skewY(-5deg); }
+        .display-panel .wave span:nth-child(5) { top: 76%; animation-delay: -1.55s; transform: skewY(-4deg); }
+        .display-panel .wave span:nth-child(6) { top: 92%; animation-delay: -1.9s; transform: skewY(-3deg); }
+
+        .score-strip {
+            display: none !important;
+            position: relative;
+            z-index: 7;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .score-item {
+            min-height: 64px;
+            padding: 10px 12px;
+            border-radius: 16px;
+            background: rgba(40, 37, 35, 0.66);
+            border: 1px solid rgba(207, 207, 207, 0.1);
+        }
+
+        .score-item b {
+            display: block;
+            color: #fff7e7;
+            font-size: clamp(20px, 1.35vw, 28px);
+            line-height: 1;
+            font-weight: 950;
+        }
+
+        .score-item span {
+            display: block;
+            margin-top: 8px;
+            color: rgba(207, 207, 207, 0.62);
+            font-size: 12px;
+            font-weight: 850;
+            letter-spacing: 1px;
+        }
+
+        .sub-panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .mini {
+            padding: 20px 22px;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            gap: 10px;
+        }
+
+        .mini h2 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            color: #f5efe1;
+            font-size: clamp(30px, 1.95vw, 44px);
+            line-height: 1;
+            letter-spacing: 1px;
+            font-weight: 950;
+        }
+
+        /* .mini h2::after {
+            content: "";
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            line-height: 1;
+            letter-spacing: 1.2px;
+            color: rgba(207, 207, 207, 0.68);
+            background: rgba(207, 207, 207, 0.07);
+            border: 1px solid rgba(207, 207, 207, 0.10);
+        } */
+
+        .mini ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            align-content: start;
+            gap: 9px;
+            color: rgba(244, 240, 230, 0.94);
+            font-size: clamp(22px, 1.55vw, 34px);
+            line-height: 1.16;
+            font-weight: 800;
+        }
+
+        .mini li {
+            position: relative;
+            padding-left: 22px;
+        }
+
+        .mini li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.58em;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            transform: translateY(-50%);
+            background: currentColor;
+            box-shadow: 0 0 12px currentColor;
+        }
+
+        .mini.pros {
+            border-color: rgba(126, 158, 145, 0.42);
+            background:
+                linear-gradient(135deg, rgba(126, 158, 145, 0.22), transparent 56%),
+                linear-gradient(145deg, rgba(57, 53, 52, 0.90), rgba(40, 37, 35, 0.92));
+        }
+
+        .mini.pros::before {
+            border-color: var(--sage);
+        }
+
+        .mini.pros h2,
+        .mini.pros li::before {
+            color: var(--sage);
+        }
+
+        .mini.cons {
+            border-color: rgba(213, 164, 49, 0.48);
+            background:
+                linear-gradient(135deg, rgba(213, 164, 49, 0.20), transparent 56%),
+                linear-gradient(145deg, rgba(57, 53, 52, 0.90), rgba(40, 37, 35, 0.92));
+        }
+
+        .mini.cons::before {
+            border-color: var(--gold);
+        }
+
+        .mini.cons h2,
+        .mini.cons li::before {
+            color: var(--gold);
+        }
+
+        .circuit {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.55;
+        }
+
+        .circuit svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        @keyframes sweep {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        @keyframes flux {
+            0%, 100% { opacity: 0.4; transform: translateX(0) scaleX(0.92); }
+            50% { opacity: 1; transform: translateX(7%) scaleX(1.04); }
+        }
+
+        #neoConfigPanel {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 420px;
+            height: 100vh;
+            padding: 20px 22px;
+            overflow-y: auto;
+            z-index: 12000;
+            color: var(--silver);
+            background: linear-gradient(165deg, rgba(40, 37, 35, 0.99), rgba(30, 28, 27, 0.99));
+            border-left: 1px solid rgba(213, 164, 49, 0.34);
+            box-shadow: -10px 0 42px rgba(0, 0, 0, 0.48);
+            transition: right .3s ease;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        }
+
+        #neoConfigPanel h3 {
+            margin: 0 0 16px;
+            font-size: 18px;
+            color: var(--gold);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #neoCfgClose {
+            cursor: pointer;
+            font-size: 24px;
+            color: rgba(207, 207, 207, 0.65);
+            line-height: 1;
+        }
+
+        .neo-cfg-group {
+            margin-bottom: 12px;
+        }
+
+        .neo-cfg-label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 12px;
+            color: rgba(207, 207, 207, 0.68);
+            letter-spacing: 0.2px;
+        }
+
+        .neo-cfg-input,
+        .neo-cfg-textarea,
+        .neo-cfg-btn {
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid rgba(207, 207, 207, 0.14);
+            background: rgba(35, 32, 30, 0.9);
+            color: #f0efe9;
+            font-size: 14px;
+            line-height: 1.5;
+            padding: 10px 12px;
+            font-family: inherit;
+        }
+
+        .neo-cfg-textarea {
+            min-height: 76px;
+            resize: vertical;
+        }
+
+        .neo-cfg-input:focus,
+        .neo-cfg-textarea:focus {
+            outline: none;
+            border-color: rgba(213, 164, 49, 0.66);
+            box-shadow: 0 0 0 2px rgba(213, 164, 49, 0.15);
+        }
+
+        .neo-cfg-btn {
+            cursor: pointer;
+            background: linear-gradient(135deg, rgba(213, 164, 49, 0.25), rgba(126, 158, 145, 0.20));
+            border-style: dashed;
+            color: #f4ead2;
+            font-weight: 800;
+        }
+
+        #neoConfigToggle {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 110px;
+            z-index: 12001;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            writing-mode: vertical-rl;
+            font-size: 18px;
+            letter-spacing: 3px;
+            color: #211f1e;
+            border: 1px solid rgba(213, 164, 49, 0.48);
+            border-right: none;
+            border-radius: 12px 0 0 12px;
+            background: linear-gradient(180deg, var(--gold), #c59a32);
+            box-shadow: -6px 0 24px rgba(0, 0, 0, 0.24);
+            user-select: none;
+            font-weight: 950;
+        }
+
+        #neoConfigPanel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #neoConfigPanel::-webkit-scrollbar-thumb {
+            background: rgba(213, 164, 49, 0.45);
+            border-radius: 4px;
+        }
+
+        @media (max-width: 1366px) {
+            .board {
+                height: min(880px, 94vh);
+                gap: 14px;
+            }
+
+            .content {
+                gap: 18px;
+            }
+
+            .spec-panel {
+                padding: 20px 22px;
+            }
+
+            .spec-list li {
+                min-height: 42px;
+                font-size: 19px;
+                padding-top: 7px;
+                padding-bottom: 7px;
+            }
+
+            .audience {
+                font-size: 20px;
+            }
+
+            .mini h2 {
+                font-size: clamp(26px, 2.2vw, 38px);
+            }
+
+            .mini ul {
+                font-size: clamp(20px, 1.85vw, 30px);
+            }
+        }
+
+        @media (max-width: 1100px) {
+            html,
+            body {
+                overflow: auto;
+                height: auto;
+            }
+
+            .scene {
+                min-height: 100vh;
+                height: auto;
+                overflow: visible;
+            }
+
+            .board {
+                width: min(94vw, 820px);
+                height: auto;
+                margin: 22px auto 34px;
+                gap: 16px;
+            }
+
+            .hero-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+
+            .brand-pill,
+            .palette-note {
+                justify-content: center;
+            }
+
+            .title-wrap {
+                gap: 10px;
+                padding-top: 18px;
+            }
+
+            .title-wrap .line {
+                width: min(16vw, 96px);
+            }
+
+            h1 {
+                font-size: clamp(24px, 6vw, 38px);
+            }
+
+            h1::before {
+                top: -22px;
+                font-size: 11px;
+                letter-spacing: 1.4px;
+            }
+
+            .content {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                height: auto;
+            }
+
+            .spec-panel {
+                padding: 18px;
+            }
+
+            .section-head b {
+                font-size: 22px;
+            }
+
+            .spec-list {
+                gap: 8px;
+            }
+
+            .spec-list li {
+                font-size: clamp(16px, 4.2vw, 22px);
+                min-height: 42px;
+            }
+
+            .right-col {
+                grid-template-rows: auto auto;
+                gap: 14px;
+            }
+
+            .display-panel {
+                min-height: auto;
+                padding: 14px;
+                row-gap: 12px;
+            }
+
+            .display-panel .display-media {
+                width: 100%;
+                min-height: 0;
+            }
+
+            .display-frame {
+                max-width: none;
+                max-height: none;
+            }
+
+            .score-strip {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .sub-panels {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .mini {
+                padding: 16px;
+            }
+
+            .mini h2 {
+                font-size: clamp(24px, 5vw, 32px);
+            }
+
+            .mini ul {
+                font-size: clamp(18px, 4.5vw, 24px);
+                gap: 7px;
+            }
+
+            #neoConfigPanel {
+                width: 360px;
+                right: -360px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scene">
+        <div class="circuit" aria-hidden="true">
+            <svg viewBox="0 0 1920 1080" preserveAspectRatio="none">
+                <g stroke="rgba(213, 164, 49, 0.35)" stroke-width="2" fill="none">
+                    <path d="M0,744 H244 V690 H420 V724 H548" />
+                    <path d="M188,902 H472 V832 H650" />
+                    <path d="M1412,728 H1658 V672 H1920" />
+                    <path d="M1320,612 H1540 V546 H1884" />
+                    <path d="M1548,856 H1748 V802 H1920" />
+                </g>
+                <g stroke="rgba(126, 158, 145, 0.38)" stroke-width="2" fill="none">
+                    <path d="M0,192 H250 V146 H508" />
+                    <path d="M1518,178 H1680 V118 H1920" />
+                    <path d="M1120,1012 H1330 V958 H1568" />
+                </g>
+                <g fill="rgba(207, 207, 207, 0.72)">
+                    <circle cx="420" cy="724" r="4" />
+                    <circle cx="650" cy="832" r="4" />
+                    <circle cx="1540" cy="546" r="4" />
+                    <circle cx="1748" cy="802" r="4" />
+                    <circle cx="508" cy="146" r="4" />
+                    <circle cx="1568" cy="958" r="4" />
+                </g>
+            </svg>
+        </div>
+
+        <main class="board">
+            <div class="hero-bar">
+                <div class="brand-pill"><span class="dot"></span>咕嘎咕嘎研究所</div>
+                <div class="palette-note">专业数码家电测评</div>
+            </div>
+
+            <div class="title-wrap">
+                <span class="line"></span>
+                <h1>竞技上分利器：UG25HF</h1>
+                <span class="line"></span>
+            </div>
+
+            <section class="content">
+                <aside class="panel spec-panel">
+                    <div class="section-head">
+                        <span class="index">01</span>
+                        <div>
+                            <b>核心参数</b>
+                            <small>Specs verified</small>
+                        </div>
+                    </div>
+                    <ul class="spec-list">
+                        <li><span class="label">名称：</span><span class="value">UG25HF</span></li>
+                        <li><span class="label">面板：</span><span class="value">TN</span></li>
+                        <li><span class="label">响应时间：</span><span class="value">0.5ms</span><span class="icon">⚡</span></li>
+                        <li><span class="label">分辨率：</span><span class="value">1920*1080</span></li>
+                        <li><span class="label">屏幕刷新率：</span><span class="value">500Hz</span><span class="icon">⟳</span></li>
+                        <li><span class="label">屏幕尺寸：</span><span class="value">24.1英寸</span></li>
+                        <li><span class="label">亮度：</span><span class="value">350cd/㎡</span></li>
+                        <li><span class="label">产品净重：</span><span class="value">5.2kg</span></li>
+                        <li><span class="label">类型：</span><span class="value">直面屏</span></li>
+                        <li><span class="label">屏幕比例：</span><span class="value">16:9</span></li>
+                    </ul>
+                    <div class="audience-card">
+                        <p class="audience"><span>适用人群：</span>适合重度FPS玩家，追求毫秒级优势的玩家</p>
+                    </div>
+                </aside>
+
+                <div class="right-col">
+                    <section class="panel display-panel" aria-label="产品展示区域">
+                        <div class="display-ribbon">产品展示</div>
+                        <div class="display-media">
+                            <div class="display-media-bg" id="displayMediaBg"></div>
+                            <div class="display-frame">
+                                <img id="displayProductImage" src="./showImg/模板3示例图.png" alt="产品展示图" />
+                            </div>
+                        </div>
+                        <div class="scan"></div>
+                        <div class="wave" aria-hidden="true">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div class="score-strip" aria-label="测评维度">
+                            <div class="score-item"><b>500Hz</b><span>高刷性能</span></div>
+                            <div class="score-item"><b>0.5ms</b><span>响应速度</span></div>
+                            <div class="score-item"><b>24.1”</b><span>竞技尺寸</span></div>
+                            <div class="score-item"><b>16:9</b><span>主流比例</span></div>
+                        </div>
+                    </section>
+
+                    <div class="sub-panels">
+                        <section class="panel mini pros">
+                            <h2>亮点</h2>
+                            <ul>
+                                <li>性能堆得很满</li>
+                                <li>屏幕规格豪华</li>
+                                <li>做工与易用性细节</li>
+                            </ul>
+                        </section>
+                        <section class="panel mini cons">
+                            <h2>注意点</h2>
+                            <ul>
+                                <li>便携性一般</li>
+                                <li>标配内存偏保守</li>
+                                <li>高刷与高分对续航有压</li>
+                            </ul>
+                        </section>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="neoConfigPanel">
+        <h3>文字配置 <span id="neoCfgClose">&times;</span></h3>
+
+        <div class="neo-cfg-group">
+            <label class="neo-cfg-label">导入配置文件（.txt）</label>
+            <input id="neoCfgFile" type="file" accept=".txt" style="display:none;" />
+            <button class="neo-cfg-btn" id="neoCfgImportBtn" type="button">点击导入 TXT 配置文件</button>
+        </div>
+
+        <div class="neo-cfg-group">
+            <label class="neo-cfg-label">产品标题</label>
+            <input class="neo-cfg-input" id="neoCfgTitle" value="竞技上分利器：UG25HF" />
+        </div>
+
+        <div class="neo-cfg-group">
+            <label class="neo-cfg-label">展示图上传</label>
+            <input id="neoCfgImageFile" type="file" accept="image/*" style="display:none;" />
+            <button class="neo-cfg-btn" id="neoCfgImageBtn" type="button">点击上传展示图</button>
+        </div>
+
+        <div class="neo-cfg-group">
+            <label class="neo-cfg-label">核心参数（每行：参数名|参数值）</label>
+            <textarea class="neo-cfg-textarea" id="neoCfgSpecs" rows="12">名称|UG25HF
+面板|TN
+响应时间|0.5ms
+分辨率|1920*1080
+屏幕刷新率|500Hz
+屏幕尺寸|24.1英寸
+亮度|350cd/㎡
+产品净重|5.2kg
+类型|直面屏
+屏幕比例|16:9</textarea>
+        </div>
+
+        <div class="neo-cfg-group">
+            <label class="neo-cfg-label">适用人群</label>
+            <input class="neo-cfg-input" id="neoCfgAudience" value="适合重度FPS玩家，追求毫秒级优势的玩家" />
+        </div>
+
+        <div class="neo-cfg-group">
+            <label class="neo-cfg-label">优点（每行一条）</label>
+            <textarea class="neo-cfg-textarea" id="neoCfgPros" rows="3">性能堆得很满
+屏幕规格豪华
+做工与易用性细节</textarea>
+        </div>
+
+        <div class="neo-cfg-group">
+            <label class="neo-cfg-label">缺点（每行一条）</label>
+            <textarea class="neo-cfg-textarea" id="neoCfgCons" rows="3">便携性一般
+标配内存偏保守
+高刷与高分对续航有压</textarea>
+        </div>
+
+        <div class="neo-cfg-group">
+            <label class="neo-cfg-label">页面导出</label>
+            <button class="neo-cfg-btn" id="neoCfgDownloadBtn" type="button">下载整页 PNG</button>
+            <div id="neoCfgDownloadStatus" style="margin-top:6px; font-size:12px; color:rgba(207,207,207,0.68);"></div>
+        </div>
+    </div>
+
+    <div id="neoConfigToggle">配置</div>
+
+    <script>
+        (function () {
+            const panel = document.getElementById("neoConfigPanel");
+            const toggle = document.getElementById("neoConfigToggle");
+            const closeBtn = document.getElementById("neoCfgClose");
+            const fileInput = document.getElementById("neoCfgFile");
+            const importBtn = document.getElementById("neoCfgImportBtn");
+            const titleInput = document.getElementById("neoCfgTitle");
+            const imageFileInput = document.getElementById("neoCfgImageFile");
+            const imageUploadBtn = document.getElementById("neoCfgImageBtn");
+            const downloadBtn = document.getElementById("neoCfgDownloadBtn");
+            const downloadStatus = document.getElementById("neoCfgDownloadStatus");
+            const specsInput = document.getElementById("neoCfgSpecs");
+            const audienceInput = document.getElementById("neoCfgAudience");
+            const prosInput = document.getElementById("neoCfgPros");
+            const consInput = document.getElementById("neoCfgCons");
+            const displayImg = document.getElementById("displayProductImage");
+            const displayMedia = document.querySelector(".display-media");
+
+            let panelOpen = false;
+            let userToggleHidden = false;
+
+            function getPanelWidth() {
+                return panel.offsetWidth || 420;
+            }
+
+            function setPanelState(open) {
+                panelOpen = open;
+                const width = getPanelWidth();
+                panel.style.right = panelOpen ? "0px" : `-${width}px`;
+                toggle.style.right = panelOpen ? `${width}px` : "0px";
+            }
+
+            function isFullscreenNow() {
+                return !!(
+                    document.fullscreenElement ||
+                    document.webkitFullscreenElement ||
+                    document.mozFullScreenElement ||
+                    document.msFullscreenElement
+                );
+            }
+
+            function refreshToggleVisibility() {
+                const shouldHide = userToggleHidden || isFullscreenNow();
+                toggle.style.display = shouldHide ? "none" : "flex";
+                if (shouldHide && panelOpen) {
+                    setPanelState(false);
+                }
+            }
+
+            function normalizeLines(text) {
+                return String(text || "")
+                    .split(/\r?\n/)
+                    .map(s => s.trim())
+                    .filter(Boolean);
+            }
+
+            function parseSpecs(text) {
+                const specs = [];
+                normalizeLines(text).forEach((line) => {
+                    const parts = line.split("|");
+                    if (parts.length >= 2) {
+                        specs.push({
+                            label: parts[0].trim(),
+                            value: parts.slice(1).join("|").trim()
+                        });
+                    }
+                });
+                return specs;
+            }
+
+            function renderSpecs(specs, audienceText) {
+                const list = document.querySelector(".spec-list");
+                if (!list) return;
+                list.innerHTML = "";
+
+                specs.forEach(({ label, value }) => {
+                    const li = document.createElement("li");
+                    const labelSpan = document.createElement("span");
+                    labelSpan.className = "label";
+                    labelSpan.textContent = `${label}：`;
+
+                    const valueSpan = document.createElement("span");
+                    valueSpan.className = "value";
+                    valueSpan.textContent = value;
+
+                    li.appendChild(labelSpan);
+                    li.appendChild(valueSpan);
+
+                    if (label === "响应时间") {
+                        const icon = document.createElement("span");
+                        icon.className = "icon";
+                        icon.textContent = "⚡";
+                        li.appendChild(icon);
+                    }
+                    if (label === "屏幕刷新率") {
+                        const icon = document.createElement("span");
+                        icon.className = "icon";
+                        icon.textContent = "⟳";
+                        li.appendChild(icon);
+                    }
+
+                    list.appendChild(li);
+                });
+
+                const audience = document.querySelector(".audience");
+                if (audience) {
+                    const label = document.createElement("span");
+                    label.textContent = "适用人群：";
+                    audience.replaceChildren(label, document.createTextNode(audienceText || ""));
+                }
+            }
+
+            function renderList(selector, lines) {
+                const ul = document.querySelector(selector);
+                if (!ul) return;
+                ul.innerHTML = "";
+                lines.forEach((text) => {
+                    const li = document.createElement("li");
+                    li.textContent = text;
+                    ul.appendChild(li);
+                });
+            }
+
+            function renderDisplayImage(src) {
+                const media = document.querySelector(".display-media");
+                const bg = document.getElementById("displayMediaBg");
+                const img = document.getElementById("displayProductImage");
+                if (!img || !bg || !media || !src) return;
+
+                const safeSrc = String(src).replace(/"/g, '\\"');
+                bg.style.backgroundImage = `url("${safeSrc}")`;
+                img.style.display = "";
+                media.classList.remove("is-empty");
+                img.setAttribute("src", src);
+            }
+
+            function applyConfig() {
+                const title = titleInput.value.trim();
+                const specs = parseSpecs(specsInput.value);
+                const audience = audienceInput.value.trim();
+                const pros = normalizeLines(prosInput.value);
+                const cons = normalizeLines(consInput.value);
+
+                const titleEl = document.querySelector(".title-wrap h1");
+                if (title && titleEl) titleEl.textContent = title;
+
+                renderSpecs(specs, audience);
+                renderList(".mini.pros ul", pros);
+                renderList(".mini.cons ul", cons);
+            }
+
+            function hydrateInputsFromDom() {
+                const titleEl = document.querySelector(".title-wrap h1");
+                if (titleEl) {
+                    titleInput.value = titleEl.textContent.trim();
+                }
+
+                const specLines = [];
+                document.querySelectorAll(".spec-list li").forEach((li) => {
+                    const label = li.querySelector(".label") ? li.querySelector(".label").textContent.replace("：", "").trim() : "";
+                    const value = li.querySelector(".value") ? li.querySelector(".value").textContent.trim() : "";
+                    if (label && value) specLines.push(`${label}|${value}`);
+                });
+                if (specLines.length) specsInput.value = specLines.join("\n");
+
+                const audience = document.querySelector(".audience");
+                if (audience) {
+                    const txt = audience.textContent.replace("适用人群：", "").trim();
+                    audienceInput.value = txt;
+                }
+
+                const pros = Array.from(document.querySelectorAll(".mini.pros ul li")).map(li => li.textContent.trim()).filter(Boolean);
+                const cons = Array.from(document.querySelectorAll(".mini.cons ul li")).map(li => li.textContent.trim()).filter(Boolean);
+                if (pros.length) prosInput.value = pros.join("\n");
+                if (cons.length) consInput.value = cons.join("\n");
+            }
+
+            function parseTxtConfig(text) {
+                const sections = {};
+                let current = null;
+                String(text || "").split(/\r?\n/).forEach((line) => {
+                    const trimmed = line.trim();
+                    if (!trimmed) return;
+                    if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
+                        current = trimmed.slice(1, -1).trim();
+                        sections[current] = [];
+                        return;
+                    }
+                    if (current) sections[current].push(trimmed);
+                });
+
+                if (sections["标题"]) titleInput.value = sections["标题"].join(" ");
+                if (sections["展示图"]) renderDisplayImage(sections["展示图"].join(" "));
+                if (sections["核心参数"]) specsInput.value = sections["核心参数"].join("\n");
+                if (sections["适用人群"]) audienceInput.value = sections["适用人群"].join(" ");
+                if (sections["优点"]) prosInput.value = sections["优点"].join("\n");
+                if (sections["缺点"]) consInput.value = sections["缺点"].join("\n");
+            }
+
+            function getPngFileName() {
+                const title = (titleInput.value || "page").trim().replace(/[\\/:*?"<>|]/g, "_");
+                const t = new Date();
+                const pad = (n) => String(n).padStart(2, "0");
+                const stamp = `${t.getFullYear()}${pad(t.getMonth() + 1)}${pad(t.getDate())}-${pad(t.getHours())}${pad(t.getMinutes())}${pad(t.getSeconds())}`;
+                return `${title || "page"}-${stamp}.png`;
+            }
+
+            function loadHtml2Canvas() {
+                if (window.html2canvas) return Promise.resolve(window.html2canvas);
+                return new Promise((resolve, reject) => {
+                    const script = document.createElement("script");
+                    script.src = "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js";
+                    script.async = true;
+                    script.onload = () => resolve(window.html2canvas);
+                    script.onerror = () => reject(new Error("html2canvas 加载失败"));
+                    document.head.appendChild(script);
+                });
+            }
+
+            async function downloadPagePng() {
+                const prevOpen = panelOpen;
+                const prevPanelDisplay = panel.style.display || "";
+
+                try {
+                    downloadBtn.disabled = true;
+                    downloadStatus.textContent = "正在生成 PNG，请稍候...";
+
+                    await loadHtml2Canvas();
+
+                    panel.style.display = "none";
+                    toggle.style.display = "none";
+                    setPanelState(false);
+                    await new Promise((r) => setTimeout(r, 120));
+
+                    const target = document.querySelector(".scene") || document.body;
+                    const canvas = await window.html2canvas(target, {
+                        scale: Math.max(2, window.devicePixelRatio || 1),
+                        useCORS: true,
+                        allowTaint: true,
+                        logging: false,
+                        backgroundColor: null
+                    });
+
+                    const link = document.createElement("a");
+                    link.href = canvas.toDataURL("image/png");
+                    link.download = getPngFileName();
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+
+                    downloadStatus.textContent = "PNG 已下载。";
+                } catch (err) {
+                    console.error(err);
+                    downloadStatus.textContent = "下载失败：请检查浏览器网络或重试。";
+                } finally {
+                    panel.style.display = prevPanelDisplay;
+                    refreshToggleVisibility();
+                    if (prevOpen && !isFullscreenNow() && !userToggleHidden) {
+                        setPanelState(true);
+                    } else {
+                        setPanelState(false);
+                    }
+                    downloadBtn.disabled = false;
+                    setTimeout(() => {
+                        if (downloadStatus.textContent === "PNG 已下载。") {
+                            downloadStatus.textContent = "";
+                        }
+                    }, 1800);
+                }
+            }
+
+            if (displayImg && displayMedia) {
+                displayImg.addEventListener("error", () => {
+                    displayImg.style.display = "none";
+                    displayMedia.classList.add("is-empty");
+                });
+                displayImg.addEventListener("load", () => {
+                    if (displayImg.naturalWidth > 0) {
+                        displayImg.style.display = "";
+                        displayMedia.classList.remove("is-empty");
+                    }
+                });
+            }
+
+            toggle.addEventListener("click", () => setPanelState(!panelOpen));
+            closeBtn.addEventListener("click", () => setPanelState(false));
+
+            importBtn.addEventListener("click", () => fileInput.click());
+            fileInput.addEventListener("change", (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    parseTxtConfig(ev.target ? ev.target.result : "");
+                    applyConfig();
+                    importBtn.textContent = `已导入：${file.name}`;
+                    setTimeout(() => {
+                        importBtn.textContent = "点击导入 TXT 配置文件";
+                    }, 1800);
+                };
+                reader.readAsText(file, "UTF-8");
+                fileInput.value = "";
+            });
+
+            imageUploadBtn.addEventListener("click", () => imageFileInput.click());
+            imageFileInput.addEventListener("change", (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const src = String(ev.target && ev.target.result || "");
+                    if (src) {
+                        renderDisplayImage(src);
+                        imageUploadBtn.textContent = `已上传：${file.name}`;
+                        setTimeout(() => {
+                            imageUploadBtn.textContent = "点击上传展示图";
+                        }, 1800);
+                    }
+                };
+                reader.readAsDataURL(file);
+                imageFileInput.value = "";
+            });
+
+            downloadBtn.addEventListener("click", downloadPagePng);
+
+            [titleInput, specsInput, audienceInput, prosInput, consInput].forEach((el) => {
+                el.addEventListener("input", applyConfig);
+            });
+
+            document.addEventListener("keydown", (e) => {
+                if (e.ctrlKey && e.key.toLowerCase() === "h") {
+                    e.preventDefault();
+                    userToggleHidden = !userToggleHidden;
+                    refreshToggleVisibility();
+                }
+            });
+
+            ["fullscreenchange", "webkitfullscreenchange", "mozfullscreenchange", "MSFullscreenChange"].forEach((evt) => {
+                document.addEventListener(evt, refreshToggleVisibility);
+            });
+
+            window.addEventListener("resize", () => {
+                if (panelOpen) {
+                    setPanelState(true);
+                } else {
+                    setPanelState(false);
+                }
+            });
+
+            hydrateInputsFromDom();
+            applyConfig();
+            const initialImg = document.getElementById("displayProductImage");
+            if (initialImg && initialImg.getAttribute("src")) {
+                renderDisplayImage(initialImg.getAttribute("src"));
+            }
+            setPanelState(false);
+            refreshToggleVisibility();
+        })();
+    </script>
+    <style>
+        html, body { width: 1920px !important; height: 1080px !important; }
+        #neoConfigPanel, #neoConfigToggle { display: none !important; }
+        .scene *, .scene *::before, .scene *::after { animation-play-state: paused !important; }
+        html.stardeck-capturing *, html.stardeck-capturing *::before, html.stardeck-capturing *::after {
+            animation-play-state: paused !important;
+            transition: none !important;
+            caret-color: transparent !important;
+        }
+    </style>
+    <script>window.STARDECK_TEMPLATE_ID = "gold";</script>
+    <script src="/vendor/html2canvas.min.js"></script>
+    <script src="./bridge.js"></script>
+</body>
+</html>

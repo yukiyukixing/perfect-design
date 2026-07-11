@@ -10,7 +10,7 @@ export default defineConfig({
       viteEnvironment: { name: "server" },
       config: {
         main: "./worker/index.js",
-        compatibility_date: "2026-07-12",
+        compatibility_date: "2026-07-11",
         compatibility_flags: ["nodejs_compat"],
         assets: {
           binding: "ASSETS",
