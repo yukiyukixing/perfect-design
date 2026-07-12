@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>作业帮 S50 学练机信息图</title>
+  <style>
+    :root {
+      --paper: #f6f1e6;
+      --paper-deep: #ebe2cf;
+      --ink: #17202a;
+      --muted: #66727e;
+      --blue: #2b6fe8;
+      --blue-soft: #dce9ff;
+      --green: #159b71;
+      --green-soft: #daf3ea;
+      --orange: #f29a2e;
+      --orange-soft: #ffe6bf;
+      --red: #d95f48;
+      --line: rgba(23, 32, 42, 0.14);
+      --shadow: 0 24px 70px rgba(56, 45, 28, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 1920px;
+      height: 1080px;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: "Noto Sans SC", "Microsoft YaHei UI", "PingFang SC", sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(43, 111, 232, 0.055) 1px, transparent 1px) 0 0 / 48px 48px,
+        linear-gradient(0deg, rgba(43, 111, 232, 0.045) 1px, transparent 1px) 0 0 / 48px 48px,
+        radial-gradient(820px 460px at 42% 86%, rgba(242, 154, 46, 0.18), transparent 64%),
+        radial-gradient(720px 420px at 86% 14%, rgba(43, 111, 232, 0.16), transparent 62%),
+        var(--paper);
+      letter-spacing: 0;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .scene {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      isolation: isolate;
+      padding: 70px 78px 62px;
+    }
+
+    .scene::before {
+      position: absolute;
+      inset: 38px;
+      z-index: -2;
+      border: 2px solid rgba(23, 32, 42, 0.08);
+      border-radius: 36px;
+      content: "";
+    }
+
+    .scene::after {
+      position: absolute;
+      right: 74px;
+      bottom: 56px;
+      z-index: -1;
+      width: 870px;
+      height: 520px;
+      border-radius: 60% 40% 56% 44%;
+      background: rgba(255, 255, 255, 0.36);
+      filter: blur(2px);
+      content: "";
+    }
+
+    .brand-row {
+      position: absolute;
+      top: 52px;
+      left: 82px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border: 1px solid rgba(23, 32, 42, 0.14);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.46);
+      box-shadow: 0 10px 28px rgba(48, 42, 34, 0.08);
+    }
+
+    .brand-pill .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .layout {
+      display: grid;
+      height: 100%;
+      grid-template-columns: 470px 590px 1fr;
+      gap: 54px;
+      align-items: stretch;
+    }
+
+    .title-zone {
+      position: relative;
+      display: grid;
+      align-content: center;
+      padding-top: 48px;
+    }
+
+    .title-wrap h1 {
+      margin: 0;
+      font-size: 92px;
+      font-weight: 950;
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .title-kicker {
+      width: max-content;
+      margin-bottom: 24px;
+      padding: 9px 14px;
+      color: #fff;
+      background: var(--ink);
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+    }
+
+    .title-note {
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 24px;
+      font-weight: 650;
+      line-height: 1.48;
+    }
+
+    .price-sticker {
+      position: absolute;
+      right: -8px;
+      top: 170px;
+      width: 232px;
+      padding: 22px 20px;
+      transform: rotate(-5deg);
+      border: 2px solid #111;
+      border-radius: 24px 24px 28px 12px;
+      background: var(--orange-soft);
+      box-shadow: 8px 10px 0 rgba(23, 32, 42, 0.95);
+    }
+
+    .price-sticker::before {
+      position: absolute;
+      top: -16px;
+      left: 54px;
+      width: 88px;
+      height: 30px;
+      transform: rotate(6deg);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 4px 12px rgba(42, 32, 20, 0.12);
+      content: "";
+    }
+
+    .price-sticker small {
+      display: block;
+      margin-bottom: 6px;
+      color: #8f5b18;
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .price-value {
+      display: block;
+      color: #101010;
+      font-size: 31px;
+      font-weight: 950;
+      line-height: 1.12;
+    }
+
+    .device-zone {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 0;
+    }
+
+    .display-media {
+      position: relative;
+      width: 560px;
+      height: 730px;
+      overflow: visible;
+    }
+
+    .display-media-bg {
+      position: absolute;
+      inset: 70px 18px 34px;
+      border-radius: 42px;
+      background-position: center;
+      background-size: cover;
+      filter: blur(26px) saturate(0.8);
+      opacity: 0.22;
+    }
+
+    .display-frame {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+    }
+
+    .display-frame img {
+      display: none;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 26px 42px rgba(48, 38, 24, 0.22));
+    }
+
+    .generated-device {
+      position: relative;
+      width: 470px;
+      height: 620px;
+      transform: perspective(1200px) rotateY(-10deg) rotateX(3deg);
+      border: 10px solid #2c3034;
+      border-radius: 38px;
+      background: #e9ece8;
+      box-shadow:
+        0 38px 80px rgba(35, 28, 18, 0.24),
+        inset 0 0 0 4px #f9faf7;
+    }
+
+    .display-media:not(.is-empty) .generated-device { display: none; }
+    .display-media:not(.is-empty) .display-frame img { display: block; }
+
+    .screen-paper {
+      position: absolute;
+      inset: 34px 30px 54px;
+      padding: 30px 28px;
+      border-radius: 20px;
+      background:
+        linear-gradient(#d4d9d1 1px, transparent 1px) 0 0 / 100% 34px,
+        #f7f8f3;
+      color: #222;
+      font-family: "Consolas", "Microsoft YaHei", sans-serif;
+      overflow: hidden;
+    }
+
+    .screen-paper b {
+      display: block;
+      margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .math-line {
+      height: 20px;
+      margin: 18px 0;
+      border-radius: 20px;
+      background: #2b2f32;
+      opacity: 0.8;
+    }
+
+    .math-line.short { width: 54%; }
+    .math-line.mid { width: 78%; }
+    .math-line.long { width: 92%; }
+
+    .graph {
+      position: relative;
+      height: 145px;
+      margin: 28px 0;
+      border-left: 3px solid #2b2f32;
+      border-bottom: 3px solid #2b2f32;
+    }
+
+    .graph::before {
+      position: absolute;
+      left: 40px;
+      bottom: 26px;
+      width: 230px;
+      height: 82px;
+      border: 4px solid #2b2f32;
+      border-color: transparent transparent #2b2f32 #2b2f32;
+      border-radius: 50%;
+      transform: rotate(-16deg);
+      content: "";
+    }
+
+    .pen {
+      position: absolute;
+      right: 2px;
+      bottom: 66px;
+      width: 26px;
+      height: 470px;
+      border-radius: 18px;
+      background: linear-gradient(90deg, #e9edf1, #ffffff 38%, #b8c0c8 100%);
+      box-shadow: -12px 18px 28px rgba(38, 34, 27, 0.18);
+      transform: rotate(9deg);
+    }
+
+    .stand {
+      position: absolute;
+      left: 118px;
+      bottom: 12px;
+      width: 330px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(37, 34, 26, 0.16);
+      filter: blur(1px);
+    }
+
+    .right-zone {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 24px;
+      align-content: stretch;
+      padding: 26px 0 0;
+    }
+
+    .route-card {
+      padding: 26px 30px;
+      border: 2px solid var(--ink);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.55);
+      box-shadow: var(--shadow);
+    }
+
+    .route-title {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .route-title h2 {
+      margin: 0;
+      font-size: 32px;
+      font-weight: 950;
+    }
+
+    .route-title span {
+      color: var(--blue);
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .route {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+    }
+
+    .route-step {
+      position: relative;
+      min-height: 132px;
+      padding: 14px 12px 12px;
+      border-radius: 18px;
+      background: var(--blue-soft);
+      border: 1px solid rgba(43, 111, 232, 0.2);
+    }
+
+    .route-step:nth-child(2n) { background: var(--green-soft); }
+    .route-step:nth-child(3n) { background: var(--orange-soft); }
+
+    .route-step i {
+      display: grid;
+      width: 32px;
+      height: 32px;
+      margin-bottom: 10px;
+      place-items: center;
+      border-radius: 10px;
+      color: #fff;
+      background: var(--ink);
+      font-style: normal;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .route-step b {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 18px;
+      line-height: 1.15;
+      font-weight: 900;
+    }
+
+    .route-step span {
+      display: block;
+      color: #4e5b66;
+      font-size: 13px;
+      line-height: 1.38;
+      font-weight: 650;
+    }
+
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .spec-list {
+      display: contents;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .spec-list li {
+      position: relative;
+      min-height: 94px;
+      padding: 20px 22px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 14px 34px rgba(57, 44, 27, 0.1);
+    }
+
+    .spec-list li::after {
+      position: absolute;
+      right: 18px;
+      top: 18px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--blue-soft);
+      content: "";
+    }
+
+    .spec-list .label {
+      display: block;
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .spec-list .value {
+      display: block;
+      margin-top: 8px;
+      padding-right: 30px;
+      color: var(--ink);
+      font-size: 22px;
+      line-height: 1.18;
+      font-weight: 900;
+    }
+
+    .spec-list .icon { display: none; }
+
+    .judgement {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 18px;
+    }
+
+    .mini {
+      position: relative;
+      min-height: 145px;
+      padding: 20px 24px;
+      border-radius: 28px;
+      overflow: hidden;
+    }
+
+    .mini h2 {
+      margin: 0 0 13px;
+      font-size: 26px;
+      font-weight: 950;
+    }
+
+    .mini ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      font-size: 21px;
+      line-height: 1.22;
+      font-weight: 850;
+    }
+
+    .mini li::before {
+      content: "✓";
+      margin-right: 8px;
+      font-weight: 950;
+    }
+
+    .mini.cons li::before { content: "!"; }
+
+    .pros {
+      color: #063f2f;
+      background: var(--green-soft);
+      border: 2px solid rgba(21, 155, 113, 0.22);
+    }
+
+    .cons {
+      color: #5b251d;
+      background: #ffe1d8;
+      border: 2px solid rgba(217, 95, 72, 0.22);
+    }
+
+    .footer-ribbon {
+      position: absolute;
+      left: 78px;
+      right: 78px;
+      bottom: 46px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 24px;
+      min-height: 82px;
+      padding: 16px 24px 16px 28px;
+      border: 2px solid var(--ink);
+      border-radius: 26px;
+      background: #fffdf7;
+      box-shadow: 10px 10px 0 var(--ink);
+    }
+
+    .audience {
+      margin: 0;
+      color: var(--ink);
+      font-size: 29px;
+      line-height: 1.22;
+      font-weight: 950;
+    }
+
+    .audience span {
+      margin-right: 8px;
+      color: var(--blue);
+    }
+
+    .comment-note {
+      min-width: 260px;
+      padding: 13px 18px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--ink);
+      font-size: 20px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .caption-chip {
+      position: absolute;
+      left: 528px;
+      top: 115px;
+      padding: 11px 16px;
+      border-radius: 999px;
+      color: var(--blue);
+      background: #fff;
+      box-shadow: 0 12px 30px rgba(32, 40, 54, 0.1);
+      font-size: 18px;
+      font-weight: 950;
+    }
+
+    .accent-dot {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--orange);
+    }
+
+    .dot-a { left: 92px; bottom: 206px; width: 18px; height: 18px; }
+    .dot-b { left: 442px; top: 290px; width: 13px; height: 13px; background: var(--green); }
+    .dot-c { right: 620px; top: 62px; width: 22px; height: 22px; background: var(--blue); }
+
+    .stardeck-capturing .scene * {
+      animation: none !important;
+      transition: none !important;
+      caret-color: transparent !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="scene">
+    <div class="brand-row">
+      <span class="brand-pill"><span class="dot"></span>B站专业数码评测</span>
+      <span>学习平板产品介绍分镜</span>
+    </div>
+
+    <span class="caption-chip">封闭学习系统 · 类墨水屏 · AI答疑</span>
+    <i class="accent-dot dot-a"></i>
+    <i class="accent-dot dot-b"></i>
+    <i class="accent-dot dot-c"></i>
+
+    <main class="layout">
+      <section class="title-zone">
+        <div class="title-wrap">
+          <div class="title-kicker">STUDY DEVICE REVIEW</div>
+          <h1>作业帮 S50 学练机</h1>
+        </div>
+        <p class="title-note">面向中学生的刷题、自学与作业辅导工具，核心价值不是娱乐，而是减少干扰、提高练习效率。</p>
+        <div class="price-sticker">
+          <small>价格</small>
+          <span class="price-value">2815元起（256G）</span>
+        </div>
+      </section>
+
+      <section class="device-zone">
+        <div class="display-media is-empty">
+          <div class="display-media-bg" id="displayMediaBg"></div>
+          <div class="stand"></div>
+          <div class="display-frame">
+            <div class="generated-device" aria-hidden="true">
+              <div class="screen-paper">
+                <b>函数与几何综合练习</b>
+                <div class="math-line long"></div>
+                <div class="math-line mid"></div>
+                <div class="graph"></div>
+                <div class="math-line short"></div>
+                <div class="math-line mid"></div>
+              </div>
+            </div>
+            <img id="displayProductImage" alt="产品展示图" />
+          </div>
+          <div class="pen" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <section class="right-zone">
+        <section class="route-card">
+          <div class="route-title">
+            <h2>学习闭环</h2>
+            <span>AI → 教材 → 作业 → 练习 → 护眼 → 手写</span>
+          </div>
+          <div class="route">
+            <div class="route-step"><i>01</i><b>AI答疑</b><span data-spec-label="AI系统">银河大模型 + DeepSeek</span></div>
+            <div class="route-step"><i>02</i><b>同步教材</b><span data-spec-label="课程教材">302个教材版本同步学习</span></div>
+            <div class="route-step"><i>03</i><b>作业辅导</b><span data-spec-label="作业辅导">封闭式系统 + 薄弱诊断</span></div>
+            <div class="route-step"><i>04</i><b>题库练习</b><span data-spec-label="练习资源">28亿题库 + 770万套真题卷</span></div>
+            <div class="route-step"><i>05</i><b>护眼阅读</b><span data-spec-label="屏幕硬件">10.3英寸高刷类墨水屏</span></div>
+            <div class="route-step"><i>06</i><b>手写批注</b><span data-spec-label="硬件外设">4096级磁吸主动电容笔</span></div>
+          </div>
+        </section>
+
+        <section class="spec-grid">
+          <ul class="spec-list">
+            <li><span class="label">AI系统：</span><span class="value">银河大模型 + DeepSeek</span></li>
+            <li><span class="label">课程教材：</span><span class="value">302个教材版本同步学习</span></li>
+            <li><span class="label">作业辅导：</span><span class="value">封闭式系统 + 薄弱诊断</span></li>
+            <li><span class="label">练习资源：</span><span class="value">28亿题库 + 770万套真题卷</span></li>
+            <li><span class="label">屏幕硬件：</span><span class="value">10.3英寸高刷类墨水屏</span></li>
+            <li><span class="label">硬件外设：</span><span class="value">4096级磁吸主动电容笔</span></li>
+          </ul>
+        </section>
+
+        <section class="judgement">
+          <div class="mini pros">
+            <h2>优点</h2>
+            <ul>
+              <li>护眼、专注、防沉迷</li>
+              <li>适合刷题和自主学习</li>
+            </ul>
+          </div>
+          <div class="mini cons">
+            <h2>不足</h2>
+            <ul>
+              <li>不适合视频网课</li>
+              <li>黑白显示体验单一</li>
+            </ul>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="footer-ribbon">
+      <p class="audience"><span>最终结论：</span>适合已经有自学能力，希望减少娱乐干扰的中学生</p>
+      <div class="comment-note">产品链接置顶在评论区</div>
+    </footer>
+  </div>
+
+  <script>window.STARDECK_TEMPLATE_ID = "study-infographic";</script>
+  <script src="/vendor/html2canvas.min.js"></script>
+  <script src="./bridge.js"></script>
+</body>
+</html>

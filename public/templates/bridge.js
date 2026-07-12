@@ -182,9 +182,31 @@
     if (input && typeof value === "string") input.value = value;
   };
 
+  const normalizeLines = (text) => String(text || "")
+    .split(/\r?\n/)
+    .map((line) => line.replace(/^[-*•›]\s*/, "").trim())
+    .filter(Boolean);
+
+  const parseSpecs = (text) => normalizeLines(text)
+    .map((line) => {
+      const separator = line.indexOf("|");
+      if (separator < 1) return null;
+      const label = line.slice(0, separator).trim();
+      const value = line.slice(separator + 1).trim();
+      return label && value ? { label, value } : null;
+    })
+    .filter(Boolean);
+
   const setImage = (src) => {
     const finalSrc = src || defaultImage;
-    if (!finalSrc || !image || !imageBackground) return;
+    if (!image || !imageBackground) return;
+    if (!finalSrc) {
+      image.removeAttribute("src");
+      image.style.display = "none";
+      imageBackground.style.backgroundImage = "";
+      imageMedia?.classList.add("is-empty");
+      return;
+    }
     imageBackground.style.backgroundImage = `url("${String(finalSrc).replace(/"/g, '\\"')}")`;
     image.setAttribute("src", finalSrc);
     image.style.display = "";
@@ -195,7 +217,7 @@
     const audience = document.querySelector(".audience");
     if (!audience || typeof value !== "string") return;
     const label = document.createElement("span");
-    label.textContent = "适用人群：";
+    label.textContent = audience.closest(".footer-ribbon") ? "最终结论：" : "适用人群：";
     audience.replaceChildren(label, document.createTextNode(value));
   };
 
@@ -212,17 +234,81 @@
     if (title && typeof value === "string") title.textContent = value.trim() || "请输入页面标题";
   };
 
+  const setPrice = (value) => {
+    document.querySelectorAll(".price-value").forEach((node) => {
+      node.textContent = String(value || "").trim() || "价格待填写";
+    });
+  };
+
+  const setComment = (value) => {
+    document.querySelectorAll(".comment-note").forEach((node) => {
+      node.textContent = String(value || "").trim() || "产品链接置顶在评论区";
+    });
+  };
+
+  const renderSpecs = (value) => {
+    const specs = parseSpecs(value);
+    document.querySelectorAll(".spec-list").forEach((list) => {
+      list.replaceChildren(...specs.map(({ label, value }) => {
+        const li = document.createElement("li");
+        const labelSpan = document.createElement("span");
+        labelSpan.className = "label";
+        labelSpan.textContent = `${label}：`;
+        const valueSpan = document.createElement("span");
+        valueSpan.className = "value";
+        valueSpan.textContent = value;
+        li.append(labelSpan, valueSpan);
+        if (label === "响应时间" || label === "AI系统") {
+          const icon = document.createElement("span");
+          icon.className = "icon";
+          icon.textContent = label === "响应时间" ? "⚡" : "AI";
+          li.appendChild(icon);
+        }
+        if (label === "屏幕刷新率" || label === "屏幕硬件") {
+          const icon = document.createElement("span");
+          icon.className = "icon";
+          icon.textContent = label === "屏幕刷新率" ? "⟳" : "眼";
+          li.appendChild(icon);
+        }
+        return li;
+      }));
+    });
+
+    document.querySelectorAll("[data-spec-label]").forEach((node) => {
+      const match = specs.find((spec) => spec.label === node.dataset.specLabel);
+      node.textContent = match ? match.value : "";
+    });
+  };
+
+  const renderList = (selector, value) => {
+    const lines = normalizeLines(value);
+    document.querySelectorAll(selector).forEach((list) => {
+      list.replaceChildren(...lines.map((text) => {
+        const li = document.createElement("li");
+        li.textContent = text;
+        return li;
+      }));
+    });
+  };
+
   const apply = (payload = {}) => {
     setValue("neoCfgTitle", payload.title);
+    setValue("neoCfgPrice", payload.price);
     setValue("neoCfgSpecs", payload.specs);
     setValue("neoCfgAudience", payload.audience);
     setValue("neoCfgPros", payload.pros);
     setValue("neoCfgCons", payload.cons);
+    setValue("neoCfgComment", payload.comment);
     setImage(payload.imageData || "");
     document.getElementById("neoCfgTitle")?.dispatchEvent(new Event("input", { bubbles: true }));
     setTitle(payload.title);
     setBrand(payload.brand);
+    setPrice(payload.price);
+    renderSpecs(payload.specs);
     setAudience(payload.audience);
+    renderList(".mini.pros ul", payload.pros);
+    renderList(".mini.cons ul", payload.cons);
+    setComment(payload.comment);
   };
 
   const waitForImages = async (root) => {

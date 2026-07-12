@@ -347,6 +347,51 @@ a:focus-visible {
 .style-preview-ice b { border: 1px solid #c9dcff; background: #0a3149; }
 .style-preview-ice em { border: 1px solid #7affea; background: rgba(6, 46, 70, 0.86); }
 
+.style-preview-study {
+  background:
+    linear-gradient(rgba(43, 111, 232, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(43, 111, 232, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 22% 78%, rgba(242, 154, 46, 0.28), transparent 28%),
+    linear-gradient(135deg, #f6f1e6, #fffaf0);
+  background-size: 13px 13px, 13px 13px, auto, auto;
+}
+.style-preview-study::before {
+  left: 9%;
+  top: 18%;
+  width: 38%;
+  height: 14%;
+  border-radius: 3px;
+  background: #17202a;
+}
+.style-preview-study i {
+  top: 34%;
+  left: 12%;
+  width: 31%;
+  height: 43%;
+  border: 2px solid #17202a;
+  border-radius: 9px;
+  background: #eef1ec;
+  box-shadow: 6px 8px 0 rgba(23, 32, 42, 0.28);
+}
+.style-preview-study b {
+  top: 24%;
+  right: 9%;
+  width: 42%;
+  height: 20%;
+  border: 1px solid rgba(43, 111, 232, 0.28);
+  border-radius: 9px;
+  background: #dce9ff;
+}
+.style-preview-study em {
+  right: 9%;
+  bottom: 13%;
+  width: 42%;
+  height: 28%;
+  border: 1px solid rgba(21, 155, 113, 0.24);
+  border-radius: 9px;
+  background: linear-gradient(90deg, #daf3ea 0 49%, #ffe6bf 51%);
+}
+
 .style-copy { display: flex; min-width: 0; align-items: baseline; justify-content: space-between; gap: 6px; }
 .style-copy strong { overflow: hidden; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
 .style-copy small { flex: 0 0 auto; color: var(--muted-2); font-size: 8px; }

@@ -6,7 +6,7 @@ import {
   validateReview,
 } from "./product-model.js";
 
-const STORAGE_KEY = "product-review-studio-v2";
+const STORAGE_KEY = "product-review-studio-v3-s50";
 const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
 const SLIDE_WIDTH = 1920;
 const SLIDE_HEIGHT = 1080;
@@ -68,6 +68,14 @@ const STYLE_OPTIONS = [
     previewClass: "style-preview-ice",
     pptBackground: "031728",
   },
+  {
+    id: "study-infographic",
+    name: "学练信息图风",
+    meta: "作业帮 S50 分镜",
+    src: "/templates/study-infographic.html",
+    previewClass: "style-preview-study",
+    pptBackground: "f6f1e6",
+  },
 ];
 
 const STYLES = Object.fromEntries(STYLE_OPTIONS.map((style) => [style.id, style]));
@@ -84,10 +92,12 @@ const elements = {
   styleGrid: document.querySelector("#styleGrid"),
   title: document.querySelector("#titleInput"),
   brand: document.querySelector("#brandInput"),
+  price: document.querySelector("#priceInput"),
   specs: document.querySelector("#specsInput"),
   audience: document.querySelector("#audienceInput"),
   pros: document.querySelector("#prosInput"),
   cons: document.querySelector("#consInput"),
+  comment: document.querySelector("#commentInput"),
   specCount: document.querySelector("#specCount"),
   importInput: document.querySelector("#importInput"),
   importButton: document.querySelector("#importButton"),
@@ -115,10 +125,12 @@ function getTemplatePayload() {
   return {
     title: state.title,
     brand: state.brand,
+    price: state.price,
     specs: state.specs,
     audience: state.audience,
     pros: state.pros,
     cons: state.cons,
+    comment: state.comment,
     imageData: state.imageData,
   };
 }
@@ -181,10 +193,12 @@ function persistState() {
         styleId: state.styleId,
         title: state.title,
         brand: state.brand,
+        price: state.price,
         specs: state.specs,
         audience: state.audience,
         pros: state.pros,
         cons: state.cons,
+        comment: state.comment,
       }));
       elements.saveStatus.textContent = "文字内容已保存在本机";
     } catch {
@@ -198,7 +212,7 @@ function restoreState() {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
     if (!saved || typeof saved !== "object") return;
     if (saved.styleId && STYLES[saved.styleId]) state.styleId = saved.styleId;
-    ["title", "brand", "specs", "audience", "pros", "cons"].forEach((key) => {
+    ["title", "brand", "price", "specs", "audience", "pros", "cons", "comment"].forEach((key) => {
       if (typeof saved[key] === "string") state[key] = saved[key];
     });
   } catch {
@@ -209,10 +223,12 @@ function restoreState() {
 function syncInputs() {
   elements.title.value = state.title;
   elements.brand.value = state.brand;
+  elements.price.value = state.price;
   elements.specs.value = state.specs;
   elements.audience.value = state.audience;
   elements.pros.value = state.pros;
   elements.cons.value = state.cons;
+  elements.comment.value = state.comment;
   updateSpecCount();
   updateImageUi();
   updateStyleUi();
@@ -484,10 +500,12 @@ async function downloadPptx() {
 
 elements.title.addEventListener("input", (event) => updateTextField("title", event.target.value));
 elements.brand.addEventListener("input", (event) => updateTextField("brand", event.target.value));
+elements.price.addEventListener("input", (event) => updateTextField("price", event.target.value));
 elements.specs.addEventListener("input", (event) => updateTextField("specs", event.target.value));
 elements.audience.addEventListener("input", (event) => updateTextField("audience", event.target.value));
 elements.pros.addEventListener("input", (event) => updateTextField("pros", event.target.value));
 elements.cons.addEventListener("input", (event) => updateTextField("cons", event.target.value));
+elements.comment.addEventListener("input", (event) => updateTextField("comment", event.target.value));
 
 elements.styleGrid.addEventListener("click", (event) => {
   const button = event.target.closest("[data-style]");
