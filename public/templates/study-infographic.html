@@ -4,6 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>作业帮 S50 学练机信息图</title>
+  <script>
+    (() => {
+      const variants = new Set([
+        "blue",
+        "mint",
+        "sunrise",
+        "lab",
+        "magazine",
+        "dashboard",
+        "paper",
+        "purple",
+        "sidebar",
+        "glass",
+      ]);
+      const variant = new URLSearchParams(location.search).get("variant") || "blue";
+      document.documentElement.dataset.studyVariant = variants.has(variant) ? variant : "blue";
+    })();
+  </script>
   <style>
     :root {
       --ink: #101827;
@@ -685,6 +703,341 @@
       margin-right: 12px;
       color: #eaf4ff;
     }
+
+    html[data-study-variant="mint"] {
+      --ink: #10211e;
+      --muted: #55706a;
+      --blue: #08a58f;
+      --blue-deep: #047a70;
+      --cyan: #42d6bd;
+      --orange: #ffad3d;
+      --shadow: 0 18px 40px rgba(24, 111, 93, 0.14);
+    }
+
+    html[data-study-variant="mint"] body {
+      background:
+        radial-gradient(760px 460px at 26% 12%, rgba(54, 214, 189, 0.22), transparent 62%),
+        radial-gradient(760px 420px at 88% 70%, rgba(255, 173, 61, 0.12), transparent 62%),
+        linear-gradient(135deg, #f4fffb, #eaf9f4 48%, #ffffff);
+    }
+
+    html[data-study-variant="mint"] .title-zone { left: 820px; top: 88px; width: 790px; }
+    html[data-study-variant="mint"] .title-wrap h1 { font-size: 82px; color: #0f2723; }
+    html[data-study-variant="mint"] .subtitle { color: #087d70; letter-spacing: 0.12em; }
+    html[data-study-variant="mint"] .device-zone { right: auto; left: 86px; top: 100px; width: 700px; height: 420px; }
+    html[data-study-variant="mint"] .benefit-stack { left: 830px; top: 270px; width: 596px; gap: 14px; }
+    html[data-study-variant="mint"] .benefit { border-radius: 28px 12px 28px 12px; }
+    html[data-study-variant="mint"] .benefit-icon,
+    html[data-study-variant="mint"] .spec-list li::before { background: linear-gradient(145deg, #31ccb5, #058b78); }
+    html[data-study-variant="mint"] .benefit.comment .benefit-icon { background: linear-gradient(145deg, #ffbe5c, #ff8e2c); }
+    html[data-study-variant="mint"] .comment-note { background: linear-gradient(90deg, #ff9b34, #ffbd59); }
+    html[data-study-variant="mint"] .price-bubble {
+      left: 562px;
+      right: auto;
+      top: 42px;
+      width: 180px;
+      height: 180px;
+      border-radius: 38px;
+      background: linear-gradient(145deg, #ffbd59, #ff8e2c);
+      transform: rotate(-4deg);
+    }
+    html[data-study-variant="mint"] .price-value { font-size: 34px; }
+    html[data-study-variant="mint"] .footer-ribbon { left: 92px; right: auto; top: 526px; width: 670px; background: linear-gradient(90deg, #10a78c, #047a70); }
+    html[data-study-variant="mint"] .spec-grid { top: 604px; }
+    html[data-study-variant="mint"] .pros { background: linear-gradient(90deg, rgba(44, 216, 188, 0.26), rgba(247, 255, 252, 0.86)); }
+
+    html[data-study-variant="sunrise"] {
+      --blue: #2e6de8;
+      --blue-deep: #164fc8;
+      --orange: #ff7a2f;
+      --red: #ff4d61;
+      --shadow: 0 20px 44px rgba(198, 82, 28, 0.13);
+    }
+
+    html[data-study-variant="sunrise"] body {
+      background:
+        radial-gradient(900px 520px at 88% 12%, rgba(255, 122, 47, 0.22), transparent 58%),
+        radial-gradient(720px 420px at 18% 76%, rgba(46, 109, 232, 0.14), transparent 62%),
+        linear-gradient(135deg, #fffaf5, #eef5ff 56%, #ffffff);
+    }
+
+    html[data-study-variant="sunrise"] .review-pill { right: 430px; color: #ba4b18; }
+    html[data-study-variant="sunrise"] .title-wrap h1 { color: #172033; letter-spacing: -0.02em; }
+    html[data-study-variant="sunrise"] .subtitle { color: #2d66d9; }
+    html[data-study-variant="sunrise"] .price-bubble {
+      right: 54px;
+      top: 38px;
+      width: 328px;
+      height: 96px;
+      border-radius: 24px;
+      background: linear-gradient(90deg, #ff5b45, #ff9d2f);
+    }
+    html[data-study-variant="sunrise"] .price-value { max-width: 270px; font-size: 38px; }
+    html[data-study-variant="sunrise"] .benefit { border-radius: 22px; border-left: 8px solid #ff7a2f; }
+    html[data-study-variant="sunrise"] .benefit-icon { border-radius: 18px; background: linear-gradient(145deg, #ff8b38, #ff4d61); }
+    html[data-study-variant="sunrise"] .comment-note { background: linear-gradient(90deg, #ff4d61, #ff7a2f); }
+    html[data-study-variant="sunrise"] .footer-ribbon { background: linear-gradient(90deg, #ff7a2f, #2367df); }
+    html[data-study-variant="sunrise"] .spec-list li:nth-child(odd) { background: rgba(255, 248, 241, 0.9); }
+
+    html[data-study-variant="lab"] {
+      --ink: #112538;
+      --muted: #587189;
+      --blue: #2586ff;
+      --blue-deep: #0e62c7;
+      --cyan: #27c5d8;
+      --shadow: 0 16px 38px rgba(52, 105, 153, 0.12);
+    }
+
+    html[data-study-variant="lab"] body {
+      background:
+        linear-gradient(90deg, rgba(23, 118, 210, 0.045) 1px, transparent 1px) 0 0 / 64px 64px,
+        linear-gradient(0deg, rgba(23, 118, 210, 0.04) 1px, transparent 1px) 0 0 / 64px 64px,
+        linear-gradient(135deg, #ffffff, #f4fbff);
+    }
+
+    html[data-study-variant="lab"] .scene::before { border-color: rgba(39, 197, 216, 0.12); }
+    html[data-study-variant="lab"] .title-zone { width: 670px; }
+    html[data-study-variant="lab"] .title-wrap h1 { font-size: 78px; }
+    html[data-study-variant="lab"] .device-zone { top: 116px; right: 90px; height: 382px; }
+    html[data-study-variant="lab"] .generated-device { transform: perspective(1150px) rotateY(-8deg) rotateX(2deg); }
+    html[data-study-variant="lab"] .price-bubble {
+      right: 92px;
+      top: 92px;
+      width: 164px;
+      height: 164px;
+      background: #ffffff;
+      color: #0e62c7;
+      border: 5px solid rgba(37, 134, 255, 0.36);
+    }
+    html[data-study-variant="lab"] .price-value { font-size: 31px; text-shadow: none; }
+    html[data-study-variant="lab"] .benefit { box-shadow: none; border: 2px solid rgba(37, 134, 255, 0.12); }
+    html[data-study-variant="lab"] .spec-list li { box-shadow: none; border: 2px solid rgba(37, 134, 255, 0.12); }
+    html[data-study-variant="lab"] .footer-ribbon { top: 516px; background: linear-gradient(90deg, #27c5d8, #0e62c7); }
+    html[data-study-variant="lab"] .spec-grid { top: 606px; }
+
+    html[data-study-variant="magazine"] {
+      --ink: #151515;
+      --muted: #68635b;
+      --blue: #111111;
+      --blue-deep: #111111;
+      --orange: #e8672f;
+      --shadow: 0 18px 36px rgba(46, 35, 20, 0.16);
+    }
+
+    html[data-study-variant="magazine"] body {
+      background:
+        linear-gradient(90deg, rgba(26, 26, 26, 0.055) 1px, transparent 1px) 0 0 / 78px 78px,
+        linear-gradient(135deg, #f8f1e5, #fffaf1);
+    }
+
+    html[data-study-variant="magazine"] .brand-pill,
+    html[data-study-variant="magazine"] .review-pill { border-radius: 4px; box-shadow: none; }
+    html[data-study-variant="magazine"] .title-zone { left: 90px; top: 90px; width: 640px; }
+    html[data-study-variant="magazine"] .title-wrap h1 { font-size: 76px; line-height: 0.96; letter-spacing: -0.05em; }
+    html[data-study-variant="magazine"] .subtitle { justify-content: flex-start; gap: 14px; font-size: 25px; letter-spacing: 0.08em; color: #e8672f; }
+    html[data-study-variant="magazine"] .subtitle::before { flex-basis: 58px; background: #111; }
+    html[data-study-variant="magazine"] .subtitle::after { display: none; }
+    html[data-study-variant="magazine"] .device-zone { top: 66px; right: 56px; width: 860px; height: 455px; }
+    html[data-study-variant="magazine"] .generated-device { transform: perspective(1200px) rotateY(-10deg) rotateX(5deg) rotateZ(-3deg); }
+    html[data-study-variant="magazine"] .benefit-stack { left: 92px; top: 388px; width: 710px; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    html[data-study-variant="magazine"] .benefit { min-height: 112px; grid-template-columns: 1fr; padding: 16px; border-radius: 2px; }
+    html[data-study-variant="magazine"] .benefit-icon { width: 38px; height: 38px; border-radius: 50%; }
+    html[data-study-variant="magazine"] .benefit-icon::after { font-size: 22px; }
+    html[data-study-variant="magazine"] .benefit b { font-size: 21px; }
+    html[data-study-variant="magazine"] .benefit span { font-size: 14px; }
+    html[data-study-variant="magazine"] .comment-note { padding: 10px 12px; border-radius: 2px; font-size: 17px; }
+    html[data-study-variant="magazine"] .price-bubble { border-radius: 4px; width: 228px; height: 98px; right: 92px; top: 58px; background: #111; transform: rotate(3deg); }
+    html[data-study-variant="magazine"] .price-value { font-size: 31px; }
+    html[data-study-variant="magazine"] .footer-ribbon { left: 92px; right: auto; top: 524px; width: 650px; border-radius: 2px; background: #111; }
+    html[data-study-variant="magazine"] .spec-grid { top: 618px; }
+    html[data-study-variant="magazine"] .spec-list li { border-radius: 2px; border-color: rgba(17, 17, 17, 0.18); }
+
+    html[data-study-variant="dashboard"] {
+      --ink: #f2f8ff;
+      --muted: #9fb2c7;
+      --blue: #58a6ff;
+      --blue-deep: #2266d8;
+      --cyan: #23d6bd;
+      --orange: #ffb45a;
+      --shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
+    }
+
+    html[data-study-variant="dashboard"] body {
+      background:
+        linear-gradient(90deg, rgba(88, 166, 255, 0.09) 1px, transparent 1px) 0 0 / 56px 56px,
+        linear-gradient(0deg, rgba(88, 166, 255, 0.07) 1px, transparent 1px) 0 0 / 56px 56px,
+        radial-gradient(780px 420px at 76% 12%, rgba(35, 214, 189, 0.16), transparent 64%),
+        #071523;
+    }
+
+    html[data-study-variant="dashboard"] .scene::after { border-color: rgba(135, 191, 255, 0.16); background: transparent; }
+    html[data-study-variant="dashboard"] .brand-row,
+    html[data-study-variant="dashboard"] .subtitle,
+    html[data-study-variant="dashboard"] .spec-list .value,
+    html[data-study-variant="dashboard"] .mini ul { color: #c6d7e8; }
+    html[data-study-variant="dashboard"] .brand-pill,
+    html[data-study-variant="dashboard"] .review-pill,
+    html[data-study-variant="dashboard"] .benefit,
+    html[data-study-variant="dashboard"] .spec-list li {
+      background: rgba(12, 32, 52, 0.78);
+      border-color: rgba(88, 166, 255, 0.18);
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+    }
+    html[data-study-variant="dashboard"] .title-wrap h1,
+    html[data-study-variant="dashboard"] .spec-list .label { color: #f8fbff; }
+    html[data-study-variant="dashboard"] .benefit span { color: #9fb2c7; }
+    html[data-study-variant="dashboard"] .comment-note { background: linear-gradient(90deg, #2dd4bf, #58a6ff); }
+    html[data-study-variant="dashboard"] .price-bubble { background: linear-gradient(145deg, #1f63e9, #0ea5a3); }
+    html[data-study-variant="dashboard"] .footer-ribbon { background: linear-gradient(90deg, #0f766e, #1d4ed8); }
+    html[data-study-variant="dashboard"] .pros { background: rgba(16, 185, 129, 0.18); border-color: rgba(45, 212, 191, 0.32); color: #d7fff6; }
+    html[data-study-variant="dashboard"] .cons { background: rgba(245, 158, 11, 0.16); border-color: rgba(245, 158, 11, 0.36); color: #ffe9c5; }
+
+    html[data-study-variant="paper"] {
+      --ink: #2a241c;
+      --muted: #71675b;
+      --blue: #3f6ea8;
+      --blue-deep: #284b7a;
+      --orange: #d58a31;
+      --shadow: 0 16px 34px rgba(80, 59, 30, 0.15);
+    }
+
+    html[data-study-variant="paper"] body {
+      background:
+        linear-gradient(90deg, rgba(81, 66, 45, 0.06) 1px, transparent 1px) 0 0 / 48px 48px,
+        linear-gradient(0deg, rgba(81, 66, 45, 0.05) 1px, transparent 1px) 0 0 / 48px 48px,
+        radial-gradient(740px 360px at 30% 20%, rgba(213, 138, 49, 0.16), transparent 62%),
+        #fbf4e5;
+    }
+
+    html[data-study-variant="paper"] .scene::after { border-color: rgba(42, 36, 28, 0.14); background: transparent; }
+    html[data-study-variant="paper"] .brand-pill,
+    html[data-study-variant="paper"] .benefit,
+    html[data-study-variant="paper"] .spec-list li { background: rgba(255, 251, 241, 0.9); border: 1px solid rgba(88, 70, 44, 0.18); }
+    html[data-study-variant="paper"] .benefit { border-radius: 10px; }
+    html[data-study-variant="paper"] .benefit-icon,
+    html[data-study-variant="paper"] .spec-list li::before { background: linear-gradient(145deg, #4f79ae, #284b7a); }
+    html[data-study-variant="paper"] .price-bubble {
+      width: 222px;
+      height: 132px;
+      border-radius: 14px;
+      background: #ffe0a6;
+      color: #2a241c;
+      border: 3px solid #2a241c;
+      box-shadow: 8px 8px 0 #2a241c;
+      transform: rotate(-5deg);
+    }
+    html[data-study-variant="paper"] .price-value { font-size: 34px; text-shadow: none; }
+    html[data-study-variant="paper"] .comment-note { background: #2a241c; }
+    html[data-study-variant="paper"] .footer-ribbon { background: #2a241c; }
+    html[data-study-variant="paper"] .spec-list li { border-style: dashed; }
+
+    html[data-study-variant="purple"] {
+      --ink: #17142b;
+      --muted: #6d6886;
+      --blue: #7157ff;
+      --blue-deep: #5535d8;
+      --cyan: #35d1ff;
+      --orange: #ff8f43;
+      --shadow: 0 20px 46px rgba(85, 53, 216, 0.16);
+    }
+
+    html[data-study-variant="purple"] body {
+      background:
+        radial-gradient(820px 480px at 78% 18%, rgba(113, 87, 255, 0.24), transparent 64%),
+        radial-gradient(640px 360px at 22% 76%, rgba(53, 209, 255, 0.18), transparent 60%),
+        linear-gradient(135deg, #fbfaff, #eef3ff);
+    }
+
+    html[data-study-variant="purple"] .title-zone { left: 130px; top: 78px; width: 900px; }
+    html[data-study-variant="purple"] .title-wrap h1 { font-size: 80px; color: #16122f; }
+    html[data-study-variant="purple"] .subtitle { color: #5535d8; }
+    html[data-study-variant="purple"] .device-zone { right: 84px; top: 120px; width: 760px; }
+    html[data-study-variant="purple"] .benefit-stack { left: 112px; top: 286px; width: 560px; }
+    html[data-study-variant="purple"] .benefit-icon,
+    html[data-study-variant="purple"] .spec-list li::before { background: linear-gradient(145deg, #846cff, #5535d8); }
+    html[data-study-variant="purple"] .benefit.comment .benefit-icon { background: linear-gradient(145deg, #ff8f43, #ff4965); }
+    html[data-study-variant="purple"] .comment-note { background: linear-gradient(90deg, #ff4965, #846cff); }
+    html[data-study-variant="purple"] .price-bubble { background: linear-gradient(145deg, #ff8f43, #846cff); }
+    html[data-study-variant="purple"] .footer-ribbon { background: linear-gradient(90deg, #7157ff, #35a6ff); }
+
+    html[data-study-variant="sidebar"] {
+      --ink: #111827;
+      --muted: #d8e6ff;
+      --blue: #246bfe;
+      --blue-deep: #164dcc;
+      --orange: #ff9e2f;
+      --shadow: 0 18px 44px rgba(34, 72, 132, 0.15);
+    }
+
+    html[data-study-variant="sidebar"] body {
+      background:
+        linear-gradient(90deg, #164dcc 0 455px, transparent 455px),
+        linear-gradient(135deg, #f7fbff, #edf5ff);
+    }
+
+    html[data-study-variant="sidebar"] .scene::before {
+      inset: 0 auto 0 0;
+      width: 455px;
+      height: auto;
+      border: 0;
+      border-radius: 0;
+      background: linear-gradient(180deg, #1b65ff, #103e9e);
+    }
+    html[data-study-variant="sidebar"] .scene::after { border-color: rgba(36, 107, 254, 0.12); }
+    html[data-study-variant="sidebar"] .brand-row { left: 70px; color: #e9f2ff; }
+    html[data-study-variant="sidebar"] .brand-pill { color: #164dcc; }
+    html[data-study-variant="sidebar"] .review-pill { right: 84px; }
+    html[data-study-variant="sidebar"] .title-zone { left: 70px; top: 112px; width: 342px; }
+    html[data-study-variant="sidebar"] .title-wrap h1 { color: #fff; font-size: 60px; line-height: 1.08; text-shadow: none; }
+    html[data-study-variant="sidebar"] .subtitle { display: block; color: #dbeafe; font-size: 22px; letter-spacing: 0.08em; }
+    html[data-study-variant="sidebar"] .subtitle::before,
+    html[data-study-variant="sidebar"] .subtitle::after { display: none; }
+    html[data-study-variant="sidebar"] .benefit-stack { left: 70px; top: 330px; width: 336px; gap: 12px; }
+    html[data-study-variant="sidebar"] .benefit { min-height: 76px; grid-template-columns: 56px 1fr; padding: 12px; border-radius: 14px; background: rgba(255, 255, 255, 0.12); color: #fff; border-color: rgba(255, 255, 255, 0.16); box-shadow: none; }
+    html[data-study-variant="sidebar"] .benefit span { color: #d8e6ff; }
+    html[data-study-variant="sidebar"] .benefit b { font-size: 22px; }
+    html[data-study-variant="sidebar"] .benefit-icon { width: 42px; height: 42px; background: rgba(255, 255, 255, 0.2); }
+    html[data-study-variant="sidebar"] .benefit-icon::after { font-size: 21px; }
+    html[data-study-variant="sidebar"] .comment-note { padding: 10px 14px; font-size: 17px; background: #ff3655; }
+    html[data-study-variant="sidebar"] .device-zone { left: 505px; right: auto; top: 74px; width: 780px; }
+    html[data-study-variant="sidebar"] .price-bubble { left: 1180px; right: auto; top: 92px; width: 178px; height: 178px; }
+    html[data-study-variant="sidebar"] .footer-ribbon { left: 505px; right: 330px; top: 520px; }
+    html[data-study-variant="sidebar"] .spec-grid { left: 486px; right: 84px; top: 610px; }
+    html[data-study-variant="sidebar"] .judgement { left: 486px; right: 84px; }
+
+    html[data-study-variant="glass"] {
+      --ink: #122238;
+      --muted: #617287;
+      --blue: #4a8dff;
+      --blue-deep: #2762ce;
+      --cyan: #7be7ff;
+      --orange: #ff9a3c;
+      --shadow: 0 22px 54px rgba(51, 111, 188, 0.16);
+    }
+
+    html[data-study-variant="glass"] body {
+      background:
+        radial-gradient(760px 460px at 74% 14%, rgba(123, 231, 255, 0.32), transparent 62%),
+        radial-gradient(680px 380px at 26% 78%, rgba(74, 141, 255, 0.15), transparent 60%),
+        linear-gradient(135deg, #f9fdff, #edf7ff 48%, #ffffff);
+    }
+
+    html[data-study-variant="glass"] .brand-pill,
+    html[data-study-variant="glass"] .review-pill,
+    html[data-study-variant="glass"] .benefit,
+    html[data-study-variant="glass"] .spec-list li {
+      background: rgba(255, 255, 255, 0.56);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.78);
+      box-shadow: 0 18px 44px rgba(51, 111, 188, 0.12);
+    }
+    html[data-study-variant="glass"] .title-zone { left: 108px; top: 80px; }
+    html[data-study-variant="glass"] .device-zone { right: 116px; top: 104px; }
+    html[data-study-variant="glass"] .benefit-stack { left: 108px; top: 286px; width: 590px; }
+    html[data-study-variant="glass"] .benefit { border-radius: 30px; }
+    html[data-study-variant="glass"] .price-bubble { background: rgba(255, 154, 60, 0.86); backdrop-filter: blur(10px); }
+    html[data-study-variant="glass"] .footer-ribbon { background: rgba(39, 98, 206, 0.84); backdrop-filter: blur(12px); }
+    html[data-study-variant="glass"] .comment-note { background: rgba(255, 54, 85, 0.82); backdrop-filter: blur(8px); }
 
     .stardeck-capturing .scene * {
       animation: none !important;
