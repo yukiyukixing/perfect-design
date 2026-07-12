@@ -11,16 +11,90 @@ const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
 const SLIDE_WIDTH = 1920;
 const SLIDE_HEIGHT = 1080;
 
-const STYLES = {
-  gold: {
-    name: "暖金工业风 · 模板3",
+const STYLE_OPTIONS = [
+  {
+    id: "gold",
+    name: "暖金工业风",
+    meta: "原「模板3」",
     src: "/templates/gold.html",
+    previewClass: "style-preview-gold",
+    pptBackground: "393534",
   },
-  neon: {
-    name: "蓝青霓虹风 · UG25HF",
+  {
+    id: "neon",
+    name: "蓝青霓虹风",
+    meta: "原「UG25HF」",
     src: "/templates/neon.html",
+    previewClass: "style-preview-neon",
+    pptBackground: "041423",
   },
-};
+  {
+    id: "graphite",
+    name: "石墨荧光风",
+    meta: "原版布局衍生",
+    src: "/templates/gold.html?skin=graphite",
+    previewClass: "style-preview-graphite",
+    pptBackground: "111512",
+  },
+  {
+    id: "titanium",
+    name: "钛银实验风",
+    meta: "原版布局衍生",
+    src: "/templates/gold.html?skin=titanium",
+    previewClass: "style-preview-titanium",
+    pptBackground: "151b22",
+  },
+  {
+    id: "ember",
+    name: "赤焰竞速风",
+    meta: "原版布局衍生",
+    src: "/templates/gold.html?skin=ember",
+    previewClass: "style-preview-ember",
+    pptBackground: "211312",
+  },
+  {
+    id: "olive",
+    name: "橄榄军工风",
+    meta: "原版布局衍生",
+    src: "/templates/gold.html?skin=olive",
+    previewClass: "style-preview-olive",
+    pptBackground: "1a2118",
+  },
+  {
+    id: "violet",
+    name: "紫电赛博风",
+    meta: "原版布局衍生",
+    src: "/templates/neon.html?skin=violet",
+    previewClass: "style-preview-violet",
+    pptBackground: "140826",
+  },
+  {
+    id: "ice",
+    name: "冰蓝极光风",
+    meta: "原版布局衍生",
+    src: "/templates/neon.html?skin=ice",
+    previewClass: "style-preview-ice",
+    pptBackground: "031728",
+  },
+  {
+    id: "matrix",
+    name: "绿码矩阵风",
+    meta: "原版布局衍生",
+    src: "/templates/neon.html?skin=matrix",
+    previewClass: "style-preview-matrix",
+    pptBackground: "03160d",
+  },
+  {
+    id: "magenta",
+    name: "玫紫直播风",
+    meta: "原版布局衍生",
+    src: "/templates/neon.html?skin=magenta",
+    previewClass: "style-preview-magenta",
+    pptBackground: "21071c",
+  },
+];
+
+const STYLES = Object.fromEntries(STYLE_OPTIONS.map((style) => [style.id, style]));
 
 const state = {
   ...DEFAULT_REVIEW,
@@ -80,6 +154,38 @@ function safeFileName(value) {
     .replace(/\s+/g, " ")
     .slice(0, 60);
   return result || "商品测评";
+}
+
+function renderStyleGrid() {
+  elements.styleGrid.replaceChildren(
+    ...STYLE_OPTIONS.map((style) => {
+      const button = document.createElement("button");
+      button.className = "style-card";
+      button.type = "button";
+      button.dataset.style = style.id;
+      button.setAttribute("aria-pressed", "false");
+
+      const preview = document.createElement("span");
+      preview.className = `style-preview ${style.previewClass}`;
+      preview.setAttribute("aria-hidden", "true");
+      preview.append(document.createElement("i"), document.createElement("b"), document.createElement("em"));
+
+      const copy = document.createElement("span");
+      copy.className = "style-copy";
+      const title = document.createElement("strong");
+      title.textContent = style.name;
+      const meta = document.createElement("small");
+      meta.textContent = style.meta;
+      copy.append(title, meta);
+
+      const check = document.createElement("span");
+      check.className = "style-check";
+      check.textContent = "✓";
+
+      button.append(preview, copy, check);
+      return button;
+    }),
+  );
 }
 
 function showToast(message, type = "info") {
@@ -153,7 +259,7 @@ function updateImageUi() {
 
 function updateStyleUi() {
   const style = STYLES[state.styleId] || STYLES.gold;
-  elements.activeStyleName.textContent = style.name;
+  elements.activeStyleName.textContent = `${style.name} · ${style.meta}`;
   elements.styleGrid.querySelectorAll("[data-style]").forEach((button) => {
     const selected = button.dataset.style === state.styleId;
     button.classList.toggle("is-selected", selected);
@@ -375,11 +481,12 @@ async function downloadPng() {
 
 async function downloadPptx() {
   await withBusy(elements.pptxButton, elements.pptxLabel, "正在生成…", async () => {
+    const style = STYLES[state.styleId] || STYLES.gold;
     const dataUrl = await captureActiveTemplate();
     const pptx = new pptxgen();
     pptx.layout = "LAYOUT_WIDE";
     pptx.author = "好物测评 PPT 生成器";
-    pptx.subject = STYLES[state.styleId].name;
+    pptx.subject = style.name;
     pptx.title = state.title;
     pptx.company = "StarDeck";
     pptx.lang = "zh-CN";
@@ -389,13 +496,13 @@ async function downloadPptx() {
       lang: "zh-CN",
     };
     const slide = pptx.addSlide();
-    slide.background = { color: state.styleId === "neon" ? "041423" : "393534" };
+    slide.background = { color: style.pptBackground };
     slide.addImage({ data: dataUrl, x: 0, y: 0, w: 13.333333, h: 7.5 });
     await pptx.writeFile({
       fileName: `${safeFileName(state.title)}-${state.styleId}.pptx`,
       compression: true,
     });
-    showToast("同款 PPTX 已生成：单页 16:9，画面与原版预览一致。");
+    showToast("同款 PPTX 已生成：单页 16:9，画面与当前预览一致。");
   });
 }
 
@@ -448,6 +555,7 @@ elements.frame.addEventListener("load", () => {
   if (elements.frame.contentWindow?.StarDeckBridge) markFrameReady();
 });
 
+renderStyleGrid();
 new ResizeObserver(resizePreview).observe(elements.previewFrame);
 window.addEventListener("resize", resizePreview);
 document.querySelector(".brand")?.addEventListener("click", (event) => event.preventDefault());

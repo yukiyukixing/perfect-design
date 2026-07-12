@@ -291,6 +291,98 @@ a:focus-visible {
 .style-preview-neon b { border: 1px solid #46f5ff; background: #0b2534; }
 .style-preview-neon em { border: 1px solid #25ffc4; background: rgba(6, 43, 63, 0.8); }
 
+.style-preview-graphite {
+  background:
+    linear-gradient(rgba(202, 255, 61, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(82, 242, 182, 0.07) 1px, transparent 1px),
+    linear-gradient(135deg, #0e1110, #151817 54%, #20251f);
+  background-size: 12px 12px;
+}
+.style-preview-graphite::before { background: linear-gradient(90deg, #52f2b6, #caff3d); }
+.style-preview-graphite i { border: 1px solid rgba(202, 255, 61, 0.68); background: rgba(20, 26, 22, 0.9); }
+.style-preview-graphite b { border: 1px solid rgba(82, 242, 182, 0.58); background: linear-gradient(135deg, #111512, #243020); }
+.style-preview-graphite em { border: 1px solid #caff3d; background: rgba(31, 39, 29, 0.9); }
+
+.style-preview-titanium {
+  background:
+    linear-gradient(135deg, #101820, #18212a 50%, #26313a);
+  box-shadow: inset 0 0 22px rgba(159, 213, 255, 0.14);
+}
+.style-preview-titanium::before { background: linear-gradient(90deg, #c7d2dc, #9fd5ff); }
+.style-preview-titanium i { border: 1px solid rgba(199, 210, 220, 0.58); background: rgba(22, 31, 40, 0.9); }
+.style-preview-titanium b { border: 1px solid rgba(159, 213, 255, 0.62); background: linear-gradient(135deg, #182431, #2d3a45); }
+.style-preview-titanium em { border: 1px solid #9fd5ff; background: rgba(28, 38, 48, 0.9); }
+
+.style-preview-ember {
+  background:
+    radial-gradient(circle at 24% 12%, rgba(255, 178, 63, 0.24), transparent 35%),
+    linear-gradient(135deg, #160c0b, #211312 52%, #321a16);
+}
+.style-preview-ember::before { background: linear-gradient(90deg, #ff5f4a, #ffb23f); }
+.style-preview-ember i { border: 1px solid rgba(255, 178, 63, 0.62); background: rgba(36, 18, 15, 0.92); }
+.style-preview-ember b { border: 1px solid rgba(255, 95, 74, 0.62); background: linear-gradient(135deg, #24120f, #4a2118); }
+.style-preview-ember em { border: 1px solid #ffb23f; background: rgba(45, 21, 15, 0.92); }
+
+.style-preview-olive {
+  background:
+    linear-gradient(rgba(210, 195, 91, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 185, 107, 0.07) 1px, transparent 1px),
+    linear-gradient(135deg, #11170f, #1b2218 48%, #28311f);
+  background-size: 13px 13px;
+}
+.style-preview-olive::before { background: linear-gradient(90deg, #8bb96b, #d2c35b); }
+.style-preview-olive i { border: 1px solid rgba(210, 195, 91, 0.58); background: rgba(25, 32, 22, 0.92); }
+.style-preview-olive b { border: 1px solid rgba(139, 185, 107, 0.62); background: linear-gradient(135deg, #1a2317, #303820); }
+.style-preview-olive em { border: 1px solid #d2c35b; background: rgba(34, 42, 24, 0.92); }
+
+.style-preview-violet {
+  background:
+    linear-gradient(rgba(212, 109, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(93, 255, 209, 0.06) 1px, transparent 1px),
+    linear-gradient(135deg, #140826, #25104c 50%, #3a1768);
+  background-size: 11px 11px;
+}
+.style-preview-violet::before { background: linear-gradient(90deg, #d46dff, #5dffd1); }
+.style-preview-violet i { border: 1px solid #d46dff; background: rgba(33, 12, 66, 0.88); }
+.style-preview-violet b { border: 1px solid #8eb7ff; background: #211044; }
+.style-preview-violet em { border: 1px solid #5dffd1; background: rgba(33, 12, 66, 0.88); }
+
+.style-preview-ice {
+  background:
+    linear-gradient(rgba(167, 246, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201, 220, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(135deg, #031728, #07304b 48%, #0a5474);
+  background-size: 11px 11px;
+}
+.style-preview-ice::before { background: linear-gradient(90deg, #ffffff, #a7f6ff, #c9dcff); }
+.style-preview-ice i { border: 1px solid #a7f6ff; background: rgba(6, 46, 70, 0.86); }
+.style-preview-ice b { border: 1px solid #c9dcff; background: #0a3149; }
+.style-preview-ice em { border: 1px solid #7affea; background: rgba(6, 46, 70, 0.86); }
+
+.style-preview-matrix {
+  background:
+    linear-gradient(rgba(64, 255, 136, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(182, 255, 74, 0.07) 1px, transparent 1px),
+    linear-gradient(135deg, #03160d, #07301d 50%, #0d4d2c);
+  background-size: 10px 10px;
+}
+.style-preview-matrix::before { background: linear-gradient(90deg, #40ff88, #f4ff72); }
+.style-preview-matrix i { border: 1px solid #40ff88; background: rgba(4, 40, 23, 0.88); }
+.style-preview-matrix b { border: 1px solid #7cffc1; background: #07301d; }
+.style-preview-matrix em { border: 1px solid #b6ff4a; background: rgba(4, 40, 23, 0.88); }
+
+.style-preview-magenta {
+  background:
+    linear-gradient(rgba(255, 100, 216, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(121, 217, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(135deg, #21071c, #3f1237 50%, #641d55);
+  background-size: 11px 11px;
+}
+.style-preview-magenta::before { background: linear-gradient(90deg, #ff64d8, #79d9ff, #ffe06f); }
+.style-preview-magenta i { border: 1px solid #ff64d8; background: rgba(58, 13, 50, 0.88); }
+.style-preview-magenta b { border: 1px solid #79d9ff; background: #3a0d32; }
+.style-preview-magenta em { border: 1px solid #ffe06f; background: rgba(58, 13, 50, 0.88); }
+
 .style-copy { display: flex; min-width: 0; align-items: baseline; justify-content: space-between; gap: 6px; }
 .style-copy strong { overflow: hidden; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
 .style-copy small { flex: 0 0 auto; color: var(--muted-2); font-size: 8px; }
