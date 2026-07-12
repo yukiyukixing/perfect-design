@@ -134,32 +134,6 @@
       }
       .mini.cons h2 { color: #d8c96a; }
     `,
-    violet: `
-      :root {
-        --bg-0: #140826;
-        --bg-1: #25104c;
-        --bg-2: #3a1768;
-        --cyan: #d46dff;
-        --cyan-soft: rgba(212, 109, 255, 0.38);
-        --blue: #8eb7ff;
-        --green: #5dffd1;
-        --yellow: #ffd56b;
-        --text: #fff1ff;
-        --text-soft: rgba(255, 241, 255, 0.9);
-        --panel-bg: rgba(45, 18, 85, 0.46);
-        --panel-bg-deep: rgba(25, 10, 52, 0.52);
-      }
-      body {
-        background:
-          radial-gradient(1180px 700px at 0% 85%, rgba(212, 109, 255, 0.16), transparent 58%),
-          radial-gradient(900px 600px at 90% 18%, rgba(93, 255, 209, 0.14), transparent 62%),
-          linear-gradient(135deg, var(--bg-0), var(--bg-1) 45%, var(--bg-2));
-      }
-      h1 { background-image: linear-gradient(90deg, #d46dff, #8eb7ff, #5dffd1, #d46dff); }
-      .title-wrap .line::before { border-top-color: rgba(212, 109, 255, 0.42); box-shadow: 0 0 12px rgba(212, 109, 255, 0.65); }
-      .title-wrap .line::after { border-color: rgba(212, 109, 255, 0.35); }
-      .panel { border-color: rgba(212, 109, 255, 0.68); box-shadow: inset 0 0 48px rgba(175, 91, 232, 0.12), 0 0 26px rgba(212, 109, 255, 0.24); }
-    `,
     ice: `
       :root {
         --bg-0: #031728;
@@ -185,61 +159,6 @@
       .panel { border-color: rgba(167, 246, 255, 0.7); }
       .mini.pros h2 { color: #a7f6ff; }
       .mini.cons h2 { color: #f6f7c5; }
-    `,
-    matrix: `
-      :root {
-        --bg-0: #03160d;
-        --bg-1: #07301d;
-        --bg-2: #0d4d2c;
-        --cyan: #40ff88;
-        --cyan-soft: rgba(64, 255, 136, 0.38);
-        --blue: #7cffc1;
-        --green: #b6ff4a;
-        --yellow: #f4ff72;
-        --text: #edfff2;
-        --text-soft: rgba(237, 255, 242, 0.9);
-        --panel-bg: rgba(5, 61, 35, 0.42);
-        --panel-bg-deep: rgba(3, 34, 20, 0.52);
-      }
-      body {
-        background:
-          radial-gradient(1100px 680px at 0% 85%, rgba(64, 255, 136, 0.14), transparent 58%),
-          radial-gradient(900px 600px at 92% 18%, rgba(182, 255, 74, 0.13), transparent 62%),
-          linear-gradient(135deg, var(--bg-0), var(--bg-1) 45%, var(--bg-2));
-      }
-      h1 { background-image: linear-gradient(90deg, #40ff88, #7cffc1, #f4ff72, #40ff88); }
-      .scene::before {
-        background:
-          repeating-linear-gradient(to right, rgba(64, 255, 136, 0.14) 0 1px, transparent 1px 64px),
-          repeating-linear-gradient(to bottom, rgba(64, 255, 136, 0.12) 0 1px, transparent 1px 64px);
-      }
-      .panel { border-color: rgba(64, 255, 136, 0.68); box-shadow: inset 0 0 48px rgba(64, 255, 136, 0.11), 0 0 26px rgba(64, 255, 136, 0.2); }
-    `,
-    magenta: `
-      :root {
-        --bg-0: #21071c;
-        --bg-1: #3f1237;
-        --bg-2: #641d55;
-        --cyan: #ff64d8;
-        --cyan-soft: rgba(255, 100, 216, 0.38);
-        --blue: #79d9ff;
-        --green: #72ffd7;
-        --yellow: #ffe06f;
-        --text: #fff0fb;
-        --text-soft: rgba(255, 240, 251, 0.9);
-        --panel-bg: rgba(80, 20, 70, 0.45);
-        --panel-bg-deep: rgba(42, 8, 36, 0.52);
-      }
-      body {
-        background:
-          radial-gradient(1120px 680px at 0% 85%, rgba(255, 100, 216, 0.16), transparent 58%),
-          radial-gradient(900px 600px at 90% 18%, rgba(121, 217, 255, 0.15), transparent 62%),
-          linear-gradient(135deg, var(--bg-0), var(--bg-1) 45%, var(--bg-2));
-      }
-      h1 { background-image: linear-gradient(90deg, #ff64d8, #79d9ff, #ffe06f, #ff64d8); }
-      .panel { border-color: rgba(255, 100, 216, 0.68); box-shadow: inset 0 0 48px rgba(255, 100, 216, 0.11), 0 0 26px rgba(255, 100, 216, 0.24); }
-      .mini.pros { border-color: rgba(114, 255, 215, 0.82); }
-      .mini.cons { border-color: rgba(255, 224, 111, 0.86); }
     `,
   };
 

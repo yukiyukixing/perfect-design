@@ -61,36 +61,12 @@ const STYLE_OPTIONS = [
     pptBackground: "1a2118",
   },
   {
-    id: "violet",
-    name: "紫电赛博风",
-    meta: "原版布局衍生",
-    src: "/templates/neon.html?skin=violet",
-    previewClass: "style-preview-violet",
-    pptBackground: "140826",
-  },
-  {
     id: "ice",
     name: "冰蓝极光风",
     meta: "原版布局衍生",
     src: "/templates/neon.html?skin=ice",
     previewClass: "style-preview-ice",
     pptBackground: "031728",
-  },
-  {
-    id: "matrix",
-    name: "绿码矩阵风",
-    meta: "原版布局衍生",
-    src: "/templates/neon.html?skin=matrix",
-    previewClass: "style-preview-matrix",
-    pptBackground: "03160d",
-  },
-  {
-    id: "magenta",
-    name: "玫紫直播风",
-    meta: "原版布局衍生",
-    src: "/templates/neon.html?skin=magenta",
-    previewClass: "style-preview-magenta",
-    pptBackground: "21071c",
   },
 ];
 
